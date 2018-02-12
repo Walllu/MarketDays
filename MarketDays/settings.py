@@ -1,3 +1,4 @@
+#hh
 """
 Django settings for MarketDays project.
 
