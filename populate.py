@@ -1,9 +1,17 @@
+"""
+ Walter 20.2.18
+    I just generated the "market" app.
+    We need to introduce new models, build the database and decide how to populate the database with this script.
+"""
+
+
+
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MarketDays.settings')
 
 import django
 django.setup()
-from rango.models import Category, Page
+from market.models import Category, Page
 
 def populate():
     python_pages = [
