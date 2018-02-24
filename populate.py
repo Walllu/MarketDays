@@ -14,6 +14,7 @@ django.setup()
 from market.models import Category, Page
 
 def populate():
+    """
     python_pages = [
             {"title":"Official Python Tutorial",
                 "url":"https://docs.python.org/2/tutorial/",
@@ -56,6 +57,13 @@ def populate():
         for p in Page.objects.filter(category=c):
             print("- {0} - {1}".format(str(c),str(p)))
 
+    """
+
+    users = {}
+    items = {}
+    sessions = {}
+    offers = {}
+
 def add_page(cat, title, url, views=0):
     p = Page.objects.get_or_create(category=cat, title=title)[0]
     p.url=url
@@ -71,6 +79,6 @@ def add_cat(name,views=0,likes=0):
     return c
 
 if __name__=='__main__':
-    print("Starting Rango population script...")
+    print("Starting MarketDays population script...")
     populate()
 
