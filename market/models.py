@@ -30,17 +30,33 @@ class Item(models.Model):
     #itemValue
 
 #note for the future, we should sort out an way on deleting offers when somebody exit session
-class Offers(models.Model):
+class Offer(models.Model):
     offerID = models.IntegerField(default=0, unique=True)
     fromID = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
     toID = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    itemProposed =
+    message = models.CharField(max_length=256)
+    offerTimeStamp = models.DateField(_("Date"), default=datetime.date.today)
 
 
-class Sessions
-class OfferContent
-class SessionParticipants
+class Session(models.Model):
+    sessionID = models.IntegerField(default=0, unique=True)
+    sessionName = models.CharField(max_length=32)
+    xCords = models.IntegerField(default=0)
+    yCords = models.IntegerField(default=0)
+    sessionStart = models.DateField(_("Date"), default=datetime.date.today)
+    sessionEnd = models.DateField(_("Date"), default=datetime.date.today)
 
-#
+
+class OfferContent(models.Model):
+    callerID = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
+    caleeID = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    itemID = models.ForeignKey(Item, on_delete=models.PROTECT)
+    offerID = models.ForeignKey(Offer, on_delete=models.CASCADE)
+
     
+class SessionParticipants(models.Model):
+    sessionId = models.ForeignKey(Session, on_delete=models.PROTECT)
+    participantID = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
+    
+         
     
