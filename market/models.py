@@ -23,8 +23,8 @@ class UserProfile(models.Model):
 
 
 class Item(models.Model):
-    posterID = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
-    currentOwnerId = models.ForeignKey(UserProfile, on_delete=models.CASCADE)         #Why is this CASCADE? Walter 26.2.2018
+    posterID = models.ForeignKey(UserProfile, related_name='owns_physically', on_delete=models.PROTECT)
+    currentOwnerId = models.ForeignKey(UserProfile, related_name='owns_entitlement', on_delete=models.CASCADE)         #Why is this CASCADE? Walter 26.2.2018
     itemName = models.CharField(max_length=128)
     itemPicture = models.ImageField(upload_to='profile_images', blank=True)
     itemDescription = models.CharField(max_length=512, unique=True)                   #Why is this unique? Surely we can have non-unique descriptions  Walter 26.2.2018
@@ -34,8 +34,8 @@ class Item(models.Model):
 #note for the future, we should sort out an way on deleting offers when somebody exit session
 class Offer(models.Model):
     offerID = models.IntegerField(default=0, unique=True)
-    fromID = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
-    toID = models.ForeignKey(UserProfile, on_delete=models.CASCADE)               #why is this CASCADE?   Walter 26.2.2018
+    fromID = models.ForeignKey(UserProfile, related_name='offer_maker', on_delete=models.PROTECT)
+    toID = models.ForeignKey(UserProfile, related_name='offer_reciever', on_delete=models.CASCADE)               #why is this CASCADE?   Walter 26.2.2018
     message = models.CharField(max_length=256)
     offerTimeStamp = models.DateField(_("Date"), default=datetime.date.today)  
      
@@ -63,8 +63,8 @@ class Session(models.Model):
 
 
 class OfferContent(models.Model):
-    callerID = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
-    calleeID = models.ForeignKey(UserProfile, on_delete=models.CASCADE)      #Why is this CASCADE? Walter 26.2.2018
+    callerID = models.ForeignKey(UserProfile, related_name='from_side_inventory', on_delete=models.PROTECT)
+    calleeID = models.ForeignKey(UserProfile, related_name='to_side_inventory', on_delete=models.CASCADE)      #Why is this CASCADE? Walter 26.2.2018
     itemID = models.ForeignKey(Item, on_delete=models.PROTECT)
     offerID = models.ForeignKey(Offer, on_delete=models.CASCADE)             #Why is this CASCADE? Walter 26.2.2018
 
