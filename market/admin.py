@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from rango.models import UserProfile, Item, Offer, Session, OfferContent, SessionParticipants 
+from market.models import UserProfile, Item, Offer, Session, OfferContent, SessionParticipants 
 # Register your models here.
 
 
@@ -10,7 +10,7 @@ from rango.models import UserProfile, Item, Offer, Session, OfferContent, Sessio
 # Someone have a think about if we need a UserAdmin class
 #class UserAdmin(admin.ModelAdmin):
 #    pass 
-
+"""
 class ItemAdmin(admin.ModelAdmin):
     list_display = ['posterID', 'currentOwnerID', 'itemName', 'itemDatePosted']
 
@@ -24,5 +24,13 @@ admin.site.register(Item, ItemAdmin)
 admin.site.register(Offer, OfferAdmin)
 admin.site.register(Session, SessionAdmin)
 admin.site.register(UserProfile)
+admin.site.register(OfferContent)
+admin.site.register(SessionParticipants)
+"""
+
+admin.site.register(UserProfile)
+admin.site.register(Item)
+admin.site.register(Session)
+admin.site.register(Offer)
 admin.site.register(OfferContent)
 admin.site.register(SessionParticipants)

@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.utils.translation import gettext as _
+import datetime # this wasn't imported, DateField's broke
 
 # Create your models here.
 
@@ -35,14 +37,14 @@ class Offer(models.Model):
     fromID = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
     toID = models.ForeignKey(UserProfile, on_delete=models.CASCADE)               #why is this CASCADE?   Walter 26.2.2018
     message = models.CharField(max_length=256)
-    offerTimeStamp = models.DateField(_("Date"), default=datetime.date.today)
-    
+    offerTimeStamp = models.DateField(_("Date"), default=datetime.date.today)  
+     
     class Meta:
         verbose_name_plural = 'offers'
 
-    def __str__(self):
+    #def __str__(self):
         #Walter 26.2.2018 Added a few of these __str__ classes - I aimed to make them meaningful
-        return str(self.offerID)+"-from-"+str(self.fromID)+"-to-"+str(self.toID)+"-@"+str(self.offerTimeStamp)
+     #   return str(self.offerID)+"-from-"+str(self.fromID)+"-to-"+str(self.toID)+"-@"+str(self.offerTimeStamp)
 
 
 class Session(models.Model):
@@ -56,8 +58,8 @@ class Session(models.Model):
     class Meta:
         verbose_name_plural = 'sessions'
 
-    def __str__(self):
-        return str(self.sessionID)+"-title-"+str(self.sessionName)
+    #def __str__(self):
+    #    return str(self.sessionID)+"-title-"+str(self.sessionName)
 
 
 class OfferContent(models.Model):
@@ -66,16 +68,16 @@ class OfferContent(models.Model):
     itemID = models.ForeignKey(Item, on_delete=models.PROTECT)
     offerID = models.ForeignKey(Offer, on_delete=models.CASCADE)             #Why is this CASCADE? Walter 26.2.2018
 
-    def __str__(self):
-        return str(self.callerID)+"-"str(self.calleeID)+"-"+str(self.itemID)+"-"+str(self.offerID)
+   # def __str__(self):
+   #     return str(self.callerID)+"-"str(self.calleeID)+"-"+str(self.itemID)+"-"+str(self.offerID)
 
     
 class SessionParticipants(models.Model):
     sessionId = models.ForeignKey(Session, on_delete=models.PROTECT)
     participantID = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
 
-    def __str__(self):
-        return str(self.sessionID)+"-participant-"+str(self.participantID)
+    #def __str__(self):
+    #    return str(self.sessionID)+"-participant-"+str(self.participantID)
     
          
     
