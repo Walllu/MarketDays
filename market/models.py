@@ -11,11 +11,14 @@ import datetime # this wasn't imported, DateField's broke
 
 class UserProfile(models.Model):
     userID = models.OneToOneField(User)
+	userName = models.CharField(max_length=12, unique=True) # Ole, 1st Mar
+	firstName = models.CharField(max_length=20) # Ole, 1st Mar
+	lastName = models.CharField(max_length=20) # Ole, 1st Mar
     userPhoneNumber = models.IntegerField(default=0)
     userPicture = models.ImageField(upload_to='profile_images', blank=True)
     userDescription = models.CharField(max_length=512, unique=True)
     userInterests = models.CharField(max_length=512, unique=True)
-    userStartDate = models.DateField(_("Date"), default=datetime.date.today)
+    userStartDate = models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
     #creditcard to model later
 
     def __str__(self):
@@ -25,6 +28,7 @@ class UserProfile(models.Model):
 class Item(models.Model):
     posterID = models.ForeignKey(UserProfile, related_name='owns_physically', on_delete=models.PROTECT)
     currentOwnerId = models.ForeignKey(UserProfile, related_name='owns_entitlement', on_delete=models.CASCADE)         #Why is this CASCADE? Walter 26.2.2018
+    itemID = models.IntegerField(default=0, unique=True)
     itemName = models.CharField(max_length=128)
     itemPicture = models.ImageField(upload_to='profile_images', blank=True)
     itemDescription = models.CharField(max_length=512, unique=True)                   #Why is this unique? Surely we can have non-unique descriptions  Walter 26.2.2018
@@ -54,6 +58,7 @@ class Session(models.Model):
     yCords = models.IntegerField(default=0)
     sessionStart = models.DateField(_("Date"), default=datetime.date.today)
     sessionEnd = models.DateField(_("Date"), default=datetime.date.today)
+	participants = models.IntegerField(default=0) # Ole, 1st Mar
 
     class Meta:
         verbose_name_plural = 'sessions'
