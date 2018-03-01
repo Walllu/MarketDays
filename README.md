@@ -9,16 +9,25 @@ After all, "One man's trash is another man's treasure." <br/>
 
 - [ ] Design the models
   - [X] Look at the requirements spec
-	- [ ] Make an ER diagram --> translate this into Django's ORM
-	- [ ] Implement models 
-    - Test with the admin interface
-    - Create a plausible testing scenario (using the user personas and their info)
+	- [X] Make an ER diagram --> translate this into Django's ORM
+	- [X] Implement models 
+    - [X] Test with the admin interface
+    - [ ] Create a plausible testing scenario (using the user personas and their info)
+    - [ ] Write tests for this
 	
 
 - [ ] Design views and the templates (these are interlinked in many ways - open communication on this is necessary)
-	- [ ] Design a site map --> make URL mapping decisions (including URL "name")
+	- [X] Design a site map --> make URL mapping decisions (including URL "name")
 	- [X] Design and draw up wireframes of each page
 	- [ ] Implement user login and sign up functionality --> 
 		Pages built from here onwards, all users need to be authenticated to view
+	- [ ] Assign each group member a particular set of pages to create
+		- Tests (write tests first and continuously!)
+		- Template
+		- View
+		- URL map
+	- [ ] Merge pages in style (CSS & Javascipt)
+	- [ ] Polish up user experience
+	- [ ] Test to make sure the application actually works as intended
 
 
