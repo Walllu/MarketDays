@@ -26,11 +26,12 @@ admin.site.register(Session, SessionAdmin)
 admin.site.register(UserProfile)
 admin.site.register(OfferContent)
 admin.site.register(SessionParticipants)
-"""
 
+"""
 admin.site.register(UserProfile)
 admin.site.register(Item)
 admin.site.register(Session)
 admin.site.register(Offer)
 admin.site.register(OfferContent)
 admin.site.register(SessionParticipants)
+

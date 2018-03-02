@@ -70,7 +70,7 @@ def populate():
             ]
 
     items = [
-            {},
+            {"posterID":"1", "phonenumber":"1234567", "pic":None, "desc":"", "interests":"", "startdate":""},
             {},
             {},
             ]
