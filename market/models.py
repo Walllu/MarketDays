@@ -10,10 +10,11 @@ import datetime # this wasn't imported, DateField's broke
 # Create your models here.
 
 class UserProfile(models.Model):
-    userID = models.OneToOneField(User)
-	userName = models.CharField(max_length=12, unique=True) # Ole, 1st Mar
-	firstName = models.CharField(max_length=20) # Ole, 1st Mar
-	lastName = models.CharField(max_length=20) # Ole, 1st Mar
+    userID = models.IntegerField(primary_key=True, unique=True, default=0)
+    userName = models.CharField(max_length=12, unique=True) # Ole, 1st Mar
+    firstName = models.CharField(max_length=20) # Ole, 1st Mar
+    lastName = models.CharField(max_length=20) # Ole, 1st Mar
+    email = models.CharField(max_length=40) #Ole, 2nd Mar
     userPhoneNumber = models.IntegerField(default=0)
     userDescription = models.CharField(max_length=512, unique=True)
     userInterests = models.CharField(max_length=512, unique=True)
@@ -21,7 +22,7 @@ class UserProfile(models.Model):
     #creditcard to model later
 
     def __str__(self):
-        return self.user.username
+        return self.user.userID
 
 
 class Item(models.Model):
@@ -56,7 +57,7 @@ class Session(models.Model):
     yCords = models.IntegerField(default=0)
     sessionStart = models.DateField(_("Date"), default=datetime.date.today)
     sessionEnd = models.DateField(_("Date"), default=datetime.date.today)
-	participants = models.IntegerField(default=0) # Ole, 1st Mar
+    participants = models.IntegerField(default=0) # Ole, 1st Mar
 
     class Meta:
         verbose_name_plural = 'sessions'

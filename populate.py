@@ -11,7 +11,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MarketDays.settings')
 
 import django
 django.setup()
-from market.models import Category, Page
+# from market.models import Category, Page, UserProfile, Item
+from market.models import UserProfile, Item
 
 def populate():
     """
@@ -76,6 +77,13 @@ def populate():
             ]
     sessions = []
     offers = []
+    
+    f = open("./population_resource/data/users.txt")
+    i = 1
+    for line in f:
+        details = line.split("\t")
+        add_user(i, details[0], details[1], details[2], details[3], int(details[4]), details[5], details[6], details[7])
+        i += 1
 
 
 # We'll need to implement a few more functions, I don't think we need to worry about "user permissions" when we just shove data into the database
@@ -92,6 +100,22 @@ def add_cat(name,views=0,likes=0):
     c.likes = likes
     c.save()
     return c
+    
+def add_user(id, uname, fname, lname, email, phone, desc, inter, start):
+    print "Adding user: " + str(id)
+    
+    u = UserProfile.objects.create(userID = id)
+    
+    u.userName = uname
+    u.firstName = fname
+    u.lastName = lname
+    u.email = email
+    u.userPhoneNumber = phone
+    u.userDescription = desc
+    u.userInterests = inter
+    u.userStartDate = start
+    u.save()
+    return u
 
 if __name__=='__main__':
     print("Starting MarketDays population script...")
