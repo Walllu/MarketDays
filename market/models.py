@@ -22,7 +22,7 @@ class UserProfile(models.Model):
     #creditcard to model later
 
     def __str__(self):
-        return self.user.userID
+        return self.userID
 
 
 class Item(models.Model):
