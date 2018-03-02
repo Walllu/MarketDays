@@ -32,13 +32,21 @@ def populate():
             ]
     sessions = []
     offers = []
-    
+    '''
     f = open("./population_resource/data/users.txt")
     #with f as open("./population_resource/data/users.txt"):
     i = 1
     for line in f:
         details = line.split("\t")
         add_user(i, details[0], details[1], details[2], details[3], int(details[4]), details[5], details[6], details[7])
+        i += 1
+    f.close()
+    '''
+    f = open("./population_resource/data/items.txt")
+    i = 1
+    for line in f:
+        details = line.split("\t")
+        add_item(i, details)
         i += 1
     f.close()
 
@@ -57,10 +65,27 @@ def add_user(id, uname, fname, lname, email, phone, desc, inter, start):
     u.userDescription = desc
     u.userInterests = inter
     u.userStartDate = start
+    
     u.save()
     return u
     
-# def add_item(id, 
+def add_item(id, details):
+    print "Adding item: " + str(id)
+    print details
+    
+    possessor = UserProfile.objects.get(userID = int(details[1]))
+    claimant = UserProfile.objects.get(userID = int(details[2]))
+    
+    it = Item.objects.create(itemID = id, possessorID = possessor, claimantID = claimant)
+    
+    # file: name -> owner -> claimant -> desc -> date
+    
+    it.itemName = details[0]
+    it.itemDescription = details[3]
+    it.itemDatePosted = details[4]
+    
+    it.save()
+    return it
 
 if __name__=='__main__':
     print("Starting MarketDays population script...")

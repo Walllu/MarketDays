@@ -26,13 +26,16 @@ class UserProfile(models.Model):
 
 
 class Item(models.Model):
-    posterID = models.ForeignKey(UserProfile, related_name='owns_physically', on_delete=models.PROTECT)
-    currentOwnerId = models.ForeignKey(UserProfile, related_name='owns_entitlement', on_delete=models.CASCADE)         #Why is this CASCADE? Walter 26.2.2018
-    itemID = models.IntegerField(default=0, unique=True)
+    itemID = models.IntegerField(primary_key=True,default=0, unique=True)
+    possessorID = models.ForeignKey(UserProfile, related_name='owns_physically', on_delete=models.PROTECT)
+    claimantID = models.ForeignKey(UserProfile, related_name='owns_entitlement', on_delete=models.CASCADE)         #Why is this CASCADE? Walter 26.2.2018
     itemName = models.CharField(max_length=128)
     itemDescription = models.CharField(max_length=512, unique=True)                   #Why is this unique? Surely we can have non-unique descriptions  Walter 26.2.2018
     itemDatePosted = models.DateField(_("Date"), default=datetime.date.today)
     #itemValue
+
+    def __str__(self):
+        return str(self.itemID)
 
 #note for the future, we should sort out an way on deleting offers when somebody exit session
 class Offer(models.Model):
