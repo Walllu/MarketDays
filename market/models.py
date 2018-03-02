@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _ #I'm not sure about this fix - it seems to have fixed the DateFields, but I'm not sure why. StackOverFlow told me:)
 import datetime # this wasn't imported, DateField's broke
 
 # Create your models here.
