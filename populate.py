@@ -32,7 +32,7 @@ def populate():
             ]
     sessions = []
     offers = []
-    '''
+    
     f = open("./population_resource/data/users.txt")
     #with f as open("./population_resource/data/users.txt"):
     i = 1
@@ -41,7 +41,7 @@ def populate():
         add_user(i, details[0], details[1], details[2], details[3], int(details[4]), details[5], details[6], details[7])
         i += 1
     f.close()
-    '''
+    """
     f = open("./population_resource/data/items.txt")
     i = 1
     for line in f:
@@ -49,7 +49,7 @@ def populate():
         add_item(i, details)
         i += 1
     f.close()
-
+    """
 
 # We'll need to implement a few more functions, I don't think we need to worry about "user permissions" when we just shove data into the database    
 def add_user(id, uname, fname, lname, email, phone, desc, inter, start):
