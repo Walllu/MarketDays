@@ -116,6 +116,8 @@ def add_user(id, uname, fname, lname, email, phone, desc, inter, start):
     u.userStartDate = start
     u.save()
     return u
+    
+# def add_item(id, 
 
 if __name__=='__main__':
     print("Starting MarketDays population script...")
