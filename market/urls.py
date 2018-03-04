@@ -4,4 +4,6 @@ from market import views
 urlpatterns = [
         #assuming we want to name the initial portal to the app "index"
         #url(r'^$', views.index, name='index'),
+        url(r'^$', views.index, name='index'),
+
         ]
