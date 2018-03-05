@@ -1,6 +1,6 @@
 from django import template
 #from rango.models import Session, Offer, Item
-=======
+
 from market.models import UserProfile, Session, Offer, Item
 
 #Walter 26.2.2018
