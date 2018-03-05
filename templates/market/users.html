@@ -1,0 +1,30 @@
+{% load staticfiles %}
+
+{% block title_block %}
+	Users
+{% endblock %}
+
+{% block body_block %}
+	<h1>Some users</h1>
+	<div>
+		{% if users %}
+		<ul>
+		{% for user in users %}
+			<li>
+				<p>{{ user.email }}</p>
+				<p>{{ user.firstName }}</p>
+				<p>{{ user.lastName }}</p>
+				<p>{{ user.userName }}</p>
+				<p>{{ user.userPhoneNumber }}</p>
+				<p>{{ user.userID }}</p>
+				<p>{{ user.userStartDate }}</p>
+				<p>{{ user.userDescription }}</p>
+				<p>{{ user.userInterests }}</p>
+			</li>
+		{% endfor %}
+		</ul>
+		{% else %}
+			<strong>There are no users present.</strong>
+		{% endif %}
+	</div>
+{% endblock %}
