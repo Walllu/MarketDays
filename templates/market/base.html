@@ -17,6 +17,12 @@
             {% endblock %}
         </div>
         <hr />
-        
+        <div>
+            <ul>
+                  <li><a href="{% url 'auth_login' %}">Sign In</a></li>
+                  <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
+                  <li><a href="{% url 'index' %}">Index</a></li>
+            </ul>
+        </div>
     </body>
 </html>

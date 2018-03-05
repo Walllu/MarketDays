@@ -63,7 +63,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'market'
+    'market',
+    'registration' #add in the registration package
 ]
 
 MIDDLEWARE = [
@@ -140,6 +141,23 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+#Registration variables
+#If True, user can register
+REGISTRATION_OPEN = True
+
+#One-week activation window
+ACCOUNT_ACTIVATION_DAYS = 7
+
+#If true user will be automatically logged in
+REGISTRATION_AUTO_LOGIN = True
+
+#The page user are redirected after they log in
+LOGIN_REDIRECT_URL = '/market/'
+
+#The page users are directed to if they are not logged in
+#and are trying to access page required authentication
+LOGIN_URL = '/accounts/login/'
 
 
 # Static files (CSS, JavaScript, Images)
