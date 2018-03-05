@@ -7,4 +7,5 @@ urlpatterns = [
     #assuming we want to name the initial portal to the app "index"
     #url(r'^$', views.index, name='index'),
     url(r'^users/', views.users, name = 'users'),
+    url(r'^$', views.index, name='index'),
     ]
