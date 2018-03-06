@@ -20,7 +20,8 @@
         <div>
             <ul>
 		  {% if user.is_authenticated %}
-		  <li><a href="{% url 'auth_logout' %}?next=/market/">Logout</a></li>
+                  <li><a href="{% url 'userProfile' %}">Your Profile</a></li>
+		              <li><a href="{% url 'auth_logout' %}?next=/market/">Logout</a></li>
 		  {% else %}
                   <li><a href="{% url 'auth_login' %}">Sign In</a></li>
                   <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
