@@ -1,0 +1,11 @@
+<!-- This template should be loaded into the SessionList template with templatetag get_session_list -->
+<!-- Present an unordered list of all the sessions in the database -->
+
+<ul>
+	{% if seshes %}
+		{% for sesh in seshes %}
+		<strong><li><a href="{% url 'join_session' sesh.slug %}">{{ sesh.name}}</a></li></strong>
+		{% endfor %}
+	{% else %}
+		<li><h3> There are no active sessions! Sorry! </h3></li>
+	{% endif %}
