@@ -80,7 +80,7 @@ class OfferContent(models.Model):
 
     
 class SessionParticipants(models.Model):
-    sessionId = models.ForeignKey(Session, on_delete=models.PROTECT)
+    sessionID = models.ForeignKey(Session, on_delete=models.PROTECT)
     participantID = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
 
     #def __str__(self):

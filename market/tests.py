@@ -80,16 +80,46 @@ class ModelTests(TestCase):
         # choose a lasat name you know should be in the db
         user4 = self.get_user(lastName = 'Tomlett')
         self.assertIsNotNone(user4)
+
+    # test startdate can't be in the future
+    # test that slug creation works fine
+    # test that
+
     # tests for Item
     # test existence
-    # 
     def test_is_an_item(self):
         item1 = self.get_item(itemID = 1)
         self.assertIsNotNone(item1)
         item2 = self.get_item(itemName = "chin")
         self.assertIsNotNone(item2)
+    
+    # test that ownerID has to be existing user
+    # test that claimantID has to be existing user
+    # test that itemDatePosed can't be in the future
+    # 
+    
+    # tests for Offers
+    # test that an offer can't be made from someone else
+    # test that an offer must be sent to an existing user
+    # test that an offer can't be made in the future
+    # test that an offer's sender info is preserved
+    # test that an offer's reciever info is preserved
+    # test that an item can only be offered if it exists
+    # test that 
 
-
+    # tests for Sessions
+    # test that sessionID is unique
+    # test that a session can't start and end at the same time
+    # test that a session can't end before it starts
+    # test that a session can't start in the past
+    # test that a session can't end in the past
+    # test that a session can't have negative number of participants
+    # test that the session participant number increases with participants
+    # test that the session participant number decreases when participant leaves
+    # test that participant is actually a participant in that session
+    # test that a participant can't be part of more than one session
+    # test that a participant can't join a session that doesn't exist
+    
 
 
 
