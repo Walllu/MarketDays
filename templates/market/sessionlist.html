@@ -1,0 +1,9 @@
+{% extends "market/base.html" %}
+
+{% block title_block %}
+MarketDays Sessions
+{% endblock %}
+
+{% block body_block %}
+{% get_session_list %}
+{% endblock %}

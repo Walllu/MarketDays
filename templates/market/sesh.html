@@ -2,10 +2,13 @@
 <!-- Present an unordered list of all the sessions in the database -->
 
 <ul>
-	{% if seshes %}
-		{% for sesh in seshes %}
+	{% if sessions %}
+		{% for sesh in sessions %}
+		<div class="">
 		<strong><li><a href="{% url 'join_session' sesh.slug %}">{{ sesh.name}}</a></li></strong>
+		</div>
 		{% endfor %}
 	{% else %}
 		<li><h3> There are no active sessions! Sorry! </h3></li>
 	{% endif %}
+</ul>
