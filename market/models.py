@@ -16,8 +16,8 @@ class UserProfile(models.Model):
     lastName = models.CharField(max_length=20) # Ole, 1st Mar
     email = models.CharField(max_length=40) #Ole, 2nd Mar
     userPhoneNumber = models.IntegerField(default=0)
-    userDescription = models.CharField(max_length=512, unique=True)
-    userInterests = models.CharField(max_length=512, unique=True)
+    userDescription = models.CharField(max_length=512)
+    userInterests = models.CharField(max_length=512)
     userStartDate = models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
     slug = models.SlugField(unique=True)
     #creditcard to model later
@@ -33,7 +33,7 @@ class Item(models.Model):
     possessorID = models.ForeignKey(UserProfile, related_name='owns_physically', on_delete=models.PROTECT)
     claimantID = models.ForeignKey(UserProfile, related_name='owns_entitlement', on_delete=models.CASCADE)         #Why is this CASCADE? Walter 26.2.2018
     itemName = models.CharField(max_length=128)
-    itemDescription = models.CharField(max_length=512, unique=True)                   #Why is this unique? Surely we can have non-unique descriptions  Walter 26.2.2018
+    itemDescription = models.CharField(max_length=512)                   #Why is this unique? Surely we can have non-unique descriptions  Walter 26.2.2018
     itemDatePosted = models.DateField(_("Date"), default=datetime.date.today)
     slug = models.SlugField(unique=True)
     #itemValue
@@ -67,7 +67,7 @@ class Offer(models.Model):
 
 class Session(models.Model):
     sessionID = models.IntegerField(default=0, unique=True)
-    sessionName = models.CharField(max_length=32)
+    sessionName = models.CharField(max_length=32, unique=True)
     xCords = models.IntegerField(default=0)
     yCords = models.IntegerField(default=0)
     sessionStart = models.DateField(_("Date"), default=datetime.date.today)
@@ -79,7 +79,7 @@ class Session(models.Model):
         verbose_name_plural = 'sessions'
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.sessionID)
+        self.slug = slugify(self.sessionName)
         super(Session, self).save(*args, **kwargs
     #def __str__(self):
     #    return str(self.sessionID)+"-title-"+str(self.sessionName)
