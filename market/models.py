@@ -22,7 +22,7 @@ class UserProfile(models.Model):
     slug = models.SlugField(unique=True)
     #creditcard to model later
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.userName)
         super(UserProfile, self).save(*args, **kwargs)
     def __str__(self):
         return str(self.userID)
@@ -39,7 +39,7 @@ class Item(models.Model):
     #itemValue
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.itemID)
         super(Item, self).save(*args, **kwargs
 
     def __str__(self):
@@ -58,7 +58,7 @@ class Offer(models.Model):
         verbose_name_plural = 'offers'
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.offerID)
         super(Offer, self).save(*args, **kwargs
     #def __str__(self):
         #Walter 26.2.2018 Added a few of these __str__ classes - I aimed to make them meaningful
@@ -79,7 +79,7 @@ class Session(models.Model):
         verbose_name_plural = 'sessions'
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.sessionID)
         super(Session, self).save(*args, **kwargs
     #def __str__(self):
     #    return str(self.sessionID)+"-title-"+str(self.sessionName)
