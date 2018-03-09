@@ -20,6 +20,16 @@ def userProfile(request):
 
     return render(request, 'market/userProfile.html', context_dict)
 
+
+# I added these two in order to pass the tests I wrote -Walter 9.3.18
+def sessionlist(request):
+    pass
+
+def about(request):
+    pass
+
+
+# could we please change this view to do something meaningful? should probably present user login here yeah?
 def index(request):
     #request.session.set_test_cookie()
     #category_list = Category.objects.order_by('-likes')[:5]

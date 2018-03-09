@@ -7,8 +7,9 @@ urlpatterns = [
     #assuming we want to name the initial portal to the app "index"
     #url(r'^$', views.index, name='index'),
     url(r'^users/', views.users, name = 'users'),
+    url(r'^sessionlist/', views.sessionlist, name='sessionlist'),
     url(r'^userProfile/', views.userProfile, name = 'userProfile'),
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.index, name='index'),       # I think in the future we should consider redirecting users to userProfile instead of index - Walter 9.3.18
     url(r'^restricted/', views.restricted, name='restricted'),
 
     ]
