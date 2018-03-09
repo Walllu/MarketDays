@@ -7,6 +7,9 @@ from django.shortcuts import render
 from market.models import UserProfile
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from market.forms import UserForm, UserProfileForm
+import datetime
+from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 def users(request):
@@ -19,6 +22,39 @@ def userProfile(request):
     context_dict = {}
 
     return render(request, 'market/userProfile.html', context_dict)
+    
+def register(request):
+    # a boolean to keep track of whether or not registration worked
+    registered = False
+    if request.method == 'POST':
+        # user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+
+        #if the two forms are valid
+        if profile_form.is_valid():
+            print "hello"
+            # user = user_form.save()
+            #hash the password with set_password method
+            
+            # user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.password = make_password(profile.password)
+            #profile.user = user
+            profile.userStartDate = datetime.date.today()
+
+            profile.save()
+            registered = True
+        else:
+            #invalid form or forms
+            print(profile_form.errors)
+    else:
+        # Not a HTTP POST, so we render our form using two ModelForm instances
+        # These forms will be blank, ready for user input
+        # user_form = UserForm()
+        profile_form = UserProfileForm()
+    context = {'profile_form': profile_form, 'registered': registered}
+    return render(request, 'market/register.html', context)
 
 
 # I added these two in order to pass the tests I wrote -Walter 9.3.18
