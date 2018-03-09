@@ -2,30 +2,30 @@
 {% load staticfiles %}
 {%load market_template_tags%}
 <html>
-    <head>
+    <head lang="eng">
         <title>
             MarketDays-
             {% block title_block %}
                 items trading platform
             {% endblock %}
         </title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
 
     <body>
-        <divi id="jumbotron">
+        <div>
             {% block body_block %}
             {% endblock %}
         </div>
         <hr />
         <div>
             <ul>
-		  {% if user.is_authenticated %}
-                  <li><a href="{% url 'userProfile' %}">Your Profile</a></li>
-		              <li><a href="{% url 'auth_logout' %}?next=/market/">Logout</a></li>
-		  {% else %}
                   <li><a href="{% url 'auth_login' %}">Sign In</a></li>
                   <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
-		  {% endif %}
                   <li><a href="{% url 'index' %}">Index</a></li>
             </ul>
         </div>
