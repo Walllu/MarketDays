@@ -5,8 +5,10 @@ from market.models import Session, Item, UserProfile, Offer, OfferContent, Sessi
 import datetime
 
 class UserProfileTests(TestCase):
-    # A test to see if the database population goes well
-    def setUp(self):
+    # this sets up the test database ONCE
+    @classmethod
+    def setUpTestData(cls):
+        print "UserProfile Model tests commencing..."
         try:
             from populate import populate
             print "populating test database.........."
@@ -17,6 +19,9 @@ class UserProfileTests(TestCase):
             print "The function populate() does not exist, or is incorrect"
         except:
             print "Something fucked up in the population script"
+
+    def setUp(self):
+        pass
 
     # test existence
     def test_is_a_user(self):
@@ -31,7 +36,7 @@ class UserProfileTests(TestCase):
 
     # test startdate can't be in the future
     def test_user_joined_cant_be_in_the_future(self):
-        futuretime = timezone.now()+datetime.timedelta(days=30)
+        futuretime = datetime.datetime.now()+datetime.timedelta(days=30)
         user = UserProfile(userID=1000, userName="aassss", firstName="Billy", lastName="Joel", email="billy@joel.org", userStartDate=futuretime)
         #self.assertRaises() # not quite sure what exception is raised here
 
@@ -48,7 +53,9 @@ class UserProfileTests(TestCase):
 
 class OfferTests(TestCase):
     #come up with a shorter setUp
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
+        print "Offer Model tests commencing..."
         try:
             from populate import populate
             print "populating test database.........."
@@ -60,10 +67,13 @@ class OfferTests(TestCase):
         except:
             print "Something fucked up in the population script"
 
+    def setUp(self):
+        pass
+
     # test that offer creation works
     def test_offer_creation(self):
-        user1 = UserProfile.get(userID=1)
-        user2 = UserProfile.get(userID=2)
+        user1 = UserProfile.objects.get(userID=1)
+        user2 = UserProfile.objects.get(userID=2)
 
 
 
@@ -88,7 +98,9 @@ class OfferTests(TestCase):
     # test that
 
 class SessionTests(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
+        print "Session Model tests commencing..."
         try:
             from populate import populate
             print "populating test database.........."
@@ -99,6 +111,11 @@ class SessionTests(TestCase):
             print "The function populate() does not exist, or is incorrect"
         except:
             print "Something fucked up in the population script"
+
+    # define a new session to test
+    def setUp(self):
+        testSession = Session(sessionID=22, sessionName="Session 22", sessionStart=datetime.datetime.now(), sessionEnd=datetime.datetime.now()+datetime.timedelta(days=1))
+        testSession.save()
 
     # test that sessionID is unique
     def test_session_is_unique(self):
@@ -111,7 +128,7 @@ class SessionTests(TestCase):
         pass
     # test that a session can't start in the past
     def test_session_cant_start_in_the_past(self):
-        pastdate = timezone.now() - datetime.timedelta(days=-30)
+        pastdate = datetime.datetime.now() - datetime.timedelta(days=-30)
         session = Session(sessionID=15, sessionName="New Sesh", sessionEnd=pastdate)
         #self.assertEqual
     # test that a session can't end in the past
@@ -138,7 +155,6 @@ class ItemTests(TestCase):
             print "Something fucked up in the population script"
 
     def get_item(self, **kwargs):
-        from market.models import Item
         try:
             keys=kwargs.keys()
             if((len(keys)==0) or (len(keys)>1)):
@@ -169,6 +185,5 @@ class ItemTests(TestCase):
         pass
     # test that itemDatePosed can't be in the future
     def test_item_cant_be_made_in_the_future(self):
-        from models import Item
-        futuretime = timezone.now() + datetime.timedelta(days=30)
-        item = Item(itemID=1, possessorID=1, claimantID=1, itemName="test", itemDescription="",itemDatePosted=futuretime)
+        futuretime = datetime.datetime.now() + datetime.timedelta(days=30)
+        #item = Item(itemID=1, possessorID=1, claimantID=1, itemName="test", itemDescription="",itemDatePosted=futuretime)

@@ -21,9 +21,9 @@ class AboutPageTests(TestCase):
 
 class ProfilePageTests(TestCase):
     def test_profile_uses_template(self):
-        response = self.client.get(reverse('account'))
+        response = self.client.get(reverse('userProfile'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'market/profile.html')
+        self.assertTemplateUsed(response, 'market/userProfile.html')
 
 class SessionListPageTests(TestCase):
     def test_session_list_uses_template(self):
