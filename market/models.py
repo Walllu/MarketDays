@@ -20,7 +20,7 @@ class UserProfile(models.Model):
     userDescription = models.CharField(max_length=512, blank=True)
     userInterests = models.CharField(max_length=512, blank=True)
     userStartDate = models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
-    #slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True)
     #creditcard to model later
     def save(self, *args, **kwargs):
         self.slug = slugify(self.userName)
@@ -36,7 +36,7 @@ class Item(models.Model):
     itemName = models.CharField(max_length=128)
     itemDescription = models.CharField(max_length=512, blank=True)                   #Why is this unique? Surely we can have non-unique descriptions  Walter 26.2.2018
     itemDatePosted = models.DateField(_("Date"), default=datetime.date.today)
-    #slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True)
     #itemValue
 
     def create_offer():
@@ -56,7 +56,7 @@ class Offer(models.Model):
     toID = models.ForeignKey(UserProfile, related_name='offer_reciever', on_delete=models.CASCADE)               #why is this CASCADE?   Walter 26.2.2018
     message = models.CharField(max_length=256, blank=True)
     offerTimeStamp = models.DateField(_("Date"), default=datetime.date.today)
-    #slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name_plural = 'offers'
@@ -77,7 +77,7 @@ class Session(models.Model):
     sessionStart = models.DateField(_("Date"), default=datetime.date.today)
     sessionEnd = models.DateField(_("Date"), default=datetime.date.today)
     participants = models.IntegerField(default=0) # Ole, 1st Mar
-    #slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name_plural = 'sessions'
