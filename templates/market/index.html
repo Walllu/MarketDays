@@ -4,13 +4,18 @@
 	Index
 {% endblock %}
 {% block body_block %}
+{% if user.is_authenticated %}
 	<div>
-		<h1>MarketDays</h1>
-
-		<h2>yo</h2>
-
-		<div>
-			<img src="{%static "images/marketPicture.jpg" %}" alt="Picture of ..." />
-		</div>
+		<h1 class="text-center"> Welcome back {{ user.username }}</h1>
 	</div>
+{% else %}
+	<div>
+		<h1 class="text-center">Welcome to MarketDays</h1>
+	</div>
+{% endif %}
+	<br/>
+	<div>
+		<img src="{%static "images/marketPicture.jpg" %}" class="img-responsive img-circle center-block" alt="Picture of ..." />
+	</div>
+
 {% endblock %}

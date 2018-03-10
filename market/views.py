@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from market.models import UserProfile
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -70,9 +70,12 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.password = make_password(profile.password)
+
+
             id = UserProfile.objects.all().aggregate(Max('userID'))
             num = id['userID__max']
-            profile.userID = num + 1
+
+            profile.userID = id + 1
             #profile.user = user
             profile.userStartDate = datetime.date.today()
 
@@ -106,12 +109,14 @@ def index(request):
 # This view function should request a user's profile from the databases
 # one does not need to be logged in to view this, though if you are, you should be able to a list of items
 # Walter - 10.3.18
-def userProfile(request, user_name_slug):
+def userProfile(request, user_name_slug=None):
     context_dict = {}
     try: # try to find the user in the db
+        print "lol"
         user = UserProfile.objects.get(slug=user_name_slug)
         context_dict['userprofile_object'] = user
     except UserProfile.DoesNotExist:
+        print "lol2"
         context_dict['userprofile_object'] = None
     # context dictionary for the userProfile template now contains information regarding the user to whom it belongs
     return render(request, 'market/userProfile.html', context_dict)
@@ -127,7 +132,7 @@ def sessionlist(request):
 
 #this view shows the list of
 @login_required
-def show_market_session(request, session_slug):
+def show_market_session(request, session_slug=None):
     context_dict = {}
     # get the session
     try:
@@ -152,3 +157,22 @@ def show_market_session(request, session_slug):
 @login_required
 def restricted(request):
     return HttpResponse("thx for logging in")
+
+@login_required
+def register_profile(request):
+    form = UserProfileForm()
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
+
+            return redirect('/market/')
+        else:
+            print (form.errors)
+
+    context_dict = {'form' : form}
+
+    return render(request, 'market/profile_registration.html', context_dict)

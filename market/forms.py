@@ -15,15 +15,15 @@ class UserForm(forms.ModelForm):
 
 #this is used at the account edit stage, when you've logged in and edit your account
 class UserProfileForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-    userName = forms.CharField(max_length=15, help_text="first name")
+    #password = forms.CharField(widget=forms.PasswordInput())
+    #userName = forms.CharField(max_length=15, help_text="first name")
     firstName = forms.CharField(max_length=20, help_text="first name")
     lastName = forms.CharField(max_length=20, help_text="last name")
     # I pulled the phonenumber line from StackOverflow
     userPhoneNumber = forms.CharField(max_length=15)
     userDescription = forms.CharField(max_length=512, help_text="Please enter description...")
     userInterests = forms.CharField(max_length=512, help_text="What are you interested in?")
-    userStartDate = forms.DateField(widget=forms.HiddenInput, required=False)
+    userStartDate = forms.CharField(max_length=15)#models.DateField(_("Date"), default=datetime.date.today) to be sorted later
     class Meta:
         model = UserProfile
-        fields = ('userName','email','password','firstName','lastName','userPhoneNumber','userDescription','userInterests')
+        exclude = ('user',)#fields = ('userName','email','password','firstName','lastName','userPhoneNumber','userDescription','userInterests')

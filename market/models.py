@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     userPhoneNumber = models.CharField(max_length=15,default="")
     userDescription = models.CharField(max_length=512, default="", blank=True)
     userInterests = models.CharField(max_length=512, default="",  blank=True)
-    userStartDate = models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
+    userStartDate = models.CharField(max_length=15)#models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
     slug = models.SlugField(unique=True)
     #creditcard to model later
     def save(self, *args, **kwargs):
