@@ -80,7 +80,7 @@ def index(request):
 # This view function should request a user's profile from the databases
 # one does not need to be logged in to view this, though if you are, you should be able to a list of items
 # Walter - 10.3.18
-def userProfile(request, user_name_slug):
+def userProfile(request, user_name_slug=None):
     context_dict = {}
     try: # try to find the user in the db
         user = UserProfile.objects.get(slug=user_name_slug)

@@ -30,6 +30,7 @@
           </ul>
           {% if user.is_authenticated %}
           <ul class="nav navbar-nav navbar-right">
+            <li><a href="/market/userProfile/"><span class="glyphicon glyphicon-user"></span>Your Profile</a></li>
             <li><a href="/accounts/logout/"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
           </ul>
           {% else %}
