@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from market.forms import UserForm, UserProfileForm
 import datetime
 from django.contrib.auth.hashers import make_password
+from django.db.models import Max
 
 # Create your views here.
 def users(request):
@@ -43,6 +44,9 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.password = make_password(profile.password)
+            id = UserProfile.objects.all().aggregate(Max('userID'))
+            num = id['userID__max']
+            profile.userID = num + 1
             #profile.user = user
             profile.userStartDate = datetime.date.today()
 
