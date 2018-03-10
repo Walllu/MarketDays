@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from market.forms import UserForm, UserProfileForm
 import datetime
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 def users(request):
@@ -23,8 +24,33 @@ def users(request):
 def about(request):
     pass
 
+def user_login(request):
+    if request.method == 'POST':
+        # use request.Post.get('<variable>') instead of request.POST['<variable>'] because the first returns
+        # None if the value doesn't exist, and the latter method returns a KeyError exception in the same situation
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        passwordhash = make_password(password)
 
 
+        user = authenticate(username=username, password=passwordhash)
+        if user:
+            # is the account enabled or disabled?
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+            else:
+                # account is inactive, so no logging in for youu
+                return HttpResponse("Your MarketDays account is disabled")
+        else:
+            # Bad login details were provided
+            print("Invalid login details: {0}, {1} hash {2}".format(username, password, passwordhash))
+            return HttpResponse("Invalid login details supplied.")
+    # request is not a HTTP POST so display the login form
+    # this scenario will most likely be a HTTP GET
+    else:
+        #No context variables hence the empty dictionary
+        return render(request, 'market/login.html', {})
 
 def register(request):
     # a boolean to keep track of whether or not registration worked
