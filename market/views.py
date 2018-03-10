@@ -108,7 +108,7 @@ def show_market_session(request, session_slug):
     # get users in the session
     try:
         session = context_dict['session_object']
-        if ()!session==None) and (session.participants>0): # if session exists and it has more than 0 participants, then find all users within session
+        if (not session==None) and (session.participants>0): # if session exists and it has more than 0 participants, then find all users within session
             # if session exists with more than 0 participants, then it is assumed that at least one SessionParticipants object exists
             users_in_session = SessionParticipants.objects.get(sessionID__exact=session.sessionID)
             context_dict['users_in_session'] = users_in_session
@@ -116,7 +116,7 @@ def show_market_session(request, session_slug):
             context_dict['users_in_session'] = None
     except SessionParticipants.DoesNotExist: # if there is an error for some reason, make None
         context_dict['users_in_session'] = None
-        
+
     return render(request, 'market/show_session.html', context_dict)
 
 @login_required
