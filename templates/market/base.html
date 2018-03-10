@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% load staticfiles %}
 {%load market_template_tags%}
+
+
 <html>
     <head lang="eng">
         <title>
@@ -17,17 +19,33 @@
     </head>
 
     <body>
-        <div>
-            {% block body_block %}
-            {% endblock %}
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>MarketDays</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/market/">Home</a></li>
+            <li><a href="#">About</a></li>
+          </ul>
+          {% if user.is_authenticated %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/accounts/logout/"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+          </ul>
+          {% else %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/accounts/register/"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="/accounts/login/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          </ul>
+          {% endif %}
         </div>
-        <hr />
-        <div>
-            <ul>
-                  <li><a href="{% url 'auth_login' %}">Sign In</a></li>
-                  <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
-                  <li><a href="{% url 'index' %}">Index</a></li>
-            </ul>
-        </div>
+      </nav>
+
+      <div>
+          {% block body_block %}
+          {% endblock %}
+      </div>
+      <hr />
+
     </body>
 </html>
