@@ -5,9 +5,11 @@
 {% endblock %}
 {% block body_block %}
 	<div>
-		<h1>That's your market you, {{ user.username }}</h1>
-
-		<h2>yo</h2>
+		{% if userprofile_object %}
+		<h1>That's your market you, {{ userprofile_object.userName }}</h1>
+		{% else %}
+		<strong> This person doesn't exist! Should they? </strong>
+		{% endif %}
 
 	</div>
 {% endblock %}

@@ -17,8 +17,8 @@ class UserProfile(models.Model):
     lastName = models.CharField(max_length=20, blank=True, default="Anon")# added blank # Ole, 1st Mar
     email = models.CharField(max_length=40) #Ole, 2nd Mar
     userPhoneNumber = models.CharField(max_length=15,default="")
-    userDescription = models.CharField(max_length=512, blank=True)
-    userInterests = models.CharField(max_length=512, blank=True)
+    userDescription = models.CharField(max_length=512, default="", blank=True)
+    userInterests = models.CharField(max_length=512, default="",  blank=True)
     userStartDate = models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
     slug = models.SlugField(unique=True)
     #creditcard to model later
