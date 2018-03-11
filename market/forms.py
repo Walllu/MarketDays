@@ -26,4 +26,4 @@ class UserProfileForm(forms.ModelForm):
     userStartDate = forms.CharField(max_length=15)#models.DateField(_("Date"), default=datetime.date.today) to be sorted later
     class Meta:
         model = UserProfile
-        exclude = ('user',)#fields = ('userName','email','password','firstName','lastName','userPhoneNumber','userDescription','userInterests')
+        exclude = ('userName','password')#fields = ('userName','email','password','firstName','lastName','userPhoneNumber','userDescription','userInterests')

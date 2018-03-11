@@ -1,37 +1,24 @@
 {% extends 'market/base.html' %}
+
 {% load staticfiles %}
-{% block title_block %}
-	UserProfile
-{% endblock %}
+
+{% block title %}{{ selecteduser.username }} UserProfile{% endblock %}
 {% block body_block %}
-	<div class="jumbotron">
-		{% if userprofile_object %}
-		<div class="page-header">
-		<h1>That's your market {{ userprofile_object.userName }}</h1>
-		</div>
 
-		<dl>
-			<dt><h3>First Name</h3></dt>
-			<dd>{{userprofile_object.firstName}}</dd>
-			<dt><h2>Last Name</h2></dt>
-			<dd>{{userprofile_object.lastName}}</dd>
-			<dt><h2>email</h2></dt>
-			<dd>{{userprofile_object.email}}</dd>
-			<dt><h2>phone number</h2></dt>
-			<dd>{{userprofile_object.userPhoneNumber}}</dd>
-			<dt><h2>Description</h2></dt>
-			<dd>{{userprofile_object.userDescription}}</dd>
-			<dt><h2>Interests</h2></dt>
-			<dd>{{userprofile_object.userInterests}}</dd>
-			<dt><h2>Date {{userprofile_object.firstName}} Joined</h2></dt>
-			<dd>{{userprofile_object.userStartDate}}</dd>
-		</dl>
+<h1>{{selecteduser.username}} Profile</h1>
+<br/>
+<div>
+	{% if selecteduser.username == user.username %}
+		<form method="post" action="." enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="Update" />
+		</form>
+	{% else %}
+		lol error or whatever
 
+	{% endif %}
+</div>
+<div id="edit_profile"></div>
 
-
-		{% else %}
-		<strong> This person doesn't exist! Should they? </strong>
-		{% endif %}
-
-	</div>
 {% endblock %}

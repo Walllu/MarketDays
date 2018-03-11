@@ -16,7 +16,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		
+
 <!-- Link for change navbar:https://work.smarchal.com/twbscolor/3.3.7/css/0063ff0742e2ffffffffffff0 -->
 		<style>
 			.navbar-default {
@@ -93,14 +93,14 @@
 				background-color: #ffffff;
 			  }
 			}
-						
+
 			.active{
-				
+
 				background-color:#ffffff;
 				color:#000000;
 			}
 			body{
-				background-image: linear-gradient(to bottom right, yellow, #FFA600);
+				background-image: linear-gradient(to bottom right, white, #000000);
 			}
 		</style>
     </head>
@@ -118,7 +118,7 @@
 				{% if user.is_authenticated %}
 					<ul class="nav navbar-nav navbar-right">
 						<!--Regarding the sessions we should create sth in user model to decide if we should display him your present session/ your messages/ or join sessions -->
-						<li><a href="/market/userProfile/"><span class="glyphicon glyphicon-user"></span>Your Profile</a></li>
+						<li><a href="{% url 'profile' user.username %}"><span class="glyphicon glyphicon-user"></span>Your Profile</a></li>
 						<li><a href="{% url 'auth_logout' %}?next=/market/"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
 					</ul>
 				{% else %}

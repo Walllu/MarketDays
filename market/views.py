@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
+from models import User
 from market.models import UserProfile
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -109,6 +110,7 @@ def index(request):
 # This view function should request a user's profile from the databases
 # one does not need to be logged in to view this, though if you are, you should be able to a list of items
 # Walter - 10.3.18
+'''
 def userProfile(request, user_name_slug=None):
     context_dict = {}
     try: # try to find the user in the db
@@ -120,6 +122,7 @@ def userProfile(request, user_name_slug=None):
         context_dict['userprofile_object'] = None
     # context dictionary for the userProfile template now contains information regarding the user to whom it belongs
     return render(request, 'market/userProfile.html', context_dict)
+'''
 
 
 # --------------------------- the following views require user to be logged in -------------------- #
@@ -176,3 +179,24 @@ def register_profile(request):
     context_dict = {'form' : form}
 
     return render(request, 'market/profile_registration.html', context_dict)
+
+@login_required
+def profile(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect('index')
+
+    userprofile = UserProfile.objects.get_or_create(user=user)[0]
+    form = UserProfileForm(
+        {'userName' : userprofile.firstName, 'lastname': userprofile.lastName})
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('profile', user.username)
+        else:
+            print form.errors
+    print "llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+    return render(request, 'market/userProfile.html', {'userprofile':userprofile,'selecteduser':user,'form':form})
