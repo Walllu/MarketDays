@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^market/', include('market.urls')),
     url(r'^about/', views.about, name='about'),
     url(r'^register/', views.register, name='register'),
+    url(r'^register_item/', views.register_item, name='register_item')
     url(r'^login/', views.user_login, name='login'),
     url(r'^accounts/register/$',MyRegistrationView.as_view(),name='registration_register'),
     url(r'^accounts/', include('registration.backends.simple.urls')),

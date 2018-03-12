@@ -132,6 +132,43 @@ def userProfile(request, user_name_slug=None):
 @login_required
 def sessionlist(request):
     pass
+    
+def register_item(request, username):
+    # a boolean to keep track of whether or not registration worked
+    registered = False
+    if request.method == 'POST':
+        # user_form = UserForm(data=request.POST)
+        item_form = ItemForm(data=request.POST)
+
+        #if the two forms are valid
+        if item_form.is_valid():
+            print "hello"
+            
+            user = UserProfile.objects.get(userName=username)
+            item.possessorID = user['userID']
+            item.claimantID = item.possessorID
+
+            item = item_form.save(commit=False)
+
+            id = Item.objects.all().aggregate(Max('itemID'))
+            num = id['itemID__max']
+
+            item.itemID = id + 1
+            #profile.user = user
+            item.itemDatePosted = datetime.date.today()
+
+            item.save()
+            registered = True
+        else:
+            #invalid form or forms
+            print(item_form.errors)
+    else:
+        # Not a HTTP POST, so we render our form using two ModelForm instances
+        # These forms will be blank, ready for user input
+        # user_form = UserForm()
+        item_form = ItemForm()
+    context = {'item_form': item_form, 'registered': registered}
+    return render(request, 'market/register_item.html', context)
 
 #this view shows the list of
 @login_required

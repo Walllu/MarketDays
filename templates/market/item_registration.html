@@ -1,0 +1,22 @@
+{% extends 'market/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Register an item
+{% endblock %}
+
+{% block body_block %}
+	{% if registered %}
+		<strong>Your item has been added!</strong>
+		<a href="../">Return to the homepage</a><br />
+	{% else %}
+	<strong>register your item here!</strong><br />
+	<form id=item_form" method="post" action="." enctype="multipart/form-data">
+		{% csrf_token %}
+		<!-- Display each form -->
+		{{ form.as_p }}
+		<!-- Provide a button to submit -->
+		<input type="submit" name="submit" value="Register item" />
+	</form>
+	{% endif %}
+{% endblock %}

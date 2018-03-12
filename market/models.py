@@ -12,12 +12,14 @@ import datetime # this wasn't imported, DateField's broke
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
+    # Changing email and username to foreign keys from the User model - Ole
     userID = models.IntegerField(primary_key=True, unique=True, default=0)
-    userName = models.CharField(max_length=12, unique=True) # Ole, 1st Mar
-    password = models.CharField(max_length=100, default="")
+    userName = models.ForeignKey(User, related_name="user_username") # Ole, 1st Mar
+    # removing the password field as it is now handled by User model
+    # password = models.CharField(max_length=100, default="")
     firstName = models.CharField(max_length=20) # Ole, 1st Mar
     lastName = models.CharField(max_length=20, blank=True, default="Anon")# added blank # Ole, 1st Mar
-    email = models.CharField(max_length=40) #Ole, 2nd Mar
+    email = models.ForeignKey(User, related_name="user_email") #Ole, 2nd Mar
     userPhoneNumber = models.CharField(max_length=15,default="")
     userDescription = models.CharField(max_length=512, default="", blank=True)
     userInterests = models.CharField(max_length=512, default="",  blank=True)

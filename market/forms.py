@@ -27,3 +27,13 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude = ('userName','password')#fields = ('userName','email','password','firstName','lastName','userPhoneNumber','userDescription','userInterests')
+
+class ItemForm(forms.ModelForm):
+    # itemID = Get next ID
+    # possessorID = get user ID
+    # claimantID = get user ID
+    # itemName = set by user
+    # itemDescription = set by user
+    # itemDatePosted = get date
+    # slug = itemName + itemID
+    test = 1
