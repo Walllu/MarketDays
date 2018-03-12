@@ -31,10 +31,10 @@ def user_login(request):
         # None if the value doesn't exist, and the latter method returns a KeyError exception in the same situation
         username = request.POST.get('username')
         password = request.POST.get('password')
-        passwordhash = make_password(password)
+        #passwordhash = make_password(password)
 
 
-        user = authenticate(username=username, password=passwordhash)
+        user = authenticate(username=username, password=password)
         if user:
             # is the account enabled or disabled?
             if user.is_active:
@@ -45,7 +45,7 @@ def user_login(request):
                 return HttpResponse("Your MarketDays account is disabled")
         else:
             # Bad login details were provided
-            print("Invalid login details: {0}, {1} hash {2}".format(username, password, passwordhash))
+            print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
     # request is not a HTTP POST so display the login form
     # this scenario will most likely be a HTTP GET
@@ -69,7 +69,7 @@ def register(request):
             # user.save()
 
             profile = profile_form.save(commit=False)
-            profile.password = make_password(profile.password)
+            #profile.password = make_password(profile.password)
             id = UserProfile.objects.all().aggregate(Max('userID'))
             num = id['userID__max']
             profile.userID = num + 1
