@@ -133,6 +133,7 @@ def userProfile(request, user_name_slug=None):
 def sessionlist(request):
     pass
     
+@login_required
 def register_item(request, username):
     # a boolean to keep track of whether or not registration worked
     registered = False
