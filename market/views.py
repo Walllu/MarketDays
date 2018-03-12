@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from models import User
 from market.models import UserProfile
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from market.forms import UserForm, UserProfileForm
 import datetime
@@ -110,7 +109,7 @@ def index(request):
 # This view function should request a user's profile from the databases
 # one does not need to be logged in to view this, though if you are, you should be able to a list of items
 # Walter - 10.3.18
-'''
+
 def userProfile(request, user_name_slug=None):
     context_dict = {}
     try: # try to find the user in the db
@@ -122,7 +121,7 @@ def userProfile(request, user_name_slug=None):
         context_dict['userprofile_object'] = None
     # context dictionary for the userProfile template now contains information regarding the user to whom it belongs
     return render(request, 'market/userProfile.html', context_dict)
-'''
+
 
 
 # --------------------------- the following views require user to be logged in -------------------- #
@@ -131,8 +130,20 @@ def userProfile(request, user_name_slug=None):
 # this view shows the session list
 @login_required
 def sessionlist(request):
-    pass
-    
+    context_dict = {}
+    return render(request, 'market/sessionlist.html', context_dict)
+
+@login_required
+def join_session(request, session_slug=None):
+    # if there's a slug parameter, then we want to add SessionParticipant, and increment participants in Session, and redirect to home
+    if not session_slug:
+        pass
+    else:
+        if request.method == 'POST':
+            pass
+        else:
+            return HttpResponseRedirect(reverse('sessionlist'))
+
 @login_required
 def register_item(request, username):
     # a boolean to keep track of whether or not registration worked
@@ -144,7 +155,7 @@ def register_item(request, username):
         #if the two forms are valid
         if item_form.is_valid():
             print "hello"
-            
+
             user = UserProfile.objects.get(userName=username)
             item.possessorID = user['userID']
             item.claimantID = item.possessorID

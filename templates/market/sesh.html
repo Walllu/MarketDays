@@ -5,7 +5,7 @@
 	{% if sessions %}
 		{% for sesh in sessions %}
 		<div class="">
-		<strong><li><a href="{% url 'join_session' sesh.slug %}">{{ sesh.name}}</a></li></strong>
+		<strong><li><a href="{% url 'join_session' sesh.slug %}">{{sesh.sessionName}}</a></li></strong>
 		</div>
 		{% endfor %}
 	{% else %}

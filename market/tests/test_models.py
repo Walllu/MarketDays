@@ -74,6 +74,7 @@ class OfferTests(TestCase):
     def test_offer_creation(self):
         user1 = UserProfile.objects.get(userID=1)
         user2 = UserProfile.objects.get(userID=2)
+        offer = Offer()
 
 
 

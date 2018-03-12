@@ -1,13 +1,11 @@
 from django import template
-#from rango.models import Session, Offer, Item
-
 from market.models import UserProfile, Session, Offer, Item
 
 #Walter 26.2.2018
 # This is just something here in case we want to use templatetags later on
 
 register = template.Library()
-register = template.Library()
+
 
 # this is for the sessions list template
 @register.inclusion_tag('market/sesh.html')
@@ -29,4 +27,4 @@ def get_session_list():
 #def get_their_items(theirID)
 #def get_all_items():
 #    return {'sessionitems': Item.objects.all()}
-#def 
+#def

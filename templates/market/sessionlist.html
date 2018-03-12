@@ -1,9 +1,11 @@
 {% extends "market/base.html" %}
-
+{% load market_template_tags %}
 {% block title_block %}
 MarketDays Sessions
 {% endblock %}
 
 {% block body_block %}
+<div class="jumbotron">
 {% get_session_list %}
+</div>
 {% endblock %}
