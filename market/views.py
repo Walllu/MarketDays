@@ -70,13 +70,9 @@ def register(request):
             # user.save()
 
             profile = profile_form.save(commit=False)
-<<<<<<< HEAD
             #profile.password = make_password(profile.password)
-=======
             profile.password = make_password(profile.password)
 
-
->>>>>>> c9d0ecd19cf0afe0b0b558d23c502d676f01c81b
             id = UserProfile.objects.all().aggregate(Max('userID'))
             num = id['userID__max']
 
