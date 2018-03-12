@@ -10,6 +10,8 @@ import datetime # this wasn't imported, DateField's broke
 # Create your models here.
 
 class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+
     userID = models.IntegerField(primary_key=True, unique=True, default=0)
     userName = models.CharField(max_length=12, unique=True) # Ole, 1st Mar
     password = models.CharField(max_length=100, default="")
@@ -19,8 +21,8 @@ class UserProfile(models.Model):
     userPhoneNumber = models.CharField(max_length=15,default="")
     userDescription = models.CharField(max_length=512, default="", blank=True)
     userInterests = models.CharField(max_length=512, default="",  blank=True)
-    userStartDate = models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
-    slug = models.SlugField(unique=True)
+    userStartDate = models.CharField(max_length=15)#models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
+    slug = models.SlugField(max_length=40) #changed for tests
     #creditcard to model later
     def save(self, *args, **kwargs):
         self.slug = slugify(self.userName)
