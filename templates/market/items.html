@@ -1,0 +1,61 @@
+<!-- This template should be loaded into any template needing an item list -->
+<!-- the following is for RHS of haggle view -->
+  {% if theirtradable %}
+    {% for item in theirtradable %}
+      Input a draggable card representing {{item.itemName}}
+    {% endfor %}
+  {% elif not theirtradable %}
+    <h3> You don't have anything! Sorry! </h3>
+  {% endif %}
+<!-- the following is the LHS of haggle view  + your inventory view-->
+	{% if yourtradable %}
+		{% for item in yourtradable %}
+      Input a draggable card representing {{item.itemName}}
+		{% endfor %}
+	{% elif not yourtradable %}
+		<h3> You don't have anything! Sorry! </h3>
+	{% endif %}
+<!-- this is for your inventory view only -->
+  {% if yournontradable %}
+		{% for item in yournontradable %}
+    <div class="row">
+		<div class="col-sm-3">
+		<div class="card container-fluid" style="width: 35rem;">
+			<img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300">
+			<div class="card-header">
+				<h3 class="card-title">{{item.itemName}}</h3>
+			</div>
+			<div class="card-body">
+				<p class="card-text" style="font-size:15px;">{{item.itemDescription}}</p>
+        <p><small class="text-muted">Posted {{item.itemDatePosted}}</small></p>
+			</div>
+		</div>
+		</div>
+		</div>
+		{% endfor %}
+	{% elif not yournontradable %}
+		<h3> You don't physically have anything! Sorry! </h3>
+	{% endif %}
+<!-- the following is for the session view, showing all the items in the session -->
+  {% if sessionitems %}
+		{% for item in sessionitems %} <!--The following is an item card meant to take you to the haggle view -->
+    <div class="row">
+		<div class="col-sm-3">
+		<div class="card container-fluid" style="width: 35rem;">
+			<a href="{% url 'begin_haggle' item.itemID item.claimantID %}"><img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300"></a>
+			<div class="card-header">
+				<h3 class="card-title">{{item.itemName}}</h3>
+			</div>
+			<div class="card-body">
+				<p class="card-text" style="font-size:15px;">{{item.itemDescription}}</p>
+        <p><small class="text-muted">Posted {{item.itemDatePosted}}</small></p>
+			</div>
+		<strong><a href="{% url 'begin_haggle' item.itemID item.claimantID %}" class="btn btn-primary" >Join {{sesh.sessionName}}</a></strong>
+		</div>
+		</div>
+		</div>
+		{% endfor %}
+	{% elif not yourtradable %}
+		<h3> You don't have anything! Sorry! </h3>
+	{% endif %}
+  <!-- yourtradable, yournontradable, theirtradable, sessionitems -->
