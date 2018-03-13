@@ -1,14 +1,24 @@
 <!-- This template should be loaded into the SessionList template with templatetag get_session_list -->
 <!-- Present an unordered list of all the sessions in the database -->
 
-<ul>
+
 	{% if sessions %}
 		{% for sesh in sessions %}
-		<div class="">
-		<strong><li><a href="{% url 'join_session' sesh.slug %}">{{sesh.sessionName}}</a></li></strong>
+		<div class="row">
+		<div class="col-sm-3">
+		<div class="card container-fluid" style="width: 35rem;">
+			<a href="{% url 'join_session' sesh.slug %}"><img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300"></a>
+			<div class="card-header">
+				<h3 class="card-title">{{sesh.sessionName}}</h3>
+			</div>
+			<div class="card-body">
+				<p class="card-text" style="font-size:15px;">Starts at <small class="text-muted">{{sesh.sessionStart}}</small> - Ending around <small class="text-muted">{{sesh.sessionEnd}}</small></p>
+			</div>
+		<strong><a href="{% url 'join_session' sesh.slug %}" class="btn btn-primary" >Join {{sesh.sessionName}}</a></strong>
+		</div>
+		</div>
 		</div>
 		{% endfor %}
 	{% else %}
-		<li><h3> There are no active sessions! Sorry! </h3></li>
+		<h3> There are no active sessions! Sorry! </h3>
 	{% endif %}
-</ul>

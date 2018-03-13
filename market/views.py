@@ -139,7 +139,7 @@ def join_session(request, session_slug=None):
     if not session_slug:
         pass
     else:
-        if request.method == 'POST':
+        if request.method == "POST":
             pass
         else:
             return HttpResponseRedirect(reverse('sessionlist'))
