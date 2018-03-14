@@ -38,7 +38,7 @@ def populate():
     i = 1
     for line in f:
         details = line.split("\t")
-        add_user(i, details[0], details[1], details[2], details[3], int(details[4]), details[5], details[6], details[7])
+        add_user(i, details)
         i += 1
     f.close()
 
@@ -52,22 +52,40 @@ def populate():
 
 
 # We'll need to implement a few more functions, I don't think we need to worry about "user permissions" when we just shove data into the database
-def add_user(id, uname, fname, lname, email, phone, desc, inter, start):
+def add_user(id, details):
     #print "Adding user: " + str(id)
 
-    u = UserProfile.objects.create(userID = id)
+    '''
+    details list:
+        0: uname
+        1: fname
+        2: lname
+        3: email
+        4: phone
+        5: bio
+        6: interests
+        7: password
+        8: date
+    '''
 
-    u.userName = uname
-    u.firstName = fname
-    u.lastName = lname
-    u.email = email
-    u.userPhoneNumber = phone
-    u.userDescription = desc
-    u.userInterests = inter
-    u.userStartDate = start
+    user = User.objects.create(userName = details[0])
 
-    u.save()
-    return u
+    user.email = details[3]
+    user.password = details [7]
+    user.save()
+
+    up = UserProfile.objects.create(userID = id)
+
+    up.userName = user
+    up.firstName = details[1]
+    up.lastName = details[2]
+    up.userPhoneNumber = details[4]
+    up.userDescription = details[5]
+    up.userInterests = details[6]
+    up.userStartDate = details[8]
+    up.save()
+
+    return user, up
 
 def add_item(id, details):
     #print "Adding item: " + str(id)
