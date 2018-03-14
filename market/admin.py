@@ -11,7 +11,7 @@ from market.models import UserProfile, Item, Offer, Session, OfferContent, Sessi
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug':('userName',)}
+    prepopulated_fields = {'slug':('user',)}
 
 class ItemAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('itemID',)}

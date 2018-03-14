@@ -10,25 +10,25 @@ import datetime # this wasn't imported, DateField's broke
 # Create your models here.
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
-
     # Changing email and username to foreign keys from the User model - Ole
     userID = models.IntegerField(primary_key=True, unique=True, default=0)
-    userName = models.ForeignKey(User, related_name="user_username") # Ole, 1st Mar
+    user = models.OneToOneField(User) # Ole, 1st Mar
     # removing the password field as it is now handled by User model
     # password = models.CharField(max_length=100, default="")
     firstName = models.CharField(max_length=20) # Ole, 1st Mar
     lastName = models.CharField(max_length=20, blank=True, default="Anon")# added blank # Ole, 1st Mar
-    email = models.ForeignKey(User, related_name="user_email") #Ole, 2nd Mar
+    # email = models.ForeignKey(User, related_name="user_email") #Ole, 2nd Mar
     userPhoneNumber = models.CharField(max_length=15,default="")
     userDescription = models.CharField(max_length=512, default="", blank=True)
     userInterests = models.CharField(max_length=512, default="",  blank=True)
-    userStartDate = models.CharField(max_length=15)#models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
+    userStartDate = models.CharField(max_length=15, default=str(datetime.date.today))#models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
     slug = models.SlugField(max_length=40) #changed for tests
     #creditcard to model later
+
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.userName)
+        self.slug = slugify(self.user.username)
         super(UserProfile, self).save(*args, **kwargs)
+    
     def __str__(self):
         return str(self.userID)
 
@@ -39,11 +39,11 @@ class Item(models.Model):
     claimantID = models.ForeignKey(UserProfile, related_name='owns_entitlement', on_delete=models.CASCADE)         #Why is this CASCADE? Walter 26.2.2018
     itemName = models.CharField(max_length=128)
     itemDescription = models.CharField(max_length=512, blank=True)                   #Why is this unique? Surely we can have non-unique descriptions  Walter 26.2.2018
-    itemDatePosted = models.DateField(_("Date"), default=datetime.date.today)
+    itemDatePosted = models.CharField(max_length=15, default=str(datetime.date.today)) # models.DateField(_("Date"), default=datetime.date.today)
     slug = models.SlugField(unique=True)
     #itemValue
 
-    def create_offer():
+    def create_offer(self):
         pass
 
     def save(self, *args, **kwargs):

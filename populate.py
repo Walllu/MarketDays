@@ -5,14 +5,14 @@
 """
 
 
-
-import os
+import glob, os
+from shutil import copyfile
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MarketDays.settings')
 
 import django
 django.setup()
 # from market.models import Category, Page, UserProfile, Item
-from market.models import UserProfile, Item
+from market.models import UserProfile, Item, User
 
 def populate():
     users = [
@@ -50,6 +50,14 @@ def populate():
         i += 1
     f.close()
 
+def add_sub_user(username, email, password):
+    user = User.objects.create(username=username)
+    user.email = email
+    user.password = password
+    user.save()
+
+    return user
+
 
 # We'll need to implement a few more functions, I don't think we need to worry about "user permissions" when we just shove data into the database
 def add_user(id, details):
@@ -68,15 +76,11 @@ def add_user(id, details):
         8: date
     '''
 
-    user = User.objects.create(userName = details[0])
+    user = add_sub_user(details[0], details[3], details[7])
 
-    user.email = details[3]
-    user.password = details [7]
-    user.save()
+    up = UserProfile.objects.create(userID = id, user = user)
 
-    up = UserProfile.objects.create(userID = id)
-
-    up.userName = user
+    up.user = user
     up.firstName = details[1]
     up.lastName = details[2]
     up.userPhoneNumber = details[4]
@@ -85,7 +89,11 @@ def add_user(id, details):
     up.userStartDate = details[8]
     up.save()
 
-    return user, up
+    data_path = "./population_resource/data/profile_pictures/"
+    static_path = "./static/images/profile_pictures/"
+    copyfile(data_path + str(id) + ".jpg", static_path + str(id) + ".jpg")
+
+    return up
 
 def add_item(id, details):
     #print "Adding item: " + str(id)
@@ -103,6 +111,11 @@ def add_item(id, details):
     it.itemDatePosted = details[4]
 
     it.save()
+    
+    data_path = "./population_resource/data/item_pictures/"
+    static_path = "./static/images/item_pictures/"
+    copyfile(data_path + str(id) + ".jpg", static_path + str(id) + ".jpg")
+
     return it
 
 if __name__=='__main__':
