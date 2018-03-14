@@ -55,6 +55,7 @@ def user_login(request):
 
 def register(request):
     # a boolean to keep track of whether or not registration worked
+    print "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
     registered = False
     if request.method == 'POST':
         # user_form = UserForm(data=request.POST)
@@ -212,6 +213,7 @@ def restricted(request):
 
 @login_required
 def register_profile(request):
+    print "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
     form = UserProfileForm()
 
     if request.method == 'POST':
@@ -219,7 +221,11 @@ def register_profile(request):
         if form.is_valid():
             user_profile = form.save(commit=False)
             user_profile.user = request.user
+            id = UserProfile.objects.all().aggregate(Max('userID'))
+            num = id['userID__max']
+            user_profile.userID = num + 1
             user_profile.save()
+
 
             return redirect('/market/')
         else:
@@ -231,6 +237,7 @@ def register_profile(request):
 
 @login_required
 def profile(request, username):
+    print "llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
@@ -247,5 +254,5 @@ def profile(request, username):
             return redirect('profile', user.username)
         else:
             print form.errors
-    print "llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+
     return render(request, 'market/userProfile.html', {'userprofile':userprofile,'selecteduser':user,'form':form})

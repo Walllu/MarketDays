@@ -17,16 +17,17 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     #password = forms.CharField(widget=forms.PasswordInput())
     #userName = forms.CharField(max_length=15, help_text="first name")
-    firstName = forms.CharField(max_length=20, help_text="first name")
-    lastName = forms.CharField(max_length=20, help_text="last name")
+    #firstName = forms.CharField(max_length=20, help_text="first name")
+    #lastName = forms.CharField(max_length=20, help_text="last name")
     # I pulled the phonenumber line from StackOverflow
-    userPhoneNumber = forms.CharField(max_length=15)
-    userDescription = forms.CharField(max_length=512, help_text="Please enter description...")
-    userInterests = forms.CharField(max_length=512, help_text="What are you interested in?")
-    userStartDate = forms.CharField(max_length=15)#models.DateField(_("Date"), default=datetime.date.today) to be sorted later
+    #userPhoneNumber = forms.CharField(max_length=15)
+    #userDescription = forms.CharField(max_length=512, help_text="Please enter description...")
+    #userInterests = forms.CharField(max_length=512, help_text="What are you interested in?")
+    #userStartDate = forms.CharField(max_length=15)#models.DateField(_("Date"), default=datetime.date.today) to be sorted later
     class Meta:
         model = UserProfile
-        exclude = ('userName','password')#fields = ('userName','email','password','firstName','lastName','userPhoneNumber','userDescription','userInterests')
+        #exclude = ('userName','password')#'userName','email','password'
+        fields = ('firstName','lastName','userPhoneNumber','userDescription','userInterests')
 
 class ItemForm(forms.ModelForm):
     # itemID = Get next ID
