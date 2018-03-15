@@ -8,9 +8,11 @@
 import glob, os
 from shutil import copyfile
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MarketDays.settings')
+base_dir = os.path.abspath(__file__)  # get current directory
 
 import django
 from django.contrib.auth.hashers import make_password
+from django.core.files import File
 django.setup()
 # from market.models import Category, Page, UserProfile, Item
 from market.models import UserProfile, Item, User
@@ -88,11 +90,13 @@ def add_user(id, details):
     up.userDescription = details[5]
     up.userInterests = details[6]
     up.userStartDate = details[8]
-    up.save()
 
-    data_path = "./population_resource/data/profile_pictures/"
-    static_path = "./static/images/profile_pictures/"
-    copyfile(data_path + str(id) + ".jpg", static_path + str(id) + ".jpg")
+    data_path = base_dir[:-12] + "/population_resource/data/profile_pictures/"
+    data_path = data_path.replace("\\", "/")
+    print data_path + str(id) + ".jpg"
+    up.picture.save(str(id), File(open(data_path + str(id) + ".jpg")))
+
+    up.save()
 
     return up
 

@@ -9,15 +9,20 @@ import datetime # this wasn't imported, DateField's broke
 
 # Create your models here.
 
+def user_profile_path(self, userID):
+    print "userID: " + str(userID)
+    return "profile_pictures/" + str(userID) + ".jpg"
+
 class UserProfile(models.Model):
+
     # Changing email and username to foreign keys from the User model - Ole
     userID = models.IntegerField(primary_key=True, unique=True, default=0)
     user = models.OneToOneField(User) # Ole, 1st Mar
     # removing the password field as it is now handled by User model
     # password = models.CharField(max_length=100, default="")
-    firstName = models.CharField(max_length=20
-    ) # Ole, 1st Mar
+    firstName = models.CharField(max_length=20) # Ole, 1st Mar
     lastName = models.CharField(max_length=20, blank=True, default="Anon")# added blank # Ole, 1st Mar
+    picture = models.ImageField(upload_to=user_profile_path, default="/media/cat.jpg")
     # email = models.ForeignKey(User, related_name="user_email") #Ole, 2nd Mar
     userPhoneNumber = models.CharField(max_length=15,default="")
     userDescription = models.CharField(max_length=512, default="", blank=True)
@@ -25,6 +30,8 @@ class UserProfile(models.Model):
     userStartDate = models.CharField(max_length=15, default=str(datetime.date.today))#models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
     slug = models.SlugField(max_length=40) #changed for tests
     #creditcard to model later
+
+    
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.user.username)
