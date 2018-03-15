@@ -4,23 +4,32 @@
     {% for item in theirtradable %}
       Input a draggable card representing {{item.itemName}}
     {% endfor %}
-  {% elif not theirtradable %}
-    <h3> You don't have anything! Sorry! </h3>
   {% endif %}
 <!-- the following is the LHS of haggle view  + your inventory view-->
 	{% if yourtradable %}
 		{% for item in yourtradable %}
-      Input a draggable card representing {{item.itemName}}
+    <div class="row">
+    <div class="col-sm-3">
+    <div class="card container-fluid" style="width: 35rem; background:green;">
+      <img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300">
+      <div class="card-header">
+        <h3 class="card-title">{{item.itemName}}</h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text" style="font-size:15px;">{{item.itemDescription}}</p>
+        <p><small class="text-muted">Posted {{item.itemDatePosted}}</small></p>
+      </div>
+    </div>
+    </div>
+    </div>
 		{% endfor %}
-	{% elif not yourtradable %}
-		<h3> You don't have anything! Sorry! </h3>
 	{% endif %}
 <!-- this is for your inventory view only -->
   {% if yournontradable %}
 		{% for item in yournontradable %}
     <div class="row">
 		<div class="col-sm-3">
-		<div class="card container-fluid" style="width: 35rem;">
+		<div class="card container-fluid" style="width: 35rem; background:red;">
 			<img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300">
 			<div class="card-header">
 				<h3 class="card-title">{{item.itemName}}</h3>
@@ -33,8 +42,6 @@
 		</div>
 		</div>
 		{% endfor %}
-	{% elif not yournontradable %}
-		<h3> You don't physically have anything! Sorry! </h3>
 	{% endif %}
 <!-- the following is for the session view, showing all the items in the session -->
   {% if sessionitems %}
@@ -55,7 +62,5 @@
 		</div>
 		</div>
 		{% endfor %}
-	{% elif not yourtradable %}
-		<h3> You don't have anything! Sorry! </h3>
 	{% endif %}
   <!-- yourtradable, yournontradable, theirtradable, sessionitems -->

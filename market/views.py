@@ -191,7 +191,7 @@ def register_item(request, username):
     context = {'item_form': item_form, 'registered': registered}
     return render(request, 'market/register_item.html', context)
 
-#this view shows the list of
+#this view shows the list of 
 @login_required
 def show_market_session(request, session_slug=None):
     context_dict = {}
