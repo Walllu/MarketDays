@@ -53,7 +53,7 @@ def populate():
 def add_sub_user(username, email, password):
     user = User.objects.create(username=username)
     user.email = email
-    user.password = password
+    user.password = make_password(password)
     user.save()
 
     return user
