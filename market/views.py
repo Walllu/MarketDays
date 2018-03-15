@@ -75,7 +75,7 @@ def register(request):
             id = UserProfile.objects.all().aggregate(Max('userID'))
             num = id['userID__max']
 
-            profile.userID = id + 1
+            profile.userID = num + 1
             #profile.user = user
             profile.userStartDate = datetime.date.today()
 
