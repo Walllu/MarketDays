@@ -111,7 +111,9 @@ def index(request):
 # one does not need to be logged in to view this, though if you are, you should be able to a list of items
 # Walter - 10.3.18
 
-def userProfile(request, user_name_slug=None):
+
+# This one is for VIEWING
+def view_user(request, user_name_slug=None):
     context_dict = {}
     try: # try to find the user in the db
         print "lol"
@@ -122,7 +124,7 @@ def userProfile(request, user_name_slug=None):
         print "lol2"
         context_dict['userprofile_object'] = None
     # context dictionary for the userProfile template now contains information regarding the user to whom it belongs
-    return render(request, 'market/userProfile.html', context_dict)
+    return render(request, 'market/viewuser.html', context_dict)
 
 
 
@@ -138,13 +140,18 @@ def sessionlist(request):
 @login_required
 def join_session(request, session_slug=None):
     # if there's a slug parameter, then we want to add SessionParticipant, and increment participants in Session, and redirect to home
+    # should check if you are already part of a session - if so, do not procede
     if not session_slug:
-        pass
+        return HttpResponseRedirect(reverse('sessionlist'))
     else:
-        if request.method == "POST":
+        if request.method == "GET":
+            # increment Session participants attribute
+            # add SessionParticipant
             pass
         else:
             return HttpResponseRedirect(reverse('sessionlist'))
+
+
 
 @login_required
 def register_item(request, username):
@@ -236,6 +243,8 @@ def register_profile(request):
 
     return render(request, 'market/profile_registration.html', context_dict)
 
+
+# this view is meant for a USER TO EDIT HIS/HER OWN DETAILS
 @login_required
 def profile(request, username):
     print "llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"

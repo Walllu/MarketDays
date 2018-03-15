@@ -6,17 +6,24 @@
 {% block body_block %}
 
 <h1>{{ userprofile_object.user.username}} Profile</h1>
-<br/>
-<div id="edit_profile">
-	{% if userprofile_object.user.username == user.username %}
-		<form method="post" action="." enctype="multipart/form-data">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<input type="submit" value="Update" />
-		</form>
-	{% else %}
-		lol error or whatever
+<h2></h1>
 
+<br/>
+<div class="row">
+	{% if userprofile_object.user.username == user.username %}
+	<div id="edit_profile" style="float:right;" class="col-sm-3">
+		<div class="col-sm-3">
+		<div class="card container-fluid" style="width: 35rem;">
+			<div class="card-body">
+				<form method="post" action="." enctype="multipart/form-data">
+					{% csrf_token %}
+					{{ form.as_p }}
+					<input type="submit" value="Update" />
+				</form>
+			</div>
+		</div>
+		</div>
+	</div>
 	{% endif %}
 </div>
 
