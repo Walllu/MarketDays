@@ -1,14 +1,17 @@
 {% extends 'market/base.html' %}
 {% load staticfiles %}
+{% load market_template_tags %}
 {% block title_block %}
 	UserProfile
 {% endblock %}
 {% block body_block %}
 	<div class="jumbotron">
 		{% if userprofile_object %}
+    <div class="row">
 		<div class="page-header">
 		<h1>That's your market {{ userprofile_object.user.username }}</h1>
 		</div>
+
 		<dl>
 			<dt><h3>First Name</h3></dt>
 			<dd>{{userprofile_object.firstName}}</dd>
@@ -25,6 +28,14 @@
 			<dt><h2>Date {{userprofile_object.firstName}} Joined</h2></dt>
 			<dd>{{userprofile_object.userStartDate}}</dd>
 		</dl>
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+        {% get_your_items {{userprofile_object.userID}} %}
+      </div>
+    </div>
 		{% else %}
 		<strong> This person doesn't exist! Should they? </strong>
 		{% endif %}
