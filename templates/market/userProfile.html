@@ -2,13 +2,13 @@
 
 {% load staticfiles %}
 
-{% block title %}{{ selecteduser.username }} UserProfile{% endblock %}
+{% block title %}{{ userprofile_object.user.username }} UserProfile{% endblock %}
 {% block body_block %}
 
-<h1>{{selecteduser.username}} Profile</h1>
+<h1>{{ userprofile_object.user.username}} Profile</h1>
 <br/>
-<div>
-	{% if selecteduser.username == user.username %}
+<div id="edit_profile">
+	{% if userprofile_object.user.username == user.username %}
 		<form method="post" action="." enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ form.as_p }}
@@ -19,6 +19,5 @@
 
 	{% endif %}
 </div>
-<div id="edit_profile"></div>
 
 {% endblock %}
