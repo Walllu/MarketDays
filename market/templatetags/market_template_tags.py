@@ -16,7 +16,7 @@ def get_session_list():
 # tradable items, called depending on context
 @register.inclusion_tag('market/items.html')
 def get_your_items(yourID):  #this method should return all tradable and nontradable Items
-    return {'yourtradable': Item.objects.filter(claimantID__exact=yourID), 'yournontradable': Item.objects.filter(possessorID__exact=yourID).exclude()}
+    return {'yourtradable': Item.objects.filter(claimantID__exact=yourID), 'yournontradable': Item.objects.filter(possessorID__exact=yourID).exclude(claimantID__exact=yourID)}
 
 @register.inclusion_tag('market/items.html')  # This method returns all tradable items of other user
 def get_their_items(theirID):
@@ -28,6 +28,7 @@ def get_items_by_ownership(userID):
     return {}
 """
 
+# this one is for when you're in a session - it produces the list of all items in session
 @register.inclusion_tag('market/items.html')
 def get_all_items(sessionID):
     # this method should return all items that are in a session

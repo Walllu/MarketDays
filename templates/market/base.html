@@ -106,6 +106,7 @@
     </head>
 
     <body>
+    <div class="container-fluid">
 		<nav class="nav navbar-default">
 			<ul class="nav navbar-nav navbar-left">
 				<li><a href='https://www.youtube.com/watch?v=Jr9R9NT9lk8'>MarketDays</a></li>
@@ -118,21 +119,20 @@
 				{% if user.is_authenticated %}
 					<ul class="nav navbar-nav navbar-right">
 						<!--Regarding the sessions we should create sth in user model to decide if we should display him your present session/ your messages/ or join sessions -->
-						<li><a href="{% url 'profile' user.username %}"><span class="glyphicon glyphicon-user"></span>Your Profile</a></li>
-						<li><a href="{% url 'auth_logout' %}?next=/market/"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+						<li><a href="{% url 'profile' user.username %}"><span class="glyphicon glyphicon-user"></span> Your Profile </a></li>
+						<li><a href="{% url 'auth_logout' %}?next=/market/"><span class="glyphicon glyphicon-log-out"></span> Log Out </a></li>
 					</ul>
 				{% else %}
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="{% url 'registration_register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-						<li><a href="{% url 'auth_login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+						<li><a href="{% url 'registration_register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up </a></li>
+						<li><a href="{% url 'auth_login' %}"><span class="glyphicon glyphicon-log-in"></span> Login </a></li>
 					</ul>
 				{% endif %}
 		</nav>
-		<div>
 			{% block body_block %}
 			{% endblock %}
-		</div>
-      <hr />
 
+      <hr />
+    </div>
     </body>
 </html>
