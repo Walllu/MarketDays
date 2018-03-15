@@ -37,10 +37,12 @@
 		{% else %}
 		<strong> This person doesn't exist! Should they? </strong>
 		{% endif %}
+    {% if user_profile.user.is_authenticated %}
     <form method="post" action="." enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.as_p }}
       <input type="submit" value="Update" />
     </form>
+    {% endif %}
 	</div>
 {% endblock %}
