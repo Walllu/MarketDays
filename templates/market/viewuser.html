@@ -39,11 +39,9 @@
 		{% endif %}
 
     {% if userprofile_object.user.username == user.username %}
-    <form method="post" action="." enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="Update" />
-    </form>
+		<form method="get" action="{% url 'profile' user.username %}">
+	    <button type="submit">Edit</button>
+		</form>
     {% endif %}
 	</div>
 {% endblock %}

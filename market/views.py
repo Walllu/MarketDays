@@ -191,7 +191,7 @@ def register_item(request, username):
     context = {'item_form': item_form, 'registered': registered}
     return render(request, 'market/register_item.html', context)
 
-#this view shows the list of 
+#this view shows the list of
 @login_required
 def show_market_session(request, session_slug=None):
     context_dict = {}
@@ -221,7 +221,6 @@ def restricted(request):
 
 @login_required
 def register_profile(request):
-    print "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
     form = UserProfileForm()
 
     if request.method == 'POST':
@@ -231,7 +230,10 @@ def register_profile(request):
             user_profile.user = request.user
             id = UserProfile.objects.all().aggregate(Max('userID'))
             num = id['userID__max']
-            user_profile.userID = num + 1
+            try: #if empty database
+                user_profile.userID = num + 1
+            except:
+                user_profile.userID =  1
             user_profile.save()
 
 
@@ -247,7 +249,6 @@ def register_profile(request):
 # this view is meant for a USER TO EDIT HIS/HER OWN DETAILS
 @login_required
 def profile(request, username):
-    print "llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
