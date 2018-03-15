@@ -10,6 +10,7 @@ from shutil import copyfile
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MarketDays.settings')
 
 import django
+from django.contrib.auth.hashers import make_password
 django.setup()
 # from market.models import Category, Page, UserProfile, Item
 from market.models import UserProfile, Item, User
