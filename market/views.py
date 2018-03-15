@@ -115,8 +115,9 @@ def userProfile(request, user_name_slug=None):
     context_dict = {}
     try: # try to find the user in the db
         print "lol"
-        user = UserProfile.objects.get(slug=user_name_slug)
-        context_dict['userprofile_object'] = user
+        userprof = UserProfile.objects.get(slug=user_name_slug)
+        print "after user"
+        context_dict['userprofile_object'] = userprof
     except UserProfile.DoesNotExist:
         print "lol2"
         context_dict['userprofile_object'] = None
