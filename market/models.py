@@ -13,6 +13,10 @@ def user_profile_path(self, userID):
     print "userID: " + str(userID)
     return "profile_pictures/" + str(userID) + ".jpg"
 
+def item_picture_path(self, itemID):
+    print "itemID: " + str(itemID)
+    return "item_pictures/" + str(itemID) + ".jpg"
+
 class UserProfile(models.Model):
 
     # Changing email and username to foreign keys from the User model - Ole
@@ -48,6 +52,7 @@ class Item(models.Model):
     itemName = models.CharField(max_length=128)
     itemDescription = models.CharField(max_length=512, blank=True)                   #Why is this unique? Surely we can have non-unique descriptions  Walter 26.2.2018
     itemDatePosted = models.CharField(max_length=15, default=str(datetime.date.today)) # models.DateField(_("Date"), default=datetime.date.today)
+    picture = models.ImageField(upload_to=item_picture_path, default="/media/cat.jpg")
     slug = models.SlugField(unique=True)
     #itemValue
 

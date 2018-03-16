@@ -5,9 +5,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from models import User
-from market.models import UserProfile
+from market.models import UserProfile, Item
 from django.contrib.auth.decorators import login_required
-from market.forms import UserForm, UserProfileForm
+from market.forms import UserForm, UserProfileForm, ItemForm
 import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
@@ -166,10 +166,11 @@ def register_item(request, username):
             print "hello"
 
             user = UserProfile.objects.get(userName=username)
+            item = item_form.save(commit=False)
             item.possessorID = user['userID']
             item.claimantID = item.possessorID
 
-            item = item_form.save(commit=False)
+            
 
             id = Item.objects.all().aggregate(Max('itemID'))
             num = id['itemID__max']

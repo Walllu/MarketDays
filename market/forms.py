@@ -27,7 +27,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         #exclude = ('userName','password')#'userName','email','password'
-        fields = ('firstName','lastName','userPhoneNumber','userDescription','userInterests')
+        fields = ('firstName','lastName','userPhoneNumber','userDescription','userInterests', 'picture')
 
 class ItemForm(forms.ModelForm):
     # itemID = Get next ID
@@ -37,4 +37,7 @@ class ItemForm(forms.ModelForm):
     # itemDescription = set by user
     # itemDatePosted = get date
     # slug = itemName + itemID
-    test = 1
+    class Meta:
+        model = Item
+        fields = ('itemName', 'itemDescription', 'picture')
+
