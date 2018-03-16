@@ -28,11 +28,13 @@
 			<dt><h2>Date {{userprofile_object.firstName}} Joined</h2></dt>
 			<dd>{{userprofile_object.userStartDate}}</dd>
 		</dl>
-  </div>
+  	</div>
       <div class="col-sm-6">
         <h1>This user's <em>Inventory</em> </h1>
         {% get_your_items userprofile_object.userID %}
       </div>
+
+
     </div>
 		{% else %}
 		<strong> This person doesn't exist! Should they? </strong>
@@ -41,6 +43,10 @@
     {% if userprofile_object.user.username == user.username %}
 		<form method="get" action="{% url 'profile' user.username %}">
 	    <button type="submit">Edit</button>
+		</form>
+		<br/>
+		<form method="get" action="{% url 'add_item' user.username %}">
+	    <button type="submit">Add Item</button>
 		</form>
     {% endif %}
 	</div>

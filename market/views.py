@@ -5,9 +5,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from models import User
-from market.models import UserProfile
+from market.models import UserProfile, Item
 from django.contrib.auth.decorators import login_required
-from market.forms import UserForm, UserProfileForm
+from market.forms import UserForm, UserProfileForm, ItemForm
 import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
@@ -267,3 +267,36 @@ def profile(request, username):
             print form.errors
 
     return render(request, 'market/userProfile.html', {'userprofile':userprofile,'selecteduser':user,'form':form})
+
+
+@login_required
+def add_item(request, username):
+    form = ItemForm()
+
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save(commit=False)
+            user = User.objects.get(username=username)
+            user = UserProfile.objects.get(user=user)
+            print user.userID
+            item.possessorID = user
+            item.claimantID = item.possessorID
+
+            try: #if empty database
+                id = Item.objects.all().aggregate(Max('itemID'))
+                num = id['itemID__max']
+                item.itemID = num + 1
+            except:
+                item.itemID =  1
+
+            item.save()
+
+
+            return redirect('/market/')
+        else:
+            print form.errors
+
+    context_dict = {'form' : form}
+
+    return render(request, 'market/add_item.html', context_dict)

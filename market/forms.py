@@ -30,6 +30,7 @@ class UserProfileForm(forms.ModelForm):
         fields = ('firstName','lastName','userPhoneNumber','userDescription','userInterests')
 
 class ItemForm(forms.ModelForm):
+    print "lol"
     # itemID = Get next ID
     # possessorID = get user ID
     # claimantID = get user ID
@@ -37,4 +38,7 @@ class ItemForm(forms.ModelForm):
     # itemDescription = set by user
     # itemDatePosted = get date
     # slug = itemName + itemID
-    test = 1
+    #test = 1
+    class Meta:
+        model = Item
+        fields = ('itemName', 'itemDescription')
