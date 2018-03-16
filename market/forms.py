@@ -30,6 +30,7 @@ class UserProfileForm(forms.ModelForm):
         fields = ('firstName','lastName','userPhoneNumber','userDescription','userInterests', 'picture')
 
 class ItemForm(forms.ModelForm):
+    print "lol"
     # itemID = Get next ID
     # possessorID = get user ID
     # claimantID = get user ID

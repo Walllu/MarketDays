@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),       # I think in the future we should consider redirecting users to userProfile instead of index - Walter 9.3.18
     url(r'^restricted/', views.restricted, name='restricted'),
     url(r'^register_profile/$', views.register_profile, name='register_profile'),
+    url(r'^add_item/(?P<username>[\w\-]+)/$', views.add_item, name='add_item'),
 
 
     ]

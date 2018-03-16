@@ -192,7 +192,7 @@ def register_item(request, username):
     context = {'item_form': item_form, 'registered': registered}
     return render(request, 'market/register_item.html', context)
 
-#this view shows the list of 
+#this view shows the list of
 @login_required
 def show_market_session(request, session_slug=None):
     context_dict = {}
@@ -222,7 +222,6 @@ def restricted(request):
 
 @login_required
 def register_profile(request):
-    print "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
     form = UserProfileForm()
 
     if request.method == 'POST':
@@ -232,7 +231,10 @@ def register_profile(request):
             user_profile.user = request.user
             id = UserProfile.objects.all().aggregate(Max('userID'))
             num = id['userID__max']
-            user_profile.userID = num + 1
+            try: #if empty database
+                user_profile.userID = num + 1
+            except:
+                user_profile.userID =  1
             user_profile.save()
 
 
@@ -248,7 +250,6 @@ def register_profile(request):
 # this view is meant for a USER TO EDIT HIS/HER OWN DETAILS
 @login_required
 def profile(request, username):
-    print "llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
@@ -267,3 +268,36 @@ def profile(request, username):
             print form.errors
 
     return render(request, 'market/userProfile.html', {'userprofile':userprofile,'selecteduser':user,'form':form})
+
+
+@login_required
+def add_item(request, username):
+    form = ItemForm()
+
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save(commit=False)
+            user = User.objects.get(username=username)
+            user = UserProfile.objects.get(user=user)
+            print user.userID
+            item.possessorID = user
+            item.claimantID = item.possessorID
+
+            try: #if empty database
+                id = Item.objects.all().aggregate(Max('itemID'))
+                num = id['itemID__max']
+                item.itemID = num + 1
+            except:
+                item.itemID =  1
+
+            item.save()
+
+
+            return redirect('/market/')
+        else:
+            print form.errors
+
+    context_dict = {'form' : form}
+
+    return render(request, 'market/add_item.html', context_dict)

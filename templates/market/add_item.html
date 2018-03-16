@@ -1,0 +1,15 @@
+{% extends 'market/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Add Item
+{% endblock %}
+
+{% block body_block %}
+    <h1>Add an Item</h1>
+    <form method="post" action="." enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Submit" />
+    </form>
+{% endblock %}
