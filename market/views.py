@@ -5,7 +5,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from models import User
-from market.models import UserProfile, Item
+from django.db.models import F
+from market.models import UserProfile, Item, Session, Offer, SessionParticipants, OfferContent
 from django.contrib.auth.decorators import login_required
 from market.forms import UserForm, UserProfileForm, ItemForm
 import datetime
@@ -116,8 +117,7 @@ def index(request):
 def view_user(request, user_name_slug=None):
     context_dict = {}
     try: # try to find the user in the db
-        print "lol"
-        userprof = UserProfile.objects.get(slug=user_name_slug)
+        userprof = UserProfile.objects.get(slug=user_name_slug.lower())
         print "after user"
         context_dict['userprofile_object'] = userprof
     except UserProfile.DoesNotExist:
@@ -146,8 +146,15 @@ def join_session(request, session_slug=None):
     else:
         if request.method == "GET":
             # increment Session participants attribute
+            session_to_join = Session.objects.get(slug__exact=session_slug)
+            session_to_join.participants = F('participants') + 1
+            session_to_join.save()
             # add SessionParticipant
-            pass
+            user = request.user # this is the User instance
+            current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+            session_participant_info = SessionParticipants(sessionID=session_to_join, participantID=current_user)
+            session_participant_info.save()
+            return HttpResponseRedirect(reverse('view_market', kwargs={'session_slug':session_slug}))
         else:
             return HttpResponseRedirect(reverse('sessionlist'))
 
@@ -170,7 +177,7 @@ def register_item(request, username):
             item.possessorID = user['userID']
             item.claimantID = item.possessorID
 
-            
+
 
             id = Item.objects.all().aggregate(Max('itemID'))
             num = id['itemID__max']
@@ -219,6 +226,10 @@ def show_market_session(request, session_slug=None):
 @login_required
 def restricted(request):
     return HttpResponse("thx for logging in")
+
+@login_required
+def begin_haggle(request):
+    pass
 
 @login_required
 def register_profile(request):

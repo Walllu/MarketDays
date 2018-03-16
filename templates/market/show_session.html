@@ -1,0 +1,11 @@
+{% extends "market/base.html" %}
+{% load market_template_tags %}
+{% block title_block %}
+{{session_object.sessionName}}
+{% endblock %}
+
+{% block body_block %}
+<div class="jumbotron">
+{% get_all_items session_object.sessionID %}
+</div>
+{% endblock %}

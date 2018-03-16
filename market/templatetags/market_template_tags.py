@@ -1,5 +1,5 @@
 from django import template
-from market.models import UserProfile, Session, Offer, Item
+from market.models import UserProfile, Session, Offer, Item, SessionParticipants, OfferContent
 
 #Walter 26.2.2018
 # This is just something here in case we want to use templatetags later on
@@ -35,7 +35,7 @@ def get_all_items(sessionID):
     # essentially all the items that are in the inventories of the user within a session
     session_participants = SessionParticipants.objects.filter(sessionID__exact=sessionID).values('participantID')     # get the userID of all participants - store as a QuerySet
     session_items = [] # this list will contain Item objects
-    if session_participants.len()==0: # quick check to see if there's any participants to begin with
+    if len(session_participants)==0: # quick check to see if there's any participants to begin with
         return {'sessionitems':None}
     else: # some participants exist
         for u in session_participants:

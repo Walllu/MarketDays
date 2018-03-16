@@ -49,7 +49,7 @@
     <div class="row">
 		<div class="col-sm-3">
 		<div class="card container-fluid" style="width: 35rem;">
-			<a href="{% url 'begin_haggle' item.itemID item.claimantID %}"><img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300"></a>
+			<a href="{% url 'begin_haggle' %}"><img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300"></a>
 			<div class="card-header">
 				<h3 class="card-title">{{item.itemName}}</h3>
 			</div>
@@ -57,7 +57,7 @@
 				<p class="card-text" style="font-size:15px;">{{item.itemDescription}}</p>
         <p><small class="text-muted">Posted {{item.itemDatePosted}}</small></p>
 			</div>
-		<strong><a href="{% url 'begin_haggle' item.itemID item.claimantID %}" class="btn btn-primary" >Join {{sesh.sessionName}}</a></strong>
+		<strong><a href="{% url 'begin_haggle' %}" class="btn btn-primary">Make Offer</a></strong>
 		</div>
 		</div>
 		</div>
