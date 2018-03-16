@@ -7,8 +7,12 @@
 
 import glob, os
 from shutil import copyfile
+from PIL import Image
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MarketDays.settings')
 base_dir = os.path.abspath(__file__)  # get current directory
+data_path = base_dir[:-12] + "/population_resource/data/"
+data_path = data_path.replace("\\", "/")
 
 import django
 from django.contrib.auth.hashers import make_password
@@ -91,12 +95,9 @@ def add_user(id, details):
     up.userInterests = details[6]
     up.userStartDate = details[8]
 
-    data_path = base_dir[:-12] + "/population_resource/data/profile_pictures/"
-    data_path = data_path.replace("\\", "/")
-    print data_path + str(id) + ".jpg"
-    up.picture.save(str(id), File(open(data_path + str(id) + ".jpg")))
-
-    up.save()
+    profile_pic = data_path + "profile_pictures/"
+    print profile_pic + str(id) + ".jpg"
+    up.picture.save(str(id) + ".jpg", open(profile_pic + str(id) + ".jpg", "rb"), save=True)
 
     return up
 
@@ -114,12 +115,9 @@ def add_item(id, details):
     it.itemName = details[0]
     it.itemDescription = details[3]
     it.itemDatePosted = details[4]
-
-    it.save()
     
-    data_path = "./population_resource/data/item_pictures/"
-    static_path = "./static/images/item_pictures/"
-    copyfile(data_path + str(id) + ".jpg", static_path + str(id) + ".jpg")
+    item_pic = data_path + "item_pictures/"
+    it.picture.save(str(id) + ".jpg", open(item_pic + str(id) + ".jpg", "rb"))
 
     return it
 

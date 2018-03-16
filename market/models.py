@@ -11,11 +11,11 @@ import datetime # this wasn't imported, DateField's broke
 
 def user_profile_path(self, userID):
     print "userID: " + str(userID)
-    return "profile_pictures/" + str(userID) + ".jpg"
+    return "profile_pictures/" + str(userID)
 
 def item_picture_path(self, itemID):
     print "itemID: " + str(itemID)
-    return "item_pictures/" + str(itemID) + ".jpg"
+    return "item_pictures/" + str(itemID)
 
 class UserProfile(models.Model):
 
