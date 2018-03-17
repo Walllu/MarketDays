@@ -143,16 +143,20 @@ def join_session(request, session_slug=None):
     # should check if you are already part of a session - if so, do not procede
     user = request.user # this is the User instance
     current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
-    #check to see if user is already a part of a market session
-    if SessionParticipants.objects.filter(participantID=current_user.userID).exists():
-        print "this user is already in a session!!"
-        return HttpResponseRedirect(reverse('view_market', kwargs={'session_slug':session_slug}))
+    session_to_join = Session.objects.get(slug__exact=session_slug)
     if not session_slug:
+        return HttpResponseRedirect(reverse('sessionlist'))
+
+    #check to see if user is already a part of a market session
+    if SessionParticipants.objects.filter(sessionID=session_to_join, participantID=current_user).exists():
+        # if the user is part of the market session in question
+        return HttpResponseRedirect(reverse('view_market', kwargs={'session_slug':session_slug}))
+    elif SessionParticipants.objects.filter(participantID=current_user).exists():
+        # if the user is part of a market session, but not this one
         return HttpResponseRedirect(reverse('sessionlist'))
     else:
         if request.method == "GET":
             # increment Session participants attribute
-            session_to_join = Session.objects.get(slug__exact=session_slug)
             session_to_join.participants = F('participants') + 1
             session_to_join.save()
             # add SessionParticipant
@@ -212,6 +216,12 @@ def show_market_session(request, session_slug=None):
     try:
         session = Session.objects.get(slug=session_slug)
         context_dict['session_object'] = session
+        # check if current user is part of the session
+        user = request.user # this is the User instance
+        current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+        if not SessionParticipants.objects.filter(sessionID=session, participantID=current_user).exists():
+            print "This user is not part of this session - YOU SHALL NOT PASS!!!"
+            return HttpResponseRedirect(reverse('sessionlist'))
     except Session.DoesNotExist:
         context_dict['session_object'] = None
     # get users in the session
