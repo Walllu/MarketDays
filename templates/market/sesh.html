@@ -3,9 +3,8 @@
 
 	{% if sessions %}
 		{% for sesh in sessions %}
-		<div class="row">
-		<div class="col-sm-3">
-		<div class="card container-fluid" style="width: 35rem;">
+
+		<div id="session-card" class="card container-fluid" style="width: 35rem; float:left;">
 			<a href="{% url 'join_session' sesh.slug %}"><img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300"></a>
 			<div class="card-header">
 				<h3 class="card-title">{{sesh.sessionName}}</h3>
@@ -15,8 +14,7 @@
 			</div>
 		<strong><a href="{% url 'join_session' sesh.slug %}" class="btn btn-primary">Join {{sesh.sessionName}}</a></strong>
 		</div>
-		</div>
-		</div>
+
 		{% endfor %}
 	{% else %}
 		<h3> There are no active sessions! Sorry! </h3>

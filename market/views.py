@@ -219,6 +219,7 @@ def show_market_session(request, session_slug=None):
         # check if current user is part of the session
         user = request.user # this is the User instance
         current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+        context_dict['current_user_object'] = current_user
         if not SessionParticipants.objects.filter(sessionID=session, participantID=current_user).exists():
             print "This user is not part of this session - YOU SHALL NOT PASS!!!"
             return HttpResponseRedirect(reverse('sessionlist'))
@@ -244,7 +245,7 @@ def restricted(request):
     return HttpResponse("thx for logging in")
 
 @login_required
-def begin_haggle(request):
+def begin_haggle(request, item_id=None):
     pass
 
 @login_required
@@ -321,7 +322,7 @@ def add_item(request, username):
             item.save()
 
 
-            return redirect('/market/')
+            return HttpResponseRedirect(reverse('view_user', kwargs={'user_name_slug':user.slug}))
         else:
             print form.errors
 
