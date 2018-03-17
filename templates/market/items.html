@@ -46,21 +46,17 @@
 <!-- the following is for the session view, showing all the items in the session -->
   {% if sessionitems %}
 		{% for item in sessionitems %} <!--The following is an item card meant to take you to the haggle view -->
-    <div class="row">
-		<div class="col-sm-3">
-		<div class="card container-fluid" style="width: 35rem;">
+
+    
+    <div id="offer-card" class="ui-widget-content">
 			<a href="{% url 'begin_haggle' %}"><img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300"></a>
-			<div class="card-header">
-				<h3 class="card-title">{{item.itemName}}</h3>
-			</div>
-			<div class="card-body">
-				<p class="card-text" style="font-size:15px;">{{item.itemDescription}}</p>
-        <p><small class="text-muted">Posted {{item.itemDatePosted}}</small></p>
-			</div>
-		<strong><a href="{% url 'begin_haggle' %}" class="btn btn-primary">Make Offer</a></strong>
-		</div>
-		</div>
-		</div>
+			<h3 class="card-title">{{item.itemName}}</h3>
+			<p style="font-size:15px;">{{item.itemDescription}}</p>
+      <p><small class="text-muted">Posted {{item.itemDatePosted}}</small></p>
+		  <strong><a href="{% url 'begin_haggle' %}" class="btn btn-primary">Make Offer</a></strong>
+    </div>
+
+
 		{% endfor %}
 	{% endif %}
   <!-- yourtradable, yournontradable, theirtradable, sessionitems -->
