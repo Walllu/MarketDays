@@ -11,7 +11,7 @@
     <div class="row">
     <div class="col-sm-3">
     <div class="card container-fluid" style="width: 35rem; background:green;">
-      <img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300">
+      <img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300">
       <div class="card-header">
         <h3 class="card-title">{{item.itemName}}</h3>
       </div>
@@ -30,7 +30,7 @@
     <div class="row">
 		<div class="col-sm-3">
 		<div class="card container-fluid" style="width: 35rem; background:red;">
-			<img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300">
+			<img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300">
 			<div class="card-header">
 				<h3 class="card-title">{{item.itemName}}</h3>
 			</div>
@@ -49,7 +49,7 @@
     <div class="row">
 		<div class="col-sm-3">
 		<div class="card container-fluid" style="width: 35rem;">
-			<a href="{% url 'begin_haggle' %}"><img class="card-img-top img-thumbnail" src="/media/{{sesh.sessionID}}.jpg" alt="Image of {{sesh.sessionName}}" height="300" width="300"></a>
+			<a href="{% url 'begin_haggle' %}"><img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300"></a>
 			<div class="card-header">
 				<h3 class="card-title">{{item.itemName}}</h3>
 			</div>

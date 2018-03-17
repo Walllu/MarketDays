@@ -141,6 +141,12 @@ def sessionlist(request):
 def join_session(request, session_slug=None):
     # if there's a slug parameter, then we want to add SessionParticipant, and increment participants in Session, and redirect to home
     # should check if you are already part of a session - if so, do not procede
+    user = request.user # this is the User instance
+    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+    #check to see if user is already a part of a market session
+    if SessionParticipants.objects.filter(participantID=current_user.userID).exists():
+        print "this user is already in a session!!"
+        return HttpResponseRedirect(reverse('view_market', kwargs={'session_slug':session_slug}))
     if not session_slug:
         return HttpResponseRedirect(reverse('sessionlist'))
     else:
@@ -150,10 +156,9 @@ def join_session(request, session_slug=None):
             session_to_join.participants = F('participants') + 1
             session_to_join.save()
             # add SessionParticipant
-            user = request.user # this is the User instance
-            current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
             session_participant_info = SessionParticipants(sessionID=session_to_join, participantID=current_user)
             session_participant_info.save()
+
             return HttpResponseRedirect(reverse('view_market', kwargs={'session_slug':session_slug}))
         else:
             return HttpResponseRedirect(reverse('sessionlist'))
@@ -220,6 +225,7 @@ def show_market_session(request, session_slug=None):
             context_dict['users_in_session'] = None
     except SessionParticipants.DoesNotExist: # if there is an error for some reason, make None
         context_dict['users_in_session'] = None
+
 
     return render(request, 'market/show_session.html', context_dict)
 
