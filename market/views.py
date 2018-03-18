@@ -8,7 +8,7 @@ from models import User
 from django.db.models import F
 from market.models import UserProfile, Item, Session, Offer, SessionParticipants, OfferContent
 from django.contrib.auth.decorators import login_required
-from market.forms import UserForm, UserProfileForm, ItemForm
+from market.forms import UserForm, UserProfileForm, ItemForm, OfferForm
 import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
@@ -230,7 +230,7 @@ def show_market_session(request, session_slug=None):
         session = context_dict['session_object']
         if (not session==None) and (session.participants>0): # if session exists and it has more than 0 participants, then find all users within session
             # if session exists with more than 0 participants, then it is assumed that at least one SessionParticipants object exists
-            users_in_session = SessionParticipants.objects.get(sessionID__exact=session.sessionID)
+            users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
             context_dict['users_in_session'] = users_in_session
         else:
             context_dict['users_in_session'] = None
@@ -246,6 +246,15 @@ def restricted(request):
 
 @login_required
 def begin_haggle(request, item_id=None):
+    context_dict = {}
+    # open a new haggle view for the item of "item_id"
+    # make an OfferForm?
+    # get the current user's items
+    user = request.user # this is the User instance
+    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+    context_dict['current_user_object'] = current_user
+    # get opposing user's items
+
     pass
 
 @login_required
