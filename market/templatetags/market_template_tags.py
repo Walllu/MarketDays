@@ -49,7 +49,6 @@ def get_all_items(sessionID):
     # NOTE: I think it should be fine passing a list - the important thing is that it's an iterable
 
 
-<<<<<<< HEAD
 #this to template tags below are to get all the offers user is involved in
 @register.inclusion_tag('market/offer_snip.html')
 def get_your_offers(yourID):
@@ -69,8 +68,3 @@ def get_to_you_offers(yourID):  #this method should return all tradable and nont
 
     print allOffersParsed
     return {'toYouOffers':allOffersParsed}
-=======
-@register.inclusion_tag('market/show_notifications.html')
-def get_offers(userID):
-    pass
->>>>>>> cde173889ba8b9de7ab962a6cfa259dcb17925f2
