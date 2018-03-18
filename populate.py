@@ -20,6 +20,7 @@ from django.core.files import File
 django.setup()
 # from market.models import Category, Page, UserProfile, Item
 from market.models import UserProfile, Item, User
+from datetime import datetime
 
 def populate():
     users = [
@@ -93,7 +94,7 @@ def add_user(id, details):
     up.userPhoneNumber = details[4]
     up.userDescription = details[5]
     up.userInterests = details[6]
-    up.userStartDate = details[8]
+    up.userStartDate = datetime.now()
 
     profile_pic = data_path + "profile_pictures/"
     print profile_pic + str(id) + ".jpg"
@@ -114,7 +115,7 @@ def add_item(id, details):
 
     it.itemName = details[0]
     it.itemDescription = details[3]
-    it.itemDatePosted = details[4]
+    it.itemDatePosted = datetime.now()
     
     item_pic = data_path + "item_pictures/"
     it.picture.save(str(id) + ".jpg", open(item_pic + str(id) + ".jpg", "rb"))
