@@ -1,0 +1,12 @@
+
+{% if tradable %}
+  {% for item in tradable %}
+  <li class="ui-widget-content ui-corner-tr trading-card draggable">
+    <img class="img-thumbnail mx-auto d-block" src="{{item.picture.url}}" alt="{{item.itemDescription}}" width="96", height="72">
+    <h5 class="ui-widget-header">{{item.itemName}}</h5>
+    <a href="" style="color:black;" class="item-tooltip glyphicon glyphicon-chevron-right" title="Click to offer">Offer</a>
+  </li>
+  {% endfor %}
+{% else %}
+  <strong> <p>No tradable items!</p> </strong>
+{% endif %}

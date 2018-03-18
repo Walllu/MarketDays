@@ -258,8 +258,11 @@ def begin_haggle(request, item_id=None):
     current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
     context_dict['current_user_object'] = current_user
     # get opposing user's items
-
-    pass
+    item_in_question = Item.objects.get(itemID__exact=item_id)
+    context_dict['item_in_question'] = item_in_question
+    opponent = UserProfile.objects.get(userID__exact=item_in_question.claimantID.userID)
+    context_dict['opponent'] = opponent
+    return render(request, 'market/haggle.html', context_dict)
 
 @login_required
 def register_profile(request):
@@ -346,12 +349,8 @@ def add_item(request, username):
 
 @login_required
 def show_notifications(request, username):
-    #request.session.set_test_cookie()
-    #category_list = Category.objects.order_by('-likes')[:5]
-    #pages_list = Page.objects.order_by('-views')[:5]
-    #context_dict = {}#{'categories': category_list, 'pages': pages_list}
-
-    #visitor_cookie_handler(request)
-    #context_dict['visits'] = request.session['visits']
-    context_dict = {'boldmessage': "yoyoyo"}
-    return render(request, 'market/show_notifications.html', context = context_dict)
+    context_dict = {}
+    user = request.user # this is the User instance
+    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+    context_dict['current_user_object'] = current_user
+    return render(request, 'market/show_notifications.html', context_dict)

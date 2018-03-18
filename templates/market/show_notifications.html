@@ -6,8 +6,5 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1>Show Notifications</h1>
-	<div>
-		LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL
-	</div>
+	{% get_offers current_user_object.userID %}
 {% endblock %}
