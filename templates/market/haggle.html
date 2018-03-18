@@ -13,30 +13,56 @@ Haggle view
       <a href="{% url 'view_user' opponent.slug %}"><img class="img-thumbnail" src="{{opponent.picture.url}}" alt="image of {{opponent.userName}}"></a>
     </div>
     <div class="col-sm-6">
-      <div class="row">
         <!-- this is where their information pops up : description and interests -->
         {% if opponent %}
-          <p>{{opponent.firstName}}{{opponent.lastName}}</p>
-          <p>{{opponent.userDescription}}</p>
-          <p>{{opponent.userInterests}}</p>
+        <div style="float:right;">
+          <h1>{{opponent.firstName}}{{opponent.lastName}}</h1>
+          <p><em>Description</em> : {{opponent.userDescription}}</p>
+          <p><em>Interests</em> : {{opponent.userInterests}}</p>
           <a href="{% url 'view_user' opponent.slug %}"></a>
+        </div>
         {% else %}
         <strong> <p> This user doesn't exist!!</p> </strong>
         {% endif %}
-      </div>
     </div>
   </div>
+
+
+
+
+
   <div class="row">
     <!-- this row is for containing the trading floor -->
+    <div class="col-sm-3">
+      <ul id="youritems" class="ui-helper-reset ui-helper-clearfix">
+      {% get_tradable_items current_user_object.userID %}
+      </ul>
+    </div>
+    <div class="col-sm-3">
+      <ul id="youroffer" class="ui-helper-reset ui-helper-clearfix">
 
+      </ul>
+    </div>
+    <div class="col-sm-3">
+      <ul id="theiroffer" class="ui-helper-reset ui-helper-clearfix">
+
+      </ul>
+    </div>
+    <div class="col-sm-3">
+      <ul id="theiritems" class="ui-helper-reset ui-helper-clearfix">
+        {% get_tradable_items opponent.userID %}
+      </ul>
+    </div>
   </div>
+
+
+
+
+
+
   <div class="row">
     <!-- this row is for containing the message box and "make offer/cancel buttons" -->
   </div>
-  {% if your_items %}
-  {% endif %}
-  {% if their_items %}
-  {% endif %}
 </div>
 
 {% endblock %}
