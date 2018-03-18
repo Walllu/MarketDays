@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _ #I'm not sure about this fix - it seems to have fixed the DateFields, but I'm not sure why. StackOverFlow told me:)
 import datetime # this wasn't imported, DateField's broke
-import django.utils.timezone.now()
+from django.utils import timezone
 
 # Create your models here.
 
@@ -92,7 +92,7 @@ class Session(models.Model):
     sessionName = models.CharField(max_length=32, unique=True)
     xCords = models.IntegerField(default=0)
     yCords = models.IntegerField(default=0)
-    sessionStart = DateTimeField(default=timezone.now)
+    sessionStart = models.DateTimeField(default=timezone.now)
     sessionEnd = models.DateTimeField()
     participants = models.IntegerField(default=0) # Ole, 1st Mar
     slug = models.SlugField(unique=True)
