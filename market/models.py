@@ -6,7 +6,6 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _ #I'm not sure about this fix - it seems to have fixed the DateFields, but I'm not sure why. StackOverFlow told me:)
 import datetime # this wasn't imported, DateField's broke
-from django.utils import timezone
 
 # Create your models here.
 
@@ -27,12 +26,12 @@ class UserProfile(models.Model):
     # password = models.CharField(max_length=100, default="")
     firstName = models.CharField(max_length=20) # Ole, 1st Mar
     lastName = models.CharField(max_length=20, blank=True, default="Anon")# added blank # Ole, 1st Mar
-    picture = models.ImageField(upload_to=user_profile_path, default="/profile_pictures/cat.jpg")
+    picture = models.ImageField(upload_to=user_profile_path, default="/media/profile_pictures/cat.jpg")
     # email = models.ForeignKey(User, related_name="user_email") #Ole, 2nd Mar
     userPhoneNumber = models.CharField(max_length=15,default="")
     userDescription = models.CharField(max_length=512, default="", blank=True)
     userInterests = models.CharField(max_length=512, default="",  blank=True)
-    userStartDate = models.DateField(auto_now_add=True)
+    userStartDate = models.CharField(max_length=15, default=str(datetime.date.today))#models.DateField(_("Date"), default=datetime.date.today) # Ole, 1st Mar
     slug = models.SlugField(max_length=40) #changed for tests
     #creditcard to model later
 
@@ -52,7 +51,7 @@ class Item(models.Model):
     claimantID = models.ForeignKey(UserProfile, related_name='owns_entitlement', on_delete=models.DO_NOTHING) # I think it makes sense that the item isn't deleted if the claimant account is deleted - Ole        #Why is this CASCADE? Walter 26.2.2018
     itemName = models.CharField(max_length=128)
     itemDescription = models.CharField(max_length=512, blank=True)                   #Why is this unique? Surely we can have non-unique descriptions  Walter 26.2.2018
-    itemDatePosted = models.DateField(auto_now_add=True)
+    itemDatePosted = models.CharField(max_length=15, default=str(datetime.date.today)) # models.DateField(_("Date"), default=datetime.date.today)
     picture = models.ImageField(upload_to=item_picture_path, default="/media/cat.jpg")
     slug = models.SlugField(unique=True)
     #itemValue
@@ -73,7 +72,7 @@ class Offer(models.Model):
     fromID = models.ForeignKey(UserProfile, related_name='offer_maker', on_delete=models.CASCADE) # Intent: If a user account is deleted, their offers should also disappear
     toID = models.ForeignKey(UserProfile, related_name='offer_reciever', on_delete=models.CASCADE) # And the same for both sides of the offer               #why is this CASCADE?   Walter 26.2.2018
     message = models.CharField(max_length=256, blank=True)
-    offerTimeStamp = models.DateTimeField(auto_now_add=True)
+    offerTimeStamp = models.DateField(_("Date"), default=datetime.date.today)
     slug = models.SlugField(unique=True)
 
     class Meta:
@@ -92,8 +91,8 @@ class Session(models.Model):
     sessionName = models.CharField(max_length=32, unique=True)
     xCords = models.IntegerField(default=0)
     yCords = models.IntegerField(default=0)
-    sessionStart = models.DateTimeField(default=timezone.now)
-    sessionEnd = models.DateTimeField()
+    sessionStart = models.DateField(_("Date"), default=datetime.date.today)
+    sessionEnd = models.DateField(_("Date"), default=datetime.date.today)
     participants = models.IntegerField(default=0) # Ole, 1st Mar
     slug = models.SlugField(unique=True)
 
@@ -109,10 +108,9 @@ class Session(models.Model):
 
 class OfferContent(models.Model):
     callerID = models.ForeignKey(UserProfile, related_name='from_side_inventory', on_delete=models.PROTECT)
-    calleeID = models.ForeignKey(UserProfile, related_name='to_side_inventory', on_delete=models.CASCADE)
+    calleeID = models.ForeignKey(UserProfile, related_name='to_side_inventory', on_delete=models.CASCADE)      #Why is this CASCADE? Walter 26.2.2018
     itemID = models.ForeignKey(Item, on_delete=models.CASCADE)
-    offerID = models.ForeignKey(Offer, on_delete=models.CASCADE)
-    offered = models.BooleanField()
+    offerID = models.ForeignKey(Offer, on_delete=models.CASCADE)             #Why is this CASCADE? Walter 26.2.2018
 
    # def __str__(self):
    #     return str(self.callerID)+"-"str(self.calleeID)+"-"+str(self.itemID)+"-"+str(self.offerID)

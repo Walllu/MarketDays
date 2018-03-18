@@ -42,5 +42,3 @@ class ItemForm(forms.ModelForm):
         model = Item
         fields = ('itemName', 'itemDescription', 'picture')
 
-class OfferForm(forms.ModelForm):
-    pass

@@ -8,7 +8,7 @@ from models import User
 from django.db.models import F
 from market.models import UserProfile, Item, Session, Offer, SessionParticipants, OfferContent
 from django.contrib.auth.decorators import login_required
-from market.forms import UserForm, UserProfileForm, ItemForm, OfferForm
+from market.forms import UserForm, UserProfileForm, ItemForm
 import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
@@ -230,7 +230,6 @@ def show_market_session(request, session_slug=None):
         session = context_dict['session_object']
         if (not session==None) and (session.participants>0): # if session exists and it has more than 0 participants, then find all users within session
             # if session exists with more than 0 participants, then it is assumed that at least one SessionParticipants object exists
-            users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
             print " session exists and have participants"
             users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
             print "session id recieved"
@@ -250,19 +249,7 @@ def restricted(request):
 
 @login_required
 def begin_haggle(request, item_id=None):
-    context_dict = {}
-    # open a new haggle view for the item of "item_id"
-    # make an OfferForm?
-    # get the current user's items
-    user = request.user # this is the User instance
-    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
-    context_dict['current_user_object'] = current_user
-    # get opposing user's items
-    item_in_question = Item.objects.get(itemID__exact=item_id)
-    context_dict['item_in_question'] = item_in_question
-    opponent = UserProfile.objects.get(userID__exact=item_in_question.claimantID.userID)
-    context_dict['opponent'] = opponent
-    return render(request, 'market/haggle.html', context_dict)
+    pass
 
 @login_required
 def register_profile(request):
@@ -349,8 +336,13 @@ def add_item(request, username):
 
 @login_required
 def show_notifications(request, username):
-    context_dict = {}
-    user = request.user # this is the User instance
-    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
-    context_dict['current_user_object'] = current_user
-    return render(request, 'market/show_notifications.html', context_dict)
+    context_dict={}
+    try: # try to find the user in the db
+        user = User.objects.get(username=username)
+        userprof = UserProfile.objects.get(user=user)
+        print "userProf found"
+        context_dict['userprofile_object'] = userprof
+    except UserProfile.DoesNotExist:
+        print "lol2"
+        context_dict['userprofile_object'] = None
+    return render(request, 'market/show_notifications.html', context = context_dict)
