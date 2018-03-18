@@ -112,6 +112,7 @@ class OfferContent(models.Model):
     calleeID = models.ForeignKey(UserProfile, related_name='to_side_inventory', on_delete=models.CASCADE)
     itemID = models.ForeignKey(Item, on_delete=models.CASCADE)
     offerID = models.ForeignKey(Offer, on_delete=models.CASCADE)
+    offered = models.BooleanField()
 
    # def __str__(self):
    #     return str(self.callerID)+"-"str(self.calleeID)+"-"+str(self.itemID)+"-"+str(self.offerID)
