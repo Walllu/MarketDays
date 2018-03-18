@@ -8,12 +8,9 @@
 <!-- the following is the LHS of haggle view  + your inventory view-->
 	{% if yourtradable %}
 		{% for item in yourtradable %}
-    <div id="offer-card" class="ui-widget-content" style="background-color:#50f456;">
+    <div id="offer-card" class="ui-widget-content item-tooltip" style="background-color:#50f456;" title="{{item.itemName}} : {{item.itemDescription}}">
 			<a href="{% url 'begin_haggle' item.itemID %}"><img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300"></a>
-			<h3 class="card-title">{{item.itemName}}</h3>
-			<p style="font-size:15px;">{{item.itemDescription}}</p>
-      <p><small class="text-muted">Posted {{item.itemDatePosted}}</small></p>
-		  <strong><a href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary">Make Offer</a></strong>
+		  <strong><a title="Date Posted : {{item.itemDatePosted}}" href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary">Make Offer</a></strong>
     </div>
 		{% endfor %}
 	{% endif %}
@@ -33,7 +30,7 @@
 		{% for item in sessionitems %} <!--The following is an item card meant to take you to the haggle view -->
 
 
-    <div id="offer-card" class="ui-widget-content">
+    <div id="offer-card" class="ui-widget-content ui-corner-tr">
 			<a href="{% url 'begin_haggle' item.itemID %}"><img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300"></a>
 			<h3 class="card-title">{{item.itemName}}</h3>
 			<p style="font-size:15px;">{{item.itemDescription}}</p>

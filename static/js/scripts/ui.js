@@ -2,6 +2,14 @@
 
 $(document).ready(function(){
     // put jquery ui functionality here
-    $(".ui-widget-content").draggable({revert:true});
+
+
+
+
+
+    // the following is for the haggle view functionality
+    $(".ui-widget-content").draggable({revert:true, revertDuration:100});
+    $(".droppable").droppable();
+    $(".item-tooltip").tooltip({track:true});
   }
 );
