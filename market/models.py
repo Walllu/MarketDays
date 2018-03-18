@@ -109,9 +109,9 @@ class Session(models.Model):
 
 class OfferContent(models.Model):
     callerID = models.ForeignKey(UserProfile, related_name='from_side_inventory', on_delete=models.PROTECT)
-    calleeID = models.ForeignKey(UserProfile, related_name='to_side_inventory', on_delete=models.CASCADE)      #Why is this CASCADE? Walter 26.2.2018
+    calleeID = models.ForeignKey(UserProfile, related_name='to_side_inventory', on_delete=models.CASCADE)
     itemID = models.ForeignKey(Item, on_delete=models.CASCADE)
-    offerID = models.ForeignKey(Offer, on_delete=models.CASCADE)             #Why is this CASCADE? Walter 26.2.2018
+    offerID = models.ForeignKey(Offer, on_delete=models.CASCADE)
 
    # def __str__(self):
    #     return str(self.callerID)+"-"str(self.calleeID)+"-"+str(self.itemID)+"-"+str(self.offerID)
