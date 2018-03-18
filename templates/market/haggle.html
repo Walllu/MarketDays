@@ -10,6 +10,7 @@ Haggle view
     <!-- this row is the top row, containing your opponent's information -->
     <div class="col-sm-6">
       <!-- your information would go here, if you want -->
+      <a href="{% url 'view_user' opponent.slug %}"><img class="img-thumbnail" src="{{opponent.picture.url}}" alt="image of {{opponent.userName}}"></a>
     </div>
     <div class="col-sm-6">
         <!-- this is where their information pops up : description and interests -->
