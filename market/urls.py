@@ -17,6 +17,6 @@ urlpatterns = [
     url(r'^restricted/', views.restricted, name='restricted'),
     url(r'^register_profile/$', views.register_profile, name='register_profile'),
     url(r'^add_item/(?P<username>[\w\-]+)/$', views.add_item, name='add_item'),
-
+    url(r'^notifications/(?P<username>[\w\-]+)/$', views.show_notifications, name='notifications'),
 
     ]

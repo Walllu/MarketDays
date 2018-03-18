@@ -231,10 +231,14 @@ def show_market_session(request, session_slug=None):
         if (not session==None) and (session.participants>0): # if session exists and it has more than 0 participants, then find all users within session
             # if session exists with more than 0 participants, then it is assumed that at least one SessionParticipants object exists
             users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
+            print " session exists and have participants"
+            users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
+            print "session id recieved"
             context_dict['users_in_session'] = users_in_session
         else:
             context_dict['users_in_session'] = None
     except SessionParticipants.DoesNotExist: # if there is an error for some reason, make None
+        print "there are no users in this session"
         context_dict['users_in_session'] = None
 
 
@@ -338,3 +342,16 @@ def add_item(request, username):
     context_dict = {'form' : form}
 
     return render(request, 'market/add_item.html', context_dict)
+
+
+@login_required
+def show_notifications(request, username):
+    #request.session.set_test_cookie()
+    #category_list = Category.objects.order_by('-likes')[:5]
+    #pages_list = Page.objects.order_by('-views')[:5]
+    #context_dict = {}#{'categories': category_list, 'pages': pages_list}
+
+    #visitor_cookie_handler(request)
+    #context_dict['visits'] = request.session['visits']
+    context_dict = {'boldmessage': "yoyoyo"}
+    return render(request, 'market/show_notifications.html', context = context_dict)
