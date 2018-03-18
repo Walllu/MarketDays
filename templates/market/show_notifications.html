@@ -1,5 +1,6 @@
 {% extends 'market/base.html' %}
 {% load staticfiles %}
+{% load market_template_tags %}
 
 {% block title_block %}
 	Notifications
@@ -8,6 +9,12 @@
 {% block body_block %}
 	<h1>Show Notifications</h1>
 	<div>
-		LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL
+
+			{% get_your_offers userprofile_object.userID %}
 	</div>
+	<div>
+
+			{% get_to_you_offers userprofile_object.userID %}
+	</div>
+
 {% endblock %}

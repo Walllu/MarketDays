@@ -45,3 +45,24 @@ def get_all_items(sessionID):
                 session_items.append(item)
     return {'sessionitems': session_items}
     # NOTE: I think it should be fine passing a list - the important thing is that it's an iterable
+
+
+#this to template tags below are to get all the offers user is involved in
+@register.inclusion_tag('market/offer_snip.html')
+def get_your_offers(yourID):
+    allOffers = Offer.objects.filter(fromID__exact=yourID).values('offerID').values()
+    allOffersParsed = []
+    for offer in allOffers:
+        allOffersParsed += [offer]
+    return {'yourOffers':allOffersParsed}
+
+
+@register.inclusion_tag('market/offer_snip.html')
+def get_to_you_offers(yourID):  #this method should return all tradable and nontradable Items
+    allOffers = Offer.objects.filter(toID__exact=yourID).values('offerID').values()
+    allOffersParsed = []
+    for offer in allOffers:
+        allOffersParsed += [offer]
+
+    print allOffersParsed
+    return {'toYouOffers':allOffersParsed}

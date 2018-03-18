@@ -336,12 +336,13 @@ def add_item(request, username):
 
 @login_required
 def show_notifications(request, username):
-    #request.session.set_test_cookie()
-    #category_list = Category.objects.order_by('-likes')[:5]
-    #pages_list = Page.objects.order_by('-views')[:5]
-    #context_dict = {}#{'categories': category_list, 'pages': pages_list}
-
-    #visitor_cookie_handler(request)
-    #context_dict['visits'] = request.session['visits']
-    context_dict = {'boldmessage': "yoyoyo"}
+    context_dict={}
+    try: # try to find the user in the db
+        user = User.objects.get(username=username)
+        userprof = UserProfile.objects.get(user=user)
+        print "userProf found"
+        context_dict['userprofile_object'] = userprof
+    except UserProfile.DoesNotExist:
+        print "lol2"
+        context_dict['userprofile_object'] = None
     return render(request, 'market/show_notifications.html', context = context_dict)

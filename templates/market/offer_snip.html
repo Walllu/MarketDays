@@ -1,0 +1,31 @@
+
+<div class="col-sm-6" >
+<div id="session-card" class="card container-fluid" style="width: 90rem; float:left;">
+  {% if yourOffers %}
+    Your offers	{{ user.username }}
+    <br/>
+		{% for offer in yourOffers %}
+    <div id="offer-card" class="ui-widget-content" style="background-color:#f46650;">
+			<h3 class="offer-name">{{offer.message}}</h3>
+      <p><small class="text-muted">Posted {{offer.offerTimeStamp}}</small></p>
+    </div>
+		{% endfor %}
+	{% endif %}
+</div>
+</div>
+
+
+<div class="col-sm-6" >
+<div id="session-card" class="card container-fluid" style="width: 90rem; float:right;">
+  {% if toYouOffers %}
+  	To you offers	{{ user.username }}
+    <br/>
+    {% for offer in toYouOffers %}
+    <div id="offer-card" class="ui-widget-content" style="background-color:#50f452;">
+      <h3 class="offer-name">{{offer.message}}</h3>
+      <p><small class="text-muted">Posted {{offer.offerTimeStamp}}</small></p>
+    </div>
+    {% endfor %}
+  {% endif %}
+</div>
+</div>
