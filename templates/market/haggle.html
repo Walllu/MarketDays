@@ -1,0 +1,41 @@
+{% extends 'market/base.html' %}
+{% load staticfiles %}
+{% load market_template_tags %}
+{% block title_block %}
+Haggle view
+{% endblock %}
+{% block body_block %}
+<div class="jumbotron">
+  <div class="row">
+    <!-- this row is the top row, containing your opponent's information -->
+    <div class="col-sm-6">
+      <!-- your information would go here, if you want -->
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <!-- this is where their information pops up : description and interests -->
+        {% if opponent %}
+          <p>{{opponent.firstName}}{{opponent.lastName}}</p>
+          <p>{{opponent.userDescription}}</p>
+          <p>{{opponent.userInterests}}</p>
+          <a href="{% url 'view_user' opponent.slug %}"></a>
+        {% else %}
+        <strong> <p> This user doesn't exist!!</p> </strong>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!-- this row is for containing the trading floor -->
+
+  </div>
+  <div class="row">
+    <!-- this row is for containing the message box and "make offer/cancel buttons" -->
+  </div>
+  {% if your_items %}
+  {% endif %}
+  {% if their_items %}
+  {% endif %}
+</div>
+
+{% endblock %}
