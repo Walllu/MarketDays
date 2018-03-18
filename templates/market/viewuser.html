@@ -33,8 +33,6 @@
         <h1>This user's <em>Inventory</em> </h1>
         {% get_your_items userprofile_object.userID %}
       </div>
-
-
     </div>
 		{% else %}
 		<strong> This person doesn't exist! Should they? </strong>
@@ -48,6 +46,7 @@
 		<form method="get" action="{% url 'add_item' user.username %}">
 	    <button type="submit">Add Item</button>
 		</form>
+
     {% endif %}
 	</div>
 {% endblock %}
