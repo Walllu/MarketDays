@@ -26,7 +26,7 @@ class UserProfile(models.Model):
     # password = models.CharField(max_length=100, default="")
     firstName = models.CharField(max_length=20) # Ole, 1st Mar
     lastName = models.CharField(max_length=20, blank=True, default="Anon")# added blank # Ole, 1st Mar
-    picture = models.ImageField(upload_to=user_profile_path, default="/media/cat.jpg")
+    picture = models.ImageField(upload_to=user_profile_path, default="/media/profile_pictures/cat.jpg")
     # email = models.ForeignKey(User, related_name="user_email") #Ole, 2nd Mar
     userPhoneNumber = models.CharField(max_length=15,default="")
     userDescription = models.CharField(max_length=512, default="", blank=True)
@@ -35,7 +35,7 @@ class UserProfile(models.Model):
     slug = models.SlugField(max_length=40) #changed for tests
     #creditcard to model later
 
-    
+
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.user.username)
