@@ -257,6 +257,11 @@ def begin_haggle(request, item_id=None):
     user = request.user # this is the User instance
     current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
     context_dict['current_user_object'] = current_user
+    itemcount = Item.objects.filter(claimantID__exact=current_user).count()
+    if itemcount == 0:
+        context_dict['current_user_item_count'] = None
+    else:
+        context_dict['current_user_item_count'] = True
     # get opposing user's items
     item_in_question = Item.objects.get(itemID__exact=item_id)
     context_dict['item_in_question'] = item_in_question
@@ -315,7 +320,7 @@ def profile(request, username):
 
 
 @login_required
-def add_item(request, username):    
+def add_item(request, username):
     form = ItemForm()
 
     if request.method == 'POST':

@@ -12,7 +12,7 @@ $(document).ready(function(){
       containment: "document",
       helper: "clone",
       cursor: "move"
-  });
+    });
 
     // the following is for the haggle view functionality
     //////////////////////////////////////////////////////////
@@ -56,7 +56,8 @@ $(document).ready(function(){
         $item.find( "a.ui-icon-arrow-2-e-w" ).remove();
         $item.append( next_icon ).appendTo( $list ).fadeIn(function() {
           $item.animate({ width: "48px" }).find( "img" ).animate({ height: "36px" });
-      });
+        });
+      })
     }
     function offerTheirItem($item){}
     function takeYourItemBack($item){
@@ -65,6 +66,12 @@ $(document).ready(function(){
       });
     }
     function takeTheirItemBack($item){}
+    function submitOffer(){
+      var LHSoffer = []; // list to store the itemIDs of the items in the LHS of the offer table
+      var RHSoffer = []; // list to store the itemIDs of the items in the RHS of the offer table
+      $("#youritems").find("li").css("background-color","blue");
+    }
+    $("#submitOffer").on("click", submitOffer);
 
 
     $( "#youritems > li" ).on( "click", function( event ) {
@@ -87,5 +94,8 @@ $(document).ready(function(){
       }
       return false;
     });
-  }
-);
+
+    /////////////////////////////////////////////////////////
+
+
+  });

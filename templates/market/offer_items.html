@@ -1,10 +1,10 @@
 
 {% if tradable %}
   {% for item in tradable %}
-  <li class="ui-widget-content ui-corner-tr trading-card draggable">
+  <li class="ui-widget-content ui-corner-tr trading-card draggable w3-dropdown-hover">
     <img class="img-thumbnail mx-auto d-block" src="{{item.picture.url}}" alt="{{item.itemDescription}}" width="96", height="72">
     <h5 class="ui-widget-header">{{item.itemName}}</h5>
-    <a href="" style="color:black;" class="item-tooltip glyphicon glyphicon-chevron-right" title="Click to offer">Offer</a>
+    <!--<p class="w3-dropdown-content">{{item.itemDescription}}</p>-->
   </li>
   {% endfor %}
 {% else %}

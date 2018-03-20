@@ -11,16 +11,47 @@
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
+#LHSitems{
+  background-color:#c6d3d3;
+  height: 500px;
+}
+#LHSoffer{
+  background-color:#ffe1ba;
+  height: 500px;
+  border-width: 1px;
+  border-color:#ffe7c9;
+}
+#RHSitems{
+  background-color:#c6d3d3;
+  height: 500px;
+}
+#RHSoffer{
+  background-color:#ffe1ba;
+  height: 500px;
+  border-width: 1px;
+  border-color:#ffe7c9;
+}
+
+#trading-table{
+  height:500px;
+  z-index: -8;
+}
+
 .trading-card{
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-  width: 50%;
+  width: 20%;
   margin:2%;
   background-color:#effbff;
+  z-index: 5000;
+}
+.trading-card p {
+  visibility: collapse;
 }
 .trading-card:hover{
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   background-color:#c9e0e8;
+  width:75%;
 }
 
 .session-card {

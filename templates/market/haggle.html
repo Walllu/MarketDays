@@ -31,24 +31,24 @@ Haggle view
 
 
 
-  <div class="row">
+  <div id="trading-table" class="row">
     <!-- this row is for containing the trading floor -->
-    <div class="col-sm-3">
+    <div id="LHSitems" class="col-sm-3">
       <ul id="youritems" class="ui-helper-reset ui-helper-clearfix">
       {% get_tradable_items current_user_object.userID %}
       </ul>
     </div>
-    <div class="col-sm-3">
+    <div id="LHSoffer" class="col-sm-3 panel panel-default">
       <ul id="youroffer" class="ui-helper-reset ui-helper-clearfix">
-
+        <p class="text-muted">Place your offers here!</p>
       </ul>
     </div>
-    <div class="col-sm-3">
+    <div id="RHSoffer" class="col-sm-3 panel panel-default">
       <ul id="theiroffer" class="ui-helper-reset ui-helper-clearfix">
-
+        <p class="text-muted">Place your offers here!</p>
       </ul>
     </div>
-    <div class="col-sm-3">
+    <div id="RHSitems" class="col-sm-3">
       <ul id="theiritems" class="ui-helper-reset ui-helper-clearfix">
         {% get_tradable_items opponent.userID %}
       </ul>
@@ -59,10 +59,30 @@ Haggle view
 
 
 
-
+{% if current_user_item_count %}
   <div class="row">
     <!-- this row is for containing the message box and "make offer/cancel buttons" -->
+    <div class="col-sm-6 form-group">
+      <label for="message">Do you have a message to add?</label>
+      <textarea class="form-control" rows="3" id="offer-message"></textarea>
+    </div>
+    <div class="col-sm-3">
+      <!-- This div is for the ACCEPT OFFER button when template is reused for countering-->
+    </div>
+    <div class="col-sm-3">
+      <p class="btn btn-primary" id="submitOffer">Make an offer</p>
+      <p class="btn btn-danger" id="cancelOffer">Cancel</p>
+    </div>
   </div>
 </div>
+{% else %}
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  You don't have any tradable items!!
+</div>
+{% endif %}
 
+
+<script src="/static/js/scripts/makeoffer.js"></script>
 {% endblock %}
