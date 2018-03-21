@@ -4,6 +4,7 @@
   <li class="ui-widget-content ui-corner-tr trading-card draggable w3-dropdown-hover">
     <img class="img-thumbnail mx-auto d-block" src="{{item.picture.url}}" alt="{{item.itemDescription}}" width="96", height="72">
     <h5 class="ui-widget-header">{{item.itemName}}</h5>
+    <small id="hiddenID" style="visibility:collapse; font-size:1px;">{{item.itemID}}</small>
     <!--<p class="w3-dropdown-content">{{item.itemDescription}}</p>-->
   </li>
   {% endfor %}

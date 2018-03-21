@@ -13,6 +13,7 @@ import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.db.models import Max
+from django.http import JsonResponse
 
 # Create your views here.
 def users(request):
@@ -363,3 +364,15 @@ def show_notifications(request, username):
         print "lol2"
         context_dict['userprofile_object'] = None
     return render(request, 'market/show_notifications.html', context = context_dict)
+
+
+
+
+@login_required
+def makeoffer(request):
+    if request.method == 'POST':
+        #now we want to go ahead and make a new Offer
+        print "POSTED DUUUDE"
+        return JsonResponse({})
+    else:
+        return None

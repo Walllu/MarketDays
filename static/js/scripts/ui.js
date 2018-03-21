@@ -17,16 +17,15 @@ $(document).ready(function(){
     // the following is for the haggle view functionality
     //////////////////////////////////////////////////////////
     // this makes your inventory accept the items you offered
-    $("#youritems.droppable").droppable(
-      {
-        accept:"#youroffer > .item-card"
+    $("#youritems.droppable").droppable({
+        accept:"#youroffer > .item-card",
         drop: function(event, ui){takeYourItemBack(ui.draggable);}
       }
     );
     // this makes the LHS of the offer table accept your items
     $("#youroffer.droppable").droppable(
       {
-        accept:"#youritems > .item-card"
+        accept:"#youritems > .item-card",
         drop: function(event, ui){offerYourItem(ui.draggable);}
       }
     );
@@ -34,14 +33,14 @@ $(document).ready(function(){
     // this makes their inventory accept offered items
     $("#theiritems.droppable").droppable(
       {
-        accept:"#theiroffer > .item-card"
+        accept:"#theiroffer > .item-card",
         drop: function(event, ui){takeTheirItemBack(ui.draggable);}
       }
     );
     // this makes the RHS of the offer table accept their items
     $("#theiroffer.droppable").droppable(
       {
-        accept:"#theiritems > .item-card"
+        accept:"#theiritems > .item-card",
         drop: function(event, ui){offerTheirItem(ui.draggable);}
       }
     );

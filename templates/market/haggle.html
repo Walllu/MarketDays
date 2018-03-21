@@ -76,10 +76,15 @@ Haggle view
   </div>
 </div>
 {% else %}
+<div class="row">
 <div class="alert alert-danger" role="alert">
   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
   <span class="sr-only">Error:</span>
   You don't have any tradable items!!
+</div>
+<div class="alert alert-danger" role="alert">
+  <a href="{% url 'add_item' current_user_object.userName %}" class="btn btn-primary" >Click here to add an item!</a>
+</div>
 </div>
 {% endif %}
 
