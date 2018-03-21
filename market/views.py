@@ -233,8 +233,13 @@ def show_market_session(request, session_slug=None):
             # if session exists with more than 0 participants, then it is assumed that at least one SessionParticipants object exists
             users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
             print " session exists and have participants"
+            s = SessionParticipants.objects.all()
+            print s.values()
             users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
+
+
             print "session id recieved"
+            print users_in_session
             context_dict['users_in_session'] = users_in_session
         else:
             context_dict['users_in_session'] = None
@@ -353,6 +358,7 @@ def add_item(request, username):
     return render(request, 'market/add_item.html', context_dict)
 
 
+@login_required
 def show_notifications(request, username):
     context_dict={}
     try: # try to find the user in the db
@@ -368,6 +374,7 @@ def show_notifications(request, username):
 
 
 
+
 @login_required
 def makeoffer(request):
     if request.method == 'POST':
@@ -376,3 +383,23 @@ def makeoffer(request):
         return JsonResponse({})
     else:
         return None
+
+@login_required
+def delete_item(request, itemID):
+    item = Item.objects.get(itemID__exact=int(itemID))
+    if item.possessorID.slug == item.claimantID.slug:
+        Item.objects.filter(itemID__exact=itemID).delete()
+        return redirect('/market/viewuser/'+item.possessorID.slug)
+    else:
+        return redirect('/market/viewuser/'+item.possessorID.slug)
+        #we need to add a message that would say that you cannot delete not yours item
+
+
+@login_required
+def delete_offer(request, offerID):
+    offer = Offer.objects.get(offerID__exact=int(offerID))
+    Offer.objects.filter(offerID__exact=offerID).delete()
+    try:
+        return redirect('/market/notifications/'+offer.fromID.user.username)
+    except:
+        return redirect('/market/notifications/'+offer.toID.user.username)

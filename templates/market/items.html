@@ -10,7 +10,8 @@
 		{% for item in yourtradable %}
     <div id="offer-card" class="ui-widget-content item-tooltip" style="background-color:#50f456;" title="{{item.itemName}} : {{item.itemDescription}}">
 			<a href="{% url 'begin_haggle' item.itemID %}"><img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300"></a>
-		  <strong><a title="Date Posted : {{item.itemDatePosted}}" href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary">Make Offer</a></strong>
+      <strong><a title="Date Posted : {{item.itemDatePosted}}" href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary">Make Offer</a></strong>
+      <strong><a href="{% url 'delete_item' item.itemID %}" class="btn btn-primary">Delete Item</a></strong>
     </div>
 		{% endfor %}
 	{% endif %}
