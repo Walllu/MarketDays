@@ -312,7 +312,7 @@ def profile(request, username):
 
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
     form = UserProfileForm(
-        {'userName' : userprofile.firstName, 'lastname': userprofile.lastName})
+        {'firstName' : userprofile.firstName, 'lastname': userprofile.lastName})
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=userprofile)

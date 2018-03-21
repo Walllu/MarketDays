@@ -12,6 +12,7 @@
 		margin: 0;
 	}
 {% endblock %}
+
 {% block body_block %}
 
 <h1 class="text-center">{{selecteduser.username}} Profile</h1>
@@ -22,7 +23,7 @@
          <div class="top-bg"></div>
     </div>
 	<div id="edit_profile" class="container col-md-9 box">
-		<form role="form" method="post" action="." enctype="multipart/form-data">
+		<form method="post" action=".">
 		{% csrf_token %}
 		<p class="required"><label class="required" for="id_firstname" >Firstname:</label>
 			<input class="form-control" id="id_firstname" name="firstName" type="text" value="{{userprofile_object.firstName}}" maxlength="20" />
@@ -33,17 +34,17 @@
 			<span class="helptext">*This field is required.</span>
 		</p>
 		<p class="required"><label class="required" for="id_phonenum">Phone Number:</label>
-			<input class="form-control" id="id_phonenum" name="userPhoneNumber" type="number" maxlength="11" size="11" />
+			<input class="form-control" id="id_phonenum" name="userPhoneNumber" type="tel" maxlength="11" size="11" value=" {{userprofile_object.userPhoneNumber}}" />
 			<span class="helptext">*This field is required.</span>
 		</p>
-		<p><label for="id_description">Description:</label>
-			<input class="form-control" id="id_description" name="userDescription" type="text" style="height: 100px"  />
+		<p><label for="id_description">Description:</label><br>
+			<textarea id="id_description" name="userDescription" cols="69" rows="5" value="{{userprofile_object.userDescription}}" ></textarea>
 		</p>
 		<p><label for="id_interest">Interest:</label>
-			<input class="form-control" id="id_interest" name="userInterests" type="text" style="height: 50px" />
+			<input class="form-control" id="id_interest" name="userInterests" type="text" style="height: 50px" value="{{userprofile_object.userInterests}}" />
 		</p>
 		<input type="file" name="picture" accept="image/*">
-		<button class="btn btn-primary" type="submit" value="update" style="float: right" />Update</button>
+		<button class="btn btn-primary" type="submit" value="Update" style="float: right" />Update</button>
 		</form>
 	</div>
 </div>
