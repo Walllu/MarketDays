@@ -15,8 +15,8 @@
                         Delete Offer
                      </a>
 
-                     <a href = "{% url 'begin_haggle' 10 %}" class = "btn btn-default" role = "button">
-                        Haggle
+                     <a href = "{% url 'counter_offer' offer.offerID %}" class = "btn btn-default" role = "button">
+                        View Offer
                      </a>
                   </p>
                   </div>
@@ -42,8 +42,8 @@
                         Delete Offer
                      </a>
 
-                     <a href = "#" class = "btn btn-default" role = "button">
-                        Button
+                     <a href =  "{% url 'counter_offer' offer.offerID %}" class = "btn btn-default" role = "button">
+                        View Offer
                      </a>
                   </p>
                   </div>
