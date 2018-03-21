@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^register_profile/$', views.register_profile, name='register_profile'),
     url(r'^add_item/(?P<username>[\w\-]+)/$', views.add_item, name='add_item'),
     url(r'^notifications/(?P<username>[\w\-]+)/$', views.show_notifications, name='notifications'),
-
+    url(r'^delete_item/(?P<itemID>[\w\-]+)/$', views.delete_item, name='delete_item'),
+    url(r'^delete_offer/(?P<offerID>[\w\-]+)/$', views.delete_offer, name='delete_offer')
     ]
