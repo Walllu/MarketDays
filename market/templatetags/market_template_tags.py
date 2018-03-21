@@ -29,7 +29,8 @@ def get_offer_LHS(offerID):
     LHS = OfferContent.objects.filter(offerID=offer).exclude(offered=False).values('itemID')
     items = []
     for id in LHS:
-        items.append(Item.objects.get(itemID__exact=id))
+        realID = id['itemID']
+        items.append(Item.objects.get(itemID__exact=realID))
     return {'LHSitems':items}
 
 @register.inclusion_tag('market/offer_items.html')
@@ -39,7 +40,8 @@ def get_offer_RHS(offerID):
     RHS = OfferContent.objects.filter(offerID=offer).exclude(offered=True).values('itemID')
     items = []
     for id in RHS:
-        items.append(Item.objects.get(itemID__exact=id))
+        realID = id['itemID']
+        items.append(Item.objects.get(itemID__exact=realID))
     return {'RHSitems':items}
 
 @register.inclusion_tag('market/offer_items.html')
@@ -51,8 +53,8 @@ def get_tradable_exclude_LHS(offerID):
     LHS = OfferContent.objects.filter(offerID=offer).exclude(offered=False).values('itemID')
     items = []
     for id in LHS:
-        print id
-        items.append(Item.objects.get(itemID__exact=id))
+        realID = id['itemID']
+        items.append(Item.objects.get(itemID__exact=realID))
     # keep items in tradable but not in items
     tradable_exclude_LHS = []
     for item in tradable:
@@ -71,7 +73,8 @@ def get_tradable_exclude_RHS(offerID):
     RHS = OfferContent.objects.filter(offerID=offer).exclude(offered=True).values('itemID')
     items = []
     for id in RHS:
-        items.append(Item.objects.get(itemID__exact=id))
+        realID = id['itemID']
+        items.append(Item.objects.get(itemID__exact=realID))
     # keep items in tradable but not in items
     tradable_exclude_RHS = []
     for item in tradable:

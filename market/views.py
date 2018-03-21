@@ -386,7 +386,7 @@ def makeoffer(request):
         RHS = unicode_body['RHS']
         message = unicode_body['message']
         opponentID = unicode_body['opponent_ID']
-        opponent = UserProfile.objects.get(userID__exact=int(opponentID))
+        opponent = UserProfile.objects.get(userID__exact=opponentID)
         # make new offer with this information
         ID = Offer.objects.all().aggregate(Max('offerID')) # this returns a list of offerIDs
         maxID = ID['offerID__max']
@@ -403,7 +403,7 @@ def makeoffer(request):
             content.save()
         for toItem in RHS:
             toItem = int(toItem)
-            thisitem = Item.objects.get(itemID__exact=int(toItem))
+            thisitem = Item.objects.get(itemID__exact=toItem)
             content = OfferContent(callerID=current_user, calleeID=opponent, itemID=thisitem, offerID=offer, offered=False)
             content.save()
 
@@ -442,18 +442,20 @@ def counter_offer(request, offerID):
         opponent = offer.fromID
         context_dict['offer_object'] = offer
         context_dict['opponent'] = opponent
+        context_dict['current_user_object'] = current_user
     except Offer.DoesNotExist:
+        context_dict['opponent'] = None
         context_dict['offer_object'] = None
-    # include current user details
-    user = request.user # this is the User instance
-    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
-    context_dict['current_user_object'] = current_user
+        context_dict['current_user_object'] = None
+    #include current user details
+    #user = request.user # this is the User instance
+    #current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
     itemcount = Item.objects.filter(claimantID__exact=current_user).count()
     if itemcount == 0:
         context_dict['current_user_item_count'] = None
     else:
         context_dict['current_user_item_count'] = True
-    
+
     return render(request, 'market/counteroffer.html', context_dict)
 
 @login_required
