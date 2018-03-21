@@ -19,8 +19,9 @@ from django.contrib.auth.hashers import make_password
 from django.core.files import File
 django.setup()
 # from market.models import Category, Page, UserProfile, Item
-from market.models import UserProfile, Item, User
-from datetime import datetime
+from market.models import UserProfile, Item, User, Session, SessionParticipants, Offer, OfferContent
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 def populate():
     users = [
@@ -41,6 +42,16 @@ def populate():
     sessions = []
     offers = []
 
+    se_names = [ "Oedipus", "Narcissus", "Minerva" ]
+
+    for i in range(3):
+        details = [None, None, None]
+        details[0] = se_names[i]
+        details[1] = i * 4 + 17
+        details[2] = i * 3 + 13
+        print "Adding session: " + str(i)
+        add_session(i, details)
+
     f = open("./population_resource/data/users.txt")
     #with f as open("./population_resource/data/users.txt"):
     i = 1
@@ -57,6 +68,8 @@ def populate():
         add_item(i, details)
         i += 1
     f.close()
+
+
 
 def add_sub_user(username, email, password):
     user = User.objects.create(username=username)
@@ -121,6 +134,16 @@ def add_item(id, details):
     it.picture.save(str(id) + ".jpg", open(item_pic + str(id) + ".jpg", "rb"))
 
     return it
+
+def add_session(id, details):
+    next_week = timezone.now() + timedelta(weeks=1)
+    se = Session.objects.create(sessionID=id, sessionName=details[0], sessionEnd=next_week)
+    se.xCords = details[1]
+    se.yCords = details[2]
+
+    se.save()
+    return se
+
 
 if __name__=='__main__':
     print("Starting MarketDays population script...")
