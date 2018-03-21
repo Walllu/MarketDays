@@ -8,6 +8,48 @@
     <!--<p class="w3-dropdown-content">{{item.itemDescription}}</p>-->
   </li>
   {% endfor %}
-{% else %}
-  <strong> <p>No tradable items!</p> </strong>
+{% endif %}
+
+{% if LHSitems %}
+  {% for item in LHSitems %}
+  <li class="ui-widget-content ui-corner-tr trading-card draggable w3-dropdown-hover">
+    <img class="img-thumbnail mx-auto d-block" src="{{item.picture.url}}" alt="{{item.itemDescription}}" width="96", height="72">
+    <h5 class="ui-widget-header">{{item.itemName}}</h5>
+    <small id="hiddenID" style="visibility:collapse; font-size:1px;">{{item.itemID}}</small>
+    <!--<p class="w3-dropdown-content">{{item.itemDescription}}</p>-->
+  </li>
+  {% endfor %}
+{% endif %}
+
+{% if RHSitems %}
+  {% for item in RHSitems %}
+  <li class="ui-widget-content ui-corner-tr trading-card draggable w3-dropdown-hover">
+    <img class="img-thumbnail mx-auto d-block" src="{{item.picture.url}}" alt="{{item.itemDescription}}" width="96", height="72">
+    <h5 class="ui-widget-header">{{item.itemName}}</h5>
+    <small id="hiddenID" style="visibility:collapse; font-size:1px;">{{item.itemID}}</small>
+    <!--<p class="w3-dropdown-content">{{item.itemDescription}}</p>-->
+  </li>
+  {% endfor %}
+{% endif %}
+
+{% if RHSitems_sans %}
+  {% for item in RHSitems_sans %}
+  <li class="ui-widget-content ui-corner-tr trading-card draggable w3-dropdown-hover">
+    <img class="img-thumbnail mx-auto d-block" src="{{item.picture.url}}" alt="{{item.itemDescription}}" width="96", height="72">
+    <h5 class="ui-widget-header">{{item.itemName}}</h5>
+    <small id="hiddenID" style="visibility:collapse; font-size:1px;">{{item.itemID}}</small>
+    <!--<p class="w3-dropdown-content">{{item.itemDescription}}</p>-->
+  </li>
+  {% endfor %}
+{% endif %}
+
+{% if LHSitems_sans %}
+  {% for item in LHSitems_sans %}
+  <li class="ui-widget-content ui-corner-tr trading-card draggable w3-dropdown-hover">
+    <img class="img-thumbnail mx-auto d-block" src="{{item.picture.url}}" alt="{{item.itemDescription}}" width="96", height="72">
+    <h5 class="ui-widget-header">{{item.itemName}}</h5>
+    <small id="hiddenID" style="visibility:collapse; font-size:1px;">{{item.itemID}}</small>
+    <!--<p class="w3-dropdown-content">{{item.itemDescription}}</p>-->
+  </li>
+  {% endfor %}
 {% endif %}

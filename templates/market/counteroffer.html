@@ -1,0 +1,103 @@
+{% extends 'market/base.html' %}
+{% load staticfiles %}
+{% load market_template_tags %}
+{% block title_block %}
+Haggle view
+{% endblock %}
+{% block body_block %}
+<div class="jumbotron">
+  <div class="row">
+    <!-- this row is the top row, containing your opponent's information -->
+    <div class="col-sm-6">
+      <!-- your information would go here, if you want -->
+      <a href="{% url 'view_user' opponent.slug %}"><img class="img-thumbnail" src="{{opponent.picture.url}}" alt="image of {{opponent.userName}}"></a>
+    </div>
+    <div class="col-sm-6">
+        <!-- this is where their information pops up : description and interests -->
+        {% if opponent %}
+        <div style="float:right;">
+          <h1>{{opponent.firstName}}{{opponent.lastName}}</h1>
+          <p><em>Description</em> : {{opponent.userDescription}}</p>
+          <p><em>Interests</em> : {{opponent.userInterests}}</p>
+          <a href="{% url 'view_user' opponent.slug %}"></a>
+        </div>
+        {% else %}
+        <strong> <p> This user doesn't exist!!</p> </strong>
+        {% endif %}
+    </div>
+  </div>
+
+
+
+
+{% if offer_object %}
+  <div id="trading-table" class="row">
+    <!-- this row is for containing the trading floor -->
+    <div id="LHSitems" class="col-sm-3">
+      <ul id="youritems" class="ui-helper-reset ui-helper-clearfix">
+      {% get_tradable_exclude_LHS offer_object.offerID %}
+      </ul>
+    </div>
+    <div id="LHSoffer" class="col-sm-3 panel panel-default">
+      <ul id="youroffer" class="ui-helper-reset ui-helper-clearfix">
+        <p class="text-muted">Place your offers here!</p>
+        {% get_offer_LHS offer_object.offerID %}
+      </ul>
+    </div>
+    <div id="RHSoffer" class="col-sm-3 panel panel-default">
+      <ul id="theiroffer" class="ui-helper-reset ui-helper-clearfix">
+        <p class="text-muted">Place your offers here!</p>
+        {% get_offer_RHS offer_object.offerID %}
+      </ul>
+    </div>
+    <div id="RHSitems" class="col-sm-3">
+      <ul id="theiritems" class="ui-helper-reset ui-helper-clearfix">
+        {% get_tradable_exclude_RHS offer_object.offerID %}
+      </ul>
+    </div>
+  </div>
+  {% else %}
+  <div class="alert alert-danger">
+    <h1>The offer you're looking for isn't here!!!</h1>
+  </div>
+  {% endif %}
+
+
+
+
+{% if offer_object %}
+{% if current_user_item_count %}
+  <div class="row">
+    <!-- this row is for containing the message box and "make offer/cancel buttons" -->
+    <div class="col-sm-6 form-group">
+      <label for="message">Do you have a message to add?</label>
+      <textarea class="form-control" rows="3" id="offer-message"></textarea>
+    </div>
+    <div class="col-sm-3">
+      <!-- This div is for the ACCEPT OFFER button when template is reused for countering-->
+    </div>
+    <div class="col-sm-3">
+      <p class="btn btn-primary" id="submitOffer">Make a counter offer</p>
+      <p class="btn btn-danger" id="cancelOffer">Cancel</p>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="row">
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  You don't have any tradable items!!
+</div>
+<div class="alert alert-danger" role="alert">
+  <a href="{% url 'add_item' current_user_object.user.username %}" class="btn btn-primary" >Click here to add an item!</a>
+</div>
+</div>
+{% endif %}
+{% endif %}
+
+<script src="/static/js/scripts/makeoffer.js"></script>
+<script type="text/javascript">
+  var opponentID = "{{opponent.userID}}";
+</script>
+{% endblock %}

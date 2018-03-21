@@ -24,7 +24,7 @@ Register
     {% csrf_token %}
 	<p class="required"><label class="required" for="id_username">Username:</label>
 		<input class="form-control" id="id_username" maxlength="30" name="username" type="text" />
-		<span class="helptext">Required: 30 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+		<span class="helptext">*Required: 30 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
 	</p>
 	<p class="required"><label class="required" for="id_email">Email:</label>
 		<input class="form-control" id="id_email" name="email" type="email" />
@@ -34,9 +34,9 @@ Register
 	</p>
 	<p class="reuired"><label class="required" for="id_password2">Password confirmation:</label>
 		<input class="form-control" id="id_password2" name="password2" type="password" />
-		<span class="helptext">Please type your password again</span>
+		<span class="helptext">*Please type your password again</span>
 	</p>
-    <button class="btn btn-lg btn-primary btn-block" type="submit"
+    <button class="btn btn-primary" type="submit" style="float: right"
 		value="submit" />Submit</button>
 	</form>
 	</div>
