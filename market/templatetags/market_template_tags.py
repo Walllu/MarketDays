@@ -50,7 +50,9 @@ def get_tradable_exclude_LHS(offerID):
     offer = Offer.objects.get(offerID__exact=offerID)
     callee = offer.toID
     tradable = Item.objects.filter(claimantID__exact=callee)
-    LHS = OfferContent.objects.filter(offerID=offer).exclude(offered=False).values('itemID')
+    tradableitems = [item for item in tradable]
+    LHS = OfferContent.objects.filter(offerID=offer).exclude(offered=True).values('itemID')
+    LHSitems = [Item.objects.get(itemID__exact=item['itemID']) for item in LHS]
     items = []
     for id in LHS:
         realID = id['itemID']
@@ -58,7 +60,7 @@ def get_tradable_exclude_LHS(offerID):
     # keep items in tradable but not in items
     tradable_exclude_LHS = []
     for item in tradable:
-        if item in items:
+        if item in LHSitems:
             continue
         else:
             tradable_exclude_LHS.append(item)
@@ -70,15 +72,17 @@ def get_tradable_exclude_RHS(offerID):
     offer = Offer.objects.get(offerID__exact=offerID)
     caller = offer.fromID
     tradable = Item.objects.filter(claimantID__exact=caller)
-    RHS = OfferContent.objects.filter(offerID=offer).exclude(offered=True).values('itemID')
+    tradableitems = [item for item in tradable]
+    RHS = OfferContent.objects.filter(offerID=offer).exclude(offered=False).values('itemID')
+    RHSitems = [Item.objects.get(itemID__exact=item['itemID']) for item in RHS]
     items = []
     for id in RHS:
         realID = id['itemID']
         items.append(Item.objects.get(itemID__exact=realID))
     # keep items in tradable but not in items
     tradable_exclude_RHS = []
-    for item in tradable:
-        if item in items:
+    for item in tradableitems:
+        if item in RHSitems:
             continue
         else:
             tradable_exclude_RHS.append(item)
