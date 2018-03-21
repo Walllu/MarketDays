@@ -22,6 +22,7 @@ django.setup()
 from market.models import UserProfile, Item, User, Session, SessionParticipants, Offer, OfferContent
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.db.models import Max
 
 def populate():
     users = [
@@ -72,6 +73,30 @@ def populate():
     for i in range(3):
         print "Populating session: " + str(i)
         pop_session(i)
+
+    for sid in range(3):
+        for i in range(11):
+            uid1 = sid * 11 + i
+            print "Populating offer: " + str(uid1)
+            try:
+                it1 = Item.objects.get(claimtantID=uid1)[0]
+            except Item.DoesNotExist:
+                it1 = None
+
+            if it1 != None:
+                for j in range(uid1 + 1, 11):
+                    uid2 = sid * 11 + j
+                    try:
+                        it2 = Item.objects.get(claimtantID=uid2)[0]
+                    except Item.DoesNotExist:
+                        it2 = None
+                    
+                    if it2 != None:
+                        print "Populating offer: " + str(uid1) + " | " + str(uid2)
+                        add_offer(it1, it2, uid1, uid2)
+                        break
+                break
+
 
 
 
@@ -157,14 +182,31 @@ def add_session_participant(se, up):
 def pop_session(id):
     se = Session.objects.get(sessionID=id)
     for i in range(11):
-        up = UserProfile.objects.get(userID=id + i + 1)
+        up = UserProfile.objects.get(userID=id*11 + i + 1)
         add_session_participant(se, up)
         se.participants = int(se.participants) + 1
     
     se.save()
     return se
 
+def add_offer_contents(offer, fid, tid, oid, it, offered):
+    contents = OfferContent.objects.create(callerID=fid, calleeID=tid, itemID=it, offerID=oid, offered=offered)
+    contents.save()
+    return contents
 
+def add_offer(it1, it2, uid1, uid2):
+    fid = UserProfile.objects.get(userID=uid1)
+    tid = UserProfile.objects.get(userID=uid2)
+    oid = Offer.objects.all().aggregate(Max('offerID'))['offerID'] + 1
+    msg = "Bla bla"
+
+    offer = Offer.objects.create(offerID=oid, fromID=fid, toID=tid, message=msg)
+    offer.save()
+
+    add_offer_contents(offer, fid, tid, oid, it1, True)
+    add_offer_contents(offer, fid, tid, oid, it2, False)
+
+    return offer
 
 
 if __name__=='__main__':
