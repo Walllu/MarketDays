@@ -69,6 +69,10 @@ def populate():
         i += 1
     f.close()
 
+    for i in range(3):
+        print "Populating session: " + str(i)
+        pop_session(i)
+
 
 
 def add_sub_user(username, email, password):
@@ -143,6 +147,24 @@ def add_session(id, details):
 
     se.save()
     return se
+
+def add_session_participant(se, up):
+    sp = SessionParticipants.objects.create(sessionID=se, participantID=up)
+    sp.save()
+    return sp
+
+
+def pop_session(id):
+    se = Session.objects.get(sessionID=id)
+    for i in range(11):
+        up = UserProfile.objects.get(userID=id + i + 1)
+        add_session_participant(se, up)
+        se.participants = int(se.participants) + 1
+    
+    se.save()
+    return se
+
+
 
 
 if __name__=='__main__':
