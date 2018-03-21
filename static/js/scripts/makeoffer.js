@@ -1,5 +1,6 @@
 $(document).ready(function (){
 
+
   //make draggable elements draggable
   $(".draggable").draggable({
     containment: "window",
