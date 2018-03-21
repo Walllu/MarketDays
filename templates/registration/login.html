@@ -5,36 +5,51 @@ Login
 {% endblock %}
 
 {% block style_block %}
+body{
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	}
 .box {
+		background-color: #E6E6E6;
 		width: 330px;
 		padding: 10px;
 		border: 5px solid gray;
-		margin: 0;
+		margin: 20px;
 	}
 {% endblock %}
+
 {% block body_block %}
-<div class="row">
-	<div class="col-md-12">
-	<h1 class="text-center">Login</h1>
-	</div>
-</div>
-<br>
 <div class="row">
 	<div class="col-md-5">
          <div class="top-bg"></div>
     </div>
-<div class="col-md-7 text-center box">
-  <form method="post" action=".">
+	<h1 class="col-lg-7 ">Login</h1>
+</div>
+<div class="row">
+	<div class="col-md-4">
+         <div class="top-bg"></div>
+    </div>
+	<div class="col-md-8 box text-center">
+	<form class="form-signin" role="form" method="post" action=".">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Log in" />
+    <label for="inputUsername" class="sr-only">Username</label>
+	<input type="text" name="username" id="id_username" class="form-control" 
+		placeholder="Username" required autofocus>
+	<label for="inputPassword" class="sr-only">Password</label>
+	<input type="password" name="password" id="id_password" class="form-control"
+		placeholder="Password" required>
+	<button class="btn btn-lg btn-primary btn-block" type="submit"
+		value="submit" />Log in </button>
     <input type="hidden" name="next" value="{{ next }}" />
-  </form>
+	</form>
+	
   <p>
     Not a member?
     <a href="{% url 'registration_register' %}">Register</a>
   </p>
-  
+  </div>
 </div>
+<div class="content">
 </div>
 {% endblock %}
