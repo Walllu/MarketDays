@@ -28,13 +28,24 @@
 
 <!-- Link for change navbar:https://work.smarchal.com/twbscolor/3.3.7/css/0063ff0742e2ffffffffffff0 -->
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+		
+	<style>
+	box {
+		width: 330px;
+		padding: 10px;
+		border: 5px solid gray;
+		margin: 0;
+	}
+	{% block style_block %}
+	{% endblock %}
+	</style>
     </head>
-
+	
     <body>
     <div class="container-fluid">
 		<nav class="nav navbar-default">
 			<ul class="nav navbar-nav navbar-left">
-				<li><a href='https://www.youtube.com/watch?v=Jr9R9NT9lk8'>MarketDays</a></li>
+				<li><a href='https://www.youtube.com/watch?v=2Vv-BfVoq4g'>MarketDays</a></li>
 				<li><a class="nav navbar-nav active" href="/market/">Home</a></li>
 				{% if user.is_authenticated %}
 				<li><a href="{% url 'sessionlist' %}">Session List</a></li>

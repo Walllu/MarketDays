@@ -5,10 +5,18 @@
 {% endblock %}
 
 {% block body_block %}
-  <h1>Registration - step2</h1>
-  <form method="post" action="." enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-  </form>
+<h1 class="text-center">Registration - step2</h1>
+<br>
+<div class="row">
+	<div class="col-md-3">
+         <div class="top-bg"></div>
+    </div>
+	<box class="container col-md-6 ">
+		<form method="post" action="." enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="Submit" />
+		</form>
+	</box>
+</div>
 {% endblock %}
