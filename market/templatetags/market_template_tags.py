@@ -22,6 +22,65 @@ def get_your_items(yourID):  #this method should return all tradable and nontrad
 def get_tradable_items(uID):
     return {'tradable': Item.objects.filter(claimantID__exact=uID)}
 
+@register.inclusion_tag('market/offer_items.html')
+def get_offer_LHS(offerID):
+    # this should return the callee items based on offerID
+    offer = Offer.objects.get(offerID__exact=offerID)
+    LHS = OfferContent.objects.filter(offerID=offer).exclude(offered=False).values('itemID')
+    items = []
+    for id in LHS:
+        items.append(Item.objects.get(itemID__exact=id))
+    return {'LHSitems':items}
+
+@register.inclusion_tag('market/offer_items.html')
+def get_offer_RHS(offerID):
+    # this should return the caller items based on offerID
+    offer = Offer.objects.get(offerID__exact=offerID)
+    RHS = OfferContent.objects.filter(offerID=offer).exclude(offered=True).values('itemID')
+    items = []
+    for id in RHS:
+        items.append(Item.objects.get(itemID__exact=id))
+    return {'RHSitems':items}
+
+@register.inclusion_tag('market/offer_items.html')
+def get_tradable_exclude_LHS(offerID):
+    # this should return a list of items tradeable by callee, but exclude those already on offer
+    offer = Offer.objects.get(offerID__exact=offerID)
+    callee = offer.toID
+    tradable = Items.objects.filter(claimantID__exact=callee)
+    LHS = OfferContent.objects.filter(offerID=offer).exclude(offered=False).values('itemID')
+    items = []
+    for id in LHS:
+        items.append(Item.objects.get(itemID__exact=id))
+    # keep items in tradable but not in items
+    tradable_exclude_LHS = []
+    for item in tradable:
+        if item in items:
+            continue
+        else:
+            tradable_exclude_LHS.append(item)
+    return {'LHSitems_sans':tradable_exclude_LHS}
+
+@register.inclusion_tag('market/offer_items.html')
+def get_tradable_exclude_RHS(offerID):
+    # this should return a list of items tradeable by callee, but exclude those already on offer
+    offer = Offer.objects.get(offerID__exact=offerID)
+    caller = offer.fromID
+    tradable = Items.objects.filter(claimantID__exact=caller)
+    RHS = OfferContent.objects.filter(offerID=offer).exclude(offered=True).values('itemID')
+    items = []
+    for id in RHS:
+        items.append(Item.objects.get(itemID__exact=id))
+    # keep items in tradable but not in items
+    tradable_exclude_RHS = []
+    for item in tradable:
+        if item in items:
+            continue
+        else:
+            tradable_exclude_RHS.append(item)
+    return {'RHSitems_sans':tradable_exclude_RHS}
+
+
 """
 @register.inclusion_tag('market/items.html')
 def get_items_by_ownership(userID):
