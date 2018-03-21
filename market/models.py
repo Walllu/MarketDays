@@ -59,6 +59,13 @@ class Item(models.Model):
 
     def create_offer(self):
         pass
+    
+    def first(self):
+        try:
+            for test in self:
+                 return test
+        except:
+            return self
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.itemID)

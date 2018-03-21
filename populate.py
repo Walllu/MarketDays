@@ -19,8 +19,10 @@ from django.contrib.auth.hashers import make_password
 from django.core.files import File
 django.setup()
 # from market.models import Category, Page, UserProfile, Item
-from market.models import UserProfile, Item, User
-from datetime import datetime
+from market.models import UserProfile, Item, User, Session, SessionParticipants, Offer, OfferContent
+from datetime import datetime, timedelta
+from django.utils import timezone
+from django.db.models import Max
 
 def populate():
     users = [
@@ -41,6 +43,16 @@ def populate():
     sessions = []
     offers = []
 
+    se_names = [ "Oedipus", "Narcissus", "Minerva" ]
+
+    for i in range(3):
+        details = [None, None, None]
+        details[0] = se_names[i]
+        details[1] = i * 4 + 17
+        details[2] = i * 3 + 13
+        print "Adding session: " + str(i)
+        add_session(i, details)
+
     f = open("./population_resource/data/users.txt")
     #with f as open("./population_resource/data/users.txt"):
     i = 1
@@ -57,6 +69,36 @@ def populate():
         add_item(i, details)
         i += 1
     f.close()
+
+    for i in range(3):
+        print "Populating session: " + str(i)
+        pop_session(i)
+
+    for sid in range(3):
+        for i in range(11):
+            uid1 = sid * 11 + i
+            print "Populating offer: " + str(uid1)
+            try:
+                it1 = Item.objects.filter(claimantID=uid1).first()
+            except Item.DoesNotExist:
+                it1 = None
+
+            if it1 != None:
+                for j in range(uid1 + 1, 11):
+                    uid2 = sid * 11 + j
+                    try:
+                        it2 = Item.objects.filter(claimantID=uid2).first()
+                    except Item.DoesNotExist:
+                        it2 = None
+                    
+                    if it2 != None:
+                        print "Populating offer: " + str(uid1) + " | " + str(uid2)
+                        add_offer(it1, it2, uid1, uid2)
+                        break
+                break
+
+
+
 
 def add_sub_user(username, email, password):
     user = User.objects.create(username=username)
@@ -121,6 +163,55 @@ def add_item(id, details):
     it.picture.save(str(id) + ".jpg", open(item_pic + str(id) + ".jpg", "rb"))
 
     return it
+
+def add_session(id, details):
+    next_week = timezone.now() + timedelta(weeks=1)
+    se = Session.objects.create(sessionID=id, sessionName=details[0], sessionEnd=next_week)
+    se.xCords = details[1]
+    se.yCords = details[2]
+
+    se.save()
+    return se
+
+def add_session_participant(se, up):
+    sp = SessionParticipants.objects.create(sessionID=se, participantID=up)
+    sp.save()
+    return sp
+
+
+def pop_session(id):
+    se = Session.objects.get(sessionID=id)
+    for i in range(11):
+        up = UserProfile.objects.get(userID=id*11 + i + 1)
+        add_session_participant(se, up)
+        se.participants = int(se.participants) + 1
+    
+    se.save()
+    return se
+
+def add_offer_contents(offer, fid, tid, oid, it, offered):
+    contents = OfferContent.objects.create(callerID=fid, calleeID=tid, itemID=it, offerID=oid, offered=offered)
+    contents.save()
+    return contents
+
+def add_offer(it1, it2, uid1, uid2):
+    fid = UserProfile.objects.get(userID=uid1)
+    tid = UserProfile.objects.get(userID=uid2)
+    id = Offer.objects.all().aggregate(Max('offerID'))
+    try:
+        oid = id['offerID__max'] + 1
+    except:
+        oid = 0
+    msg = "Bla bla"
+
+    offer = Offer.objects.create(offerID=oid, fromID=fid, toID=tid, message=msg)
+    offer.save()
+
+    add_offer_contents(offer, fid, tid, offer, it1, True)
+    add_offer_contents(offer, fid, tid, offer, it2, False)
+
+    return offer
+
 
 if __name__=='__main__':
     print("Starting MarketDays population script...")
