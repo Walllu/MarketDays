@@ -20,5 +20,7 @@ urlpatterns = [
     url(r'^notifications/(?P<username>[\w\-]+)/$', views.show_notifications, name='notifications'),
     url(r'^api/makeoffer/', views.makeoffer, name="make_offer"),
     url(r'^delete_item/(?P<itemID>[\w\-]+)/$', views.delete_item, name='delete_item'),
-    url(r'^delete_offer/(?P<offerID>[\w\-]+)/$', views.delete_offer, name='delete_offer')
+    url(r'^delete_offer/(?P<offerID>[\w\-]+)/$', views.delete_offer, name='delete_offer'),
+    url(r'^viewoffer/(?P<offerID>[\w\-]+)/$', views.counter_offer, name='counter_offer'),
+    url(r'^api/acceptoffer/$', views.accept_offer, name="accept_offer"),
     ]
