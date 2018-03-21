@@ -391,7 +391,10 @@ def makeoffer(request):
         # make new offer with this information
         ID = Offer.objects.all().aggregate(Max('offerID')) # this returns a list of offerIDs
         maxID = ID['offerID__max']
-        offer = Offer(offerID=maxID+1, fromID=current_user, toID=opponent, message=message)
+        try:
+            offer = Offer(offerID=maxID+1, fromID=current_user, toID=opponent, message=message)
+        except:
+            offer = Offer(offerID=0, fromID=current_user, toID=opponent, message=message)
         offer.save()
         # populate offer contents
         for fromItem in LHS:
