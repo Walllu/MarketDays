@@ -8,11 +8,12 @@ from models import User
 from django.db.models import F
 from market.models import UserProfile, Item, Session, Offer, SessionParticipants, OfferContent
 from django.contrib.auth.decorators import login_required
-from market.forms import UserForm, UserProfileForm, ItemForm
+from market.forms import UserForm, UserProfileForm, ItemForm, OfferForm
 import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.db.models import Max
+from django.http import JsonResponse
 
 # Create your views here.
 def users(request):
@@ -230,9 +231,15 @@ def show_market_session(request, session_slug=None):
         session = context_dict['session_object']
         if (not session==None) and (session.participants>0): # if session exists and it has more than 0 participants, then find all users within session
             # if session exists with more than 0 participants, then it is assumed that at least one SessionParticipants object exists
-            print " session exists and have participants"
             users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
+            print " session exists and have participants"
+            s = SessionParticipants.objects.all()
+            print s.values()
+            users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
+
+
             print "session id recieved"
+            print users_in_session
             context_dict['users_in_session'] = users_in_session
         else:
             context_dict['users_in_session'] = None
@@ -249,7 +256,24 @@ def restricted(request):
 
 @login_required
 def begin_haggle(request, item_id=None):
-    pass
+    context_dict = {}
+    # open a new haggle view for the item of "item_id"
+    # make an OfferForm?
+    # get the current user's items
+    user = request.user # this is the User instance
+    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+    context_dict['current_user_object'] = current_user
+    itemcount = Item.objects.filter(claimantID__exact=current_user).count()
+    if itemcount == 0:
+        context_dict['current_user_item_count'] = None
+    else:
+        context_dict['current_user_item_count'] = True
+    # get opposing user's items
+    item_in_question = Item.objects.get(itemID__exact=item_id)
+    context_dict['item_in_question'] = item_in_question
+    opponent = UserProfile.objects.get(userID__exact=item_in_question.claimantID.userID)
+    context_dict['opponent'] = opponent
+    return render(request, 'market/haggle.html', context_dict)
 
 @login_required
 def register_profile(request):
@@ -336,12 +360,46 @@ def add_item(request, username):
 
 @login_required
 def show_notifications(request, username):
-    #request.session.set_test_cookie()
-    #category_list = Category.objects.order_by('-likes')[:5]
-    #pages_list = Page.objects.order_by('-views')[:5]
-    #context_dict = {}#{'categories': category_list, 'pages': pages_list}
-
-    #visitor_cookie_handler(request)
-    #context_dict['visits'] = request.session['visits']
-    context_dict = {'boldmessage': "yoyoyo"}
+    context_dict={}
+    try: # try to find the user in the db
+        user = User.objects.get(username=username)
+        userprof = UserProfile.objects.get(user=user)
+        print "userProf found"
+        context_dict['userprofile_object'] = userprof
+    except UserProfile.DoesNotExist:
+        print "lol2"
+        context_dict['userprofile_object'] = None
     return render(request, 'market/show_notifications.html', context = context_dict)
+
+
+
+
+
+@login_required
+def makeoffer(request):
+    if request.method == 'POST':
+        #now we want to go ahead and make a new Offer
+        print "POSTED DUUUDE"
+        return JsonResponse({})
+    else:
+        return None
+
+@login_required
+def delete_item(request, itemID):
+    item = Item.objects.get(itemID__exact=int(itemID))
+    if item.possessorID.slug == item.claimantID.slug:
+        Item.objects.filter(itemID__exact=itemID).delete()
+        return redirect('/market/viewuser/'+item.possessorID.slug)
+    else:
+        return redirect('/market/viewuser/'+item.possessorID.slug)
+        #we need to add a message that would say that you cannot delete not yours item
+
+
+@login_required
+def delete_offer(request, offerID):
+    offer = Offer.objects.get(offerID__exact=int(offerID))
+    Offer.objects.filter(offerID__exact=offerID).delete()
+    try:
+        return redirect('/market/notifications/'+offer.fromID.user.username)
+    except:
+        return redirect('/market/notifications/'+offer.toID.user.username)
