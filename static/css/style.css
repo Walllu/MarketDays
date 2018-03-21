@@ -1,15 +1,18 @@
 #offer-card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-  width: 20%;
+  width: 100px;
   margin:2%;
   background-color:#d1fff6;
-  float:left;
 }
 
 #offer-card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    width: 500px;
+    color:black;
+    background-color: #c4c8ce;
 }
+
 #inventory-card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;

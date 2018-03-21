@@ -37,7 +37,7 @@
 			<a href="{% url 'begin_haggle' item.itemID %}"><img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300"></a>
 			<h3 class="card-title">{{item.itemName}}</h3>
 			<p style="font-size:15px;">{{item.itemDescription}}</p>
-      <p><small class="text-muted">Posted {{item.itemDatePosted}}</small></p>
+      <!--<p><small class="text-muted">Posted {{item.itemDatePosted}}</small></p>-->
 		  <strong><a href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary">Make Offer</a></strong>
     </div>
 
