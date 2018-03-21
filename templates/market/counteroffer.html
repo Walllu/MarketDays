@@ -79,7 +79,9 @@ Haggle view
       <!-- This div is for the ACCEPT OFFER button when template is reused for countering-->
     </div>
     <div class="col-sm-3">
-      <p class="btn btn-primary" id="submitOffer">Make a counter offer</p>
+      {% if userID == offer_object.toID.userID %}
+        <p class="btn btn-primary" id="submitOffer">Make a counter offer</p>
+      {% endif %}
       <p class="btn btn-danger" id="cancelOffer">Cancel</p>
     </div>
   </div>

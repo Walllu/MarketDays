@@ -436,6 +436,9 @@ def delete_offer(request, offerID):
 def counter_offer(request, offerID):
     # this view should render the counter offer template
     context_dict = {}
+    user = request.user
+    user = UserProfile.objects.get(user=user)
+    context_dict['userID']=user.userID
     try:
         offer = Offer.objects.get(offerID__exact=offerID)
         current_user = offer.toID
@@ -447,6 +450,7 @@ def counter_offer(request, offerID):
         context_dict['opponent'] = None
         context_dict['offer_object'] = None
         context_dict['current_user_object'] = None
+
     #include current user details
     #user = request.user # this is the User instance
     #current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
