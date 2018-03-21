@@ -185,26 +185,27 @@ $("#submitOffer").on("click", function (){
     }
     return dalist;
   }
-  RHSoffers = $("#RHSoffer").find(".trading-card").get();
-  LHSoffers = $("#LHSoffer").find(".trading-card").get();
-  offerMessage = $("¤offer-message").children;
-  alert(offerMessage);
+  var RHSoffers = $("#RHSoffer").find(".trading-card").get();
+  var LHSoffers = $("#LHSoffer").find(".trading-card").get();
+  var offerMessage = $("#offer-message").val();
   var RHSoffers = listEach(RHSoffers); // this holds the itemIDs of the RHSoffers
   var LHSoffers = listEach(LHSoffers);// this holds the itemIDs of the LHSoffers
   //we also need to extract the text in the message box
-
-  var content = {LHS:LHSoffers, RHS:RHSoffers};
+  
+  var content = {LHS:LHSoffers, RHS:RHSoffers, message:offerMessage, opponent_ID:opponentID};
   //now we send the information via POST request
   $.ajax({
     type:'POST',
+    contentType: "application/json",
     url:'/market/api/makeoffer/',
-    data: content,
-    headers: {
+    data: JSON.stringify(content),
+    dataType: "json",
+    /*headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
-    },
+    },*/
     success: function(ret) {
-      alert("success");
+      //alert("success");
     },
     error: function(ret) {
       alert("failure");
