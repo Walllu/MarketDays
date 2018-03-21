@@ -435,9 +435,25 @@ def counter_offer(request, offerID):
     # this view should render the counter offer template
     context_dict = {}
     try:
-        context_dict['offer_object'] = Offer.objects.get(offerID__exact=offerID)
+        offer = Offer.objects.get(offerID__exact=offerID)
+        context_dict['offer_object'] = offer
     except Offer.DoesNotExist:
         context_dict['offer_object'] = None
+    # include current user details
+    user = request.user # this is the User instance
+    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+    context_dict['current_user_object'] = current_user
+    itemcount = Item.objects.filter(claimantID__exact=current_user).count()
+    if itemcount == 0:
+        context_dict['current_user_item_count'] = None
+    else:
+        context_dict['current_user_item_count'] = True
+    # include opponent details
+    try:
+        opponent = UserProfile.objects.get(userID__exact=offer.fromID)
+        context_dict['opponent'] = opponent
+    except:
+        context_dict['opponent'] = None
     return render(request, 'market/counteroffer.html', context_dict)
 
 @login_required
