@@ -312,8 +312,7 @@ def profile(request, username):
 
     userprofile = UserProfile.objects.get_or_create(user=user)[0]
     form = UserProfileForm(
-        {'firstName' : userprofile.firstName, 'lastname': userprofile.lastName})
-
+        {'firstName' : userprofile.firstName, 'lastName': userprofile.lastName})
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
         if form.is_valid():
@@ -322,7 +321,7 @@ def profile(request, username):
         else:
             print form.errors
 
-    return render(request, 'market/userProfile.html', {'userprofile':userprofile,'selecteduser':user,'form':form})
+    return render(request, 'market/userProfile.html', {'userprofile_object':userprofile,'selecteduser':user,'form':form})
 
 
 @login_required
