@@ -79,7 +79,7 @@ def populate():
             uid1 = sid * 11 + i
             print "Populating offer: " + str(uid1)
             try:
-                it1 = Item.objects.get(claimtantID=uid1)[0]
+                it1 = Item.objects.filter(claimantID=uid1).first()
             except Item.DoesNotExist:
                 it1 = None
 
@@ -87,7 +87,7 @@ def populate():
                 for j in range(uid1 + 1, 11):
                     uid2 = sid * 11 + j
                     try:
-                        it2 = Item.objects.get(claimtantID=uid2)[0]
+                        it2 = Item.objects.filter(claimantID=uid2).first()
                     except Item.DoesNotExist:
                         it2 = None
                     
@@ -197,14 +197,18 @@ def add_offer_contents(offer, fid, tid, oid, it, offered):
 def add_offer(it1, it2, uid1, uid2):
     fid = UserProfile.objects.get(userID=uid1)
     tid = UserProfile.objects.get(userID=uid2)
-    oid = Offer.objects.all().aggregate(Max('offerID'))['offerID'] + 1
+    id = Offer.objects.all().aggregate(Max('offerID'))
+    try:
+        oid = id['offerID__max'] + 1
+    except:
+        oid = 0
     msg = "Bla bla"
 
     offer = Offer.objects.create(offerID=oid, fromID=fid, toID=tid, message=msg)
     offer.save()
 
-    add_offer_contents(offer, fid, tid, oid, it1, True)
-    add_offer_contents(offer, fid, tid, oid, it2, False)
+    add_offer_contents(offer, fid, tid, offer, it1, True)
+    add_offer_contents(offer, fid, tid, offer, it2, False)
 
     return offer
 
