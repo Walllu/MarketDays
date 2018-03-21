@@ -1,24 +1,27 @@
 <!-- This template should be loaded into any template needing an item list -->
-<!-- the following is for RHS of haggle view -->
-  {% if theirtradable %}
-    {% for item in theirtradable %}
-      Input a draggable card representing {{item.itemName}}
-    {% endfor %}
-  {% endif %}
 <!-- the following is the LHS of haggle view  + your inventory view-->
 	{% if yourtradable %}
 		{% for item in yourtradable %}
-    <div id="offer-card" class="ui-widget-content item-tooltip" style="background-color:#50f456;" title="{{item.itemName}} : {{item.itemDescription}}">
+    <div id="inventory-card" class="ui-widget-content item-tooltip" style="background-color:#50f456;" title="{{item.itemName}} : {{item.itemDescription}}">
+      {% if userprofile_object.user.username == user.username %}
+      <img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300">
+      {% else %}
 			<a href="{% url 'begin_haggle' item.itemID %}"><img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300"></a>
-      <strong><a title="Date Posted : {{item.itemDatePosted}}" href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary">Make Offer</a></strong>
-      <strong><a href="{% url 'delete_item' item.itemID %}" class="btn btn-primary">Delete Item</a></strong>
+      {% endif %}
+      <div class="btn-group" style="padding:2px;">
+        {% if userprofile_object.user.username == user.username %}
+        <strong><a href="{% url 'delete_item' item.itemID %}" class="btn btn-sm btn-danger">Delete Item</a></strong>
+        {% else %}
+        <strong><a title="Date Posted : {{item.itemDatePosted}}" href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary btn-sm">Make Offer</a></strong>
+        {% endif %}
+      </div>
     </div>
 		{% endfor %}
 	{% endif %}
 <!-- this is for your inventory view only -->
   {% if yournontradable %}
 		{% for item in yournontradable %}
-    <div id="offer-card" class="ui-widget-content" style="background-color:#f46650;">
+    <div id="inventory-card" class="ui-widget-content" style="background-color:#f46650;">
 			<img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300">
 			<h3 class="card-title">{{item.itemName}}</h3>
 			<p style="font-size:15px;">{{item.itemDescription}}</p>
@@ -29,7 +32,6 @@
 <!-- the following is for the session view, showing all the items in the session -->
   {% if sessionitems %}
 		{% for item in sessionitems %} <!--The following is an item card meant to take you to the haggle view -->
-
 
     <div id="offer-card" class="ui-widget-content ui-corner-tr">
 			<a href="{% url 'begin_haggle' item.itemID %}"><img class="card-img-top img-thumbnail" src="{{item.picture.url}}" alt="Image of {{item.itemName}}" height="300" width="300"></a>
