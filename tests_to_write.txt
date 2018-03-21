@@ -1,0 +1,20 @@
+tests:
+
+Deleting an item shouldn't delete the owner, claimant
+Deleting an item should delete any offers
+
+Deleting a user should delete the items they own
+Deleting a user shouldn't delete sessions
+Deleting a user should delete offers
+
+Deleting an offer shouldn't delete items
+Deleting an offer shouldn't delete users
+Deleting an offer should delete offer contents
+
+Deleting a session shouldn't delete users
+Deleting a session shouldn't delete items
+Deleting a session should delete offers
+
+Deleting offer contents shouldn't delete an offer
+Deleting offer contents shouldn't delete items
+

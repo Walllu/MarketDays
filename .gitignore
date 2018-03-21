@@ -1,7 +1,6 @@
 *.un
 *.un~
 *~
-*.txt
 *.pyc
 *.pyc.orig
 *.sqlite3
