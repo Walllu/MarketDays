@@ -4,14 +4,26 @@
 Login
 {% endblock %}
 
+{% block style_block %}
+.box {
+		width: 330px;
+		padding: 10px;
+		border: 5px solid gray;
+		margin: 0;
+	}
+{% endblock %}
 {% block body_block %}
-  <h1 class="text-center">Login</h1>
+<div class="row">
+	<div class="col-md-12">
+	<h1 class="text-center">Login</h1>
+	</div>
+</div>
 <br>
 <div class="row">
-	<div class="col-md-4">
+	<div class="col-md-5">
          <div class="top-bg"></div>
     </div>
-<box class="col-md-4 text-center">
+<div class="col-md-7 text-center box">
   <form method="post" action=".">
     {% csrf_token %}
     {{ form.as_p }}
@@ -23,6 +35,6 @@ Login
     <a href="{% url 'registration_register' %}">Register</a>
   </p>
   
-</box>
+</div>
 </div>
 {% endblock %}
