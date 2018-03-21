@@ -9,18 +9,15 @@
 {% block body_block %}
 
 	<h1>Show Notifications</h1>
-	<div>
-
-			{% get_your_offers userprofile_object.userID %}
+	<div class="row">
+		<div class="container">
+			<div class="col-md-5">
+				{% get_your_offers userprofile_object.userID %}
+			</div>
+			<div class="col-md-5">
+				{% get_to_you_offers userprofile_object.userID %}
+			</div>
+		</div>
 	</div>
-	<div>
-
-			{% get_to_you_offers userprofile_object.userID %}
-
-
-	</div>
-
-
-	
 
 {% endblock %}

@@ -1,6 +1,17 @@
 {% extends "market/base.html" %}
+
+{% block title_block %}
+Login
+{% endblock %}
+
 {% block body_block %}
-  <h1>Login</h1>
+  <h1 class="text-center">Login</h1>
+<br>
+<div class="row">
+	<div class="col-md-4">
+         <div class="top-bg"></div>
+    </div>
+<box class="col-md-4 text-center">
   <form method="post" action=".">
     {% csrf_token %}
     {{ form.as_p }}
@@ -11,4 +22,7 @@
     Not a member?
     <a href="{% url 'registration_register' %}">Register</a>
   </p>
+  
+</box>
+</div>
 {% endblock %}
