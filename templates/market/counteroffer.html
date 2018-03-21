@@ -6,6 +6,7 @@ Haggle view
 {% endblock %}
 {% block body_block %}
 <div class="jumbotron">
+  {% if opponent %}
   <div class="row">
     <!-- this row is the top row, containing your opponent's information -->
     <div class="col-sm-6">
@@ -26,6 +27,7 @@ Haggle view
         {% endif %}
     </div>
   </div>
+  {% endif %}
 
 
 

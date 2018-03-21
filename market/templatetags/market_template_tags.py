@@ -47,10 +47,11 @@ def get_tradable_exclude_LHS(offerID):
     # this should return a list of items tradeable by callee, but exclude those already on offer
     offer = Offer.objects.get(offerID__exact=offerID)
     callee = offer.toID
-    tradable = Items.objects.filter(claimantID__exact=callee)
+    tradable = Item.objects.filter(claimantID__exact=callee)
     LHS = OfferContent.objects.filter(offerID=offer).exclude(offered=False).values('itemID')
     items = []
     for id in LHS:
+        print id
         items.append(Item.objects.get(itemID__exact=id))
     # keep items in tradable but not in items
     tradable_exclude_LHS = []
@@ -66,7 +67,7 @@ def get_tradable_exclude_RHS(offerID):
     # this should return a list of items tradeable by callee, but exclude those already on offer
     offer = Offer.objects.get(offerID__exact=offerID)
     caller = offer.fromID
-    tradable = Items.objects.filter(claimantID__exact=caller)
+    tradable = Item.objects.filter(claimantID__exact=caller)
     RHS = OfferContent.objects.filter(offerID=offer).exclude(offered=True).values('itemID')
     items = []
     for id in RHS:

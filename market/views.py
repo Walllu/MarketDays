@@ -386,7 +386,7 @@ def makeoffer(request):
         RHS = unicode_body['RHS']
         message = unicode_body['message']
         opponentID = unicode_body['opponent_ID']
-        opponent = UserProfile.objects.get(userID__exact=opponentID)
+        opponent = UserProfile.objects.get(userID__exact=int(opponentID))
         # make new offer with this information
         ID = Offer.objects.all().aggregate(Max('offerID')) # this returns a list of offerIDs
         maxID = ID['offerID__max']
@@ -438,7 +438,10 @@ def counter_offer(request, offerID):
     context_dict = {}
     try:
         offer = Offer.objects.get(offerID__exact=offerID)
+        current_user = offer.toID
+        opponent = offer.fromID
         context_dict['offer_object'] = offer
+        context_dict['opponent'] = opponent
     except Offer.DoesNotExist:
         context_dict['offer_object'] = None
     # include current user details
@@ -450,12 +453,7 @@ def counter_offer(request, offerID):
         context_dict['current_user_item_count'] = None
     else:
         context_dict['current_user_item_count'] = True
-    # include opponent details
-    try:
-        opponent = UserProfile.objects.get(userID__exact=offer.fromID)
-        context_dict['opponent'] = opponent
-    except:
-        context_dict['opponent'] = None
+    
     return render(request, 'market/counteroffer.html', context_dict)
 
 @login_required
