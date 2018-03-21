@@ -1,29 +1,28 @@
     <!-- Page Content -->
     <div class="container">
-
-        <!-- Page Header -->
-        <div class="row">
-            <div class="col-lg-12">
-
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <!-- Projects Row -->
-
         {% if yourOffers %}
           Your offers	{{ user.username }}
           <br/>
           {% for offer in yourOffers %}
-          <div class="row">
-            <div class="col-md-6 portfolio-item">
-          <div id="offer-card" class="ui-widget-content" style="background-color:#f46650;">
-            <h3 class="offer-name">{{offer.message}}</h3>
-            <p><small class="text-muted">Posted {{offer.offerTimeStamp}}</small></p>
-            <strong><a href="{% url 'delete_offer' offer.offerID %}" class="btn btn-primary">Delete Offer</a></strong>
-          </div>
+          <div class = "col-sm-6 col-md-3">
+               <div class = "thumbnail" style="background-color:#f46650;">
+               <div class = "caption">
+                  <h3>Your offer to {{offer.toID_id}}</h3>
+                  <p>{{offer.message}}</p>
+                  <p><small class="text-muted">Posted {{offer.offerTimeStamp}}</small></p>
+                  <p>
+                     <a href ="{% url 'delete_offer' offer.offerID %}" class = "btn btn-primary" role = "button">
+                        Delete Offer
+                     </a>
+
+                     <a href = "{% url 'begin_haggle' 10 %}" class = "btn btn-default" role = "button">
+                        Haggle
+                     </a>
+                  </p>
+                  </div>
+               </div>
             </div>
-          </div>
+
           {% endfor %}
         {% endif %}
 
@@ -32,14 +31,24 @@
           To you offers	{{ user.username }}
           <br/>
           {% for offer in toYouOffers %}
-          <div class="row">
-              <div class="col-md-6 portfolio-item">
-            <div id="offer-card" class="ui-widget-content" style="background-color:#50f452;">
-              <h3 class="offer-name">{{offer.message}}</h3>
-              <p><small class="text-muted">Posted {{offer.offerTimeStamp}}</small></p>
-              <strong><a href="{% url 'delete_offer' offer.offerID %}" class="btn btn-primary">Delete Offer</a></strong>
+          <div class = "col-sm-6 col-md-3">
+               <div class = "thumbnail" style="background-color:#50f452;">
+               <div class = "caption">
+                  <h3>An offer from {{offer.fromID_id}}</h3>
+                  <p>{{offer.message}}</p>
+                  <p><small class="text-muted">Posted {{offer.offerTimeStamp}}</small></p>
+                  <p>
+                     <a href ="{% url 'delete_offer' offer.offerID %}" class = "btn btn-primary" role = "button">
+                        Delete Offer
+                     </a>
+
+                     <a href = "#" class = "btn btn-default" role = "button">
+                        Button
+                     </a>
+                  </p>
+                  </div>
+               </div>
             </div>
-          </div>
-        </div>
-        {% endfor %}
+          {% endfor %}
         {% endif %}
+      </div>

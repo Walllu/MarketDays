@@ -55,6 +55,9 @@ def get_your_offers(yourID):
     allOffers = Offer.objects.filter(fromID__exact=yourID).values('offerID').values()
     allOffersParsed = []
     for offer in allOffers:
+        recieverID = offer['toID_id']
+        reciever = UserProfile.objects.get(userID__exact=int(recieverID))
+        offer['toID_id']=reciever.user.username
         allOffersParsed += [offer]
     return {'yourOffers':allOffersParsed}
 
@@ -62,9 +65,12 @@ def get_your_offers(yourID):
 @register.inclusion_tag('market/offer_snip.html')
 def get_to_you_offers(yourID):  #this method should return all tradable and nontradable Items
     allOffers = Offer.objects.filter(toID__exact=yourID).values('offerID').values()
+    #sende
     allOffersParsed = []
     for offer in allOffers:
+        #llOffersParsed += [offer]
+        senderID = offer['fromID_id']
+        sender = UserProfile.objects.get(userID__exact=int(senderID))
+        offer['fromID_id']=sender.user.username
         allOffersParsed += [offer]
-
-    print allOffersParsed
     return {'toYouOffers':allOffersParsed}
