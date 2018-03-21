@@ -3,20 +3,28 @@
 {% block title_block %}
 Register
 {% endblock %}
-
+{% block style_block %}
+.box {
+		background-color: white;
+		width: 500px;
+		padding: 10px;
+		border: 5px solid gray;
+		margin: 0;
+	}
+{% endblock %}
 {% block body_block %}
 <h1 class="text-center">Register Here</h1>
 <br>
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-4">
          <div class="top-bg"></div>
     </div>
-	<box class="container col-md-6">
+	<div class="container col-md-9 box">
 	<form method="post" action=".">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />
 	</form>
-	</box>
+	</div>
 </div>
 {% endblock %}
