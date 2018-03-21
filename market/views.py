@@ -429,3 +429,17 @@ def delete_offer(request, offerID):
         return redirect('/market/notifications/'+offer.fromID.user.username)
     except:
         return redirect('/market/notifications/'+offer.toID.user.username)
+
+@login_required
+def counter_offer(request, offerID):
+    # this view should render the counter offer template
+    context_dict = {}
+    try:
+        context_dict['offer_object'] = Offer.objects.get(offerID__exact=offerID)
+    except Offer.DoesNotExist:
+        context_dict['offer_object'] = None
+    return render(request, 'market/counteroffer.html', context_dict)
+
+@login_required
+def accept_offer(request):
+    pass
