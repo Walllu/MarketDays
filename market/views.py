@@ -14,6 +14,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
 from django.db.models import Max
 from django.http import JsonResponse
+import json
 
 # Create your views here.
 def users(request):
@@ -379,7 +380,32 @@ def show_notifications(request, username):
 def makeoffer(request):
     if request.method == 'POST':
         #now we want to go ahead and make a new Offer
-        print "POSTED DUUUDE"
+        unicode_body = json.loads(request.body.decode('utf-8')) # get the contents of the AJAX post
+        user = request.user
+        current_user = UserProfile.objects.get(user=user)
+        LHS = unicode_body['LHS']
+        RHS = unicode_body['RHS']
+        message = unicode_body['message']
+        opponentID = unicode_body['opponent_ID']
+        opponent = UserProfile.objects.get(userID__exact=opponentID)
+        # make new offer with this information
+        ID = Offer.objects.all().aggregate(Max('offerID')) # this returns a list of offerIDs
+        maxID = ID['offerID__max']
+        offer = Offer(offerID=maxID+1, fromID=current_user, toID=opponent, message=message)
+        offer.save()
+        # populate offer contents
+        for fromItem in LHS:
+            fromItem = int(fromItem)
+            thisitem = Item.objects.get(itemID__exact=fromItem)
+            content = OfferContent(callerID=current_user, calleeID=opponent, itemID=thisitem, offerID=offer)
+            content.save()
+        for toItem in RHS:
+            toItem = int(toItem)
+            thisitem = Item.objects.get(itemID__exact=int(toItem))
+            content = OfferContent(callerID=current_user, calleeID=opponent, itemID=thisitem, offerID=offer, offered=False)
+            content.save()
+
+
         return JsonResponse({})
     else:
         return None
