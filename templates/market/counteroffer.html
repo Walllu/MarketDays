@@ -80,7 +80,9 @@ Haggle view
       <p class="btn btn-primary btn-block" id="acceptOffer">Accept offer</p>
     </div>
     <div class="col-sm-3">
-      <p class="btn btn-primary btn-block" id="submitOffer">Make a counter offer</p>
+      {% if userID == offer_object.toID.userID %}
+        <p class="btn btn-primary btn-block" id="submitOffer">Make a counter offer</p>
+      {% endif %}
       <p class="btn btn-danger btn-block" id="cancelOffer">Cancel</p>
     </div>
   </div>
