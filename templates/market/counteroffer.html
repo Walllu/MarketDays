@@ -78,7 +78,9 @@ Haggle view
     </div>
     <div class="col-sm-3">
       <!-- This div is for the ACCEPT OFFER button when template is reused for countering-->
+      {% if userID == offer_object.toID.userID %}
       <p class="btn btn-primary btn-block" id="acceptOffer">Accept offer</p>
+      {% endif %}
     </div>
     <div class="col-sm-3">
       {% if userID == offer_object.toID.userID %}
