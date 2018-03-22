@@ -45,6 +45,7 @@ def populate():
 
     se_names = [ "Oedipus", "Narcissus", "Minerva" ]
 
+    # Create 3 sessions
     for i in range(3):
         details = [None, None, None]
         details[0] = se_names[i]
@@ -53,6 +54,7 @@ def populate():
         print "Adding session: " + str(i)
         add_session(i, details)
 
+    # create a user for every line in users.txt
     f = open("./population_resource/data/users.txt")
     #with f as open("./population_resource/data/users.txt"):
     i = 1
@@ -62,6 +64,7 @@ def populate():
         i += 1
     f.close()
 
+    # create an item for every line in items.txt
     f = open("./population_resource/data/items.txt")
     i = 1
     for line in f:
@@ -70,10 +73,12 @@ def populate():
         i += 1
     f.close()
 
+    # Populate each session with 11 users
     for i in range(3):
         print "Populating session: " + str(i)
         pop_session(i)
 
+    # Populate each session with 1 offer
     for sid in range(3):
         for i in range(11):
             uid1 = sid * 11 + i
@@ -99,7 +104,7 @@ def populate():
 
 
 
-
+# Create user object. Takes 3 strings.
 def add_sub_user(username, email, password):
     user = User.objects.create(username=username)
     user.email = email
@@ -108,11 +113,8 @@ def add_sub_user(username, email, password):
 
     return user
 
-
-# We'll need to implement a few more functions, I don't think we need to worry about "user permissions" when we just shove data into the database
+# Create a UserProfile. Takes an int and a list of strings
 def add_user(id, details):
-    #print "Adding user: " + str(id)
-
     '''
     details list:
         0: uname
@@ -125,7 +127,6 @@ def add_user(id, details):
         7: password
         8: date
     '''
-
     user = add_sub_user(details[0], details[3], details[7])
 
     up = UserProfile.objects.create(userID = id, user = user)
