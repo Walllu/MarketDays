@@ -17,25 +17,25 @@
 {% endblock %}
 {% block body_block %}
 <div class="row">
-	<div class="col-md-5">
+	<div class="col-sm-5">
          <div class="top-bg"></div>
     </div>
-	<div class="col-md-7">
+	<div class="col-sm-7">
 		<h1>Add an Item</h1>
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-4">
+	<div class="col-sm-4">
          <div class="top-bg"></div>
     </div>
-	<div class="col-md-8 container box">
+	<div class="col-sm-8 container box">
     <form method="post" action="." enctype="multipart/form-data">
       {% csrf_token %}
 		<label for="id_itemName">Item Name:</label>
 		<input type="text" name="itemName" id="id_itemName" class="form-control" />
 
 		<label for="id_itemDescription">Description of Item: </label>
-		<textarea id="id_itemdescription" name="itemDescription" cols="53" rows="4" style="resize: none"> </textarea>
+		<textarea id="id_itemdescription" name="itemDescription" cols="48" rows="4" style="resize: none"> </textarea>
 		<br>
 		<input type="file" name="picture" accept="image/*">
 		<br>
