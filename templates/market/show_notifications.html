@@ -7,19 +7,19 @@
 {% endblock %}
 
 {% block body_block %}
-
+	<div class="jumbotron">
 	<h1>Your Notifications</h1>
 	<div class="row">
 		<h3> Your Offers: </h3>
-		<div class="col-md-5">
+		<div>
 			{% get_your_offers userprofile_object.userID %}
 		</div>
 	</div>
 	<div class="row">
 		<h3> Request to You: </h3>
-		<div class="col-md-5">
+		<div class>
 			{% get_to_you_offers userprofile_object.userID %}
 		</div>
 	</div>
-
+</div>
 {% endblock %}

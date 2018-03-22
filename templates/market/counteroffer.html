@@ -17,6 +17,7 @@ Haggle view
         <!-- this is where their information pops up : description and interests -->
         {% if opponent %}
         <div style="float:right;">
+          <p class="text-muted"> <em>Here's who you're dealing with...</em> </p>
           <h1>{{opponent.firstName}}{{opponent.lastName}}</h1>
           <p><em>Description</em> : {{opponent.userDescription}}</p>
           <p><em>Interests</em> : {{opponent.userInterests}}</p>
@@ -30,30 +31,30 @@ Haggle view
   {% endif %}
 
 
-
-
 {% if offer_object %}
   <div id="trading-table" class="row">
     <!-- this row is for containing the trading floor -->
     <div id="LHSitems" class="col-sm-3">
       <ul id="youritems" class="ui-helper-reset ui-helper-clearfix">
+      <p class="text-muted">Your tradeable inventory!</p>
       {% get_tradable_exclude_LHS offer_object.offerID %}
       </ul>
     </div>
     <div id="LHSoffer" class="col-sm-3 panel panel-default">
       <ul id="youroffer" class="ui-helper-reset ui-helper-clearfix">
-        <p class="text-muted">Place your offers here!</p>
+        <p class="text-muted"><em>Place your offers here!</em></p>
         {% get_offer_RHS offer_object.offerID %}
       </ul>
     </div>
     <div id="RHSoffer" class="col-sm-3 panel panel-default">
       <ul id="theiroffer" class="ui-helper-reset ui-helper-clearfix">
-        <p class="text-muted">Place your offers here!</p>
+        <p class="text-muted"><em>Place your offers here!</em></p>
         {% get_offer_LHS offer_object.offerID %}
       </ul>
     </div>
     <div id="RHSitems" class="col-sm-3">
       <ul id="theiritems" class="ui-helper-reset ui-helper-clearfix">
+        <p class="text-muted">Your opponent's inventory!</p>
         {% get_tradable_exclude_RHS offer_object.offerID %}
       </ul>
     </div>
@@ -72,17 +73,20 @@ Haggle view
   <div class="row">
     <!-- this row is for containing the message box and "make offer/cancel buttons" -->
     <div class="col-sm-6 form-group">
-      <label for="message">Do you have a message to add?</label>
+      <label for="message">Here's what {{opponent.user.username}} is saying! <em>(Replace the text if you wish to make a counter offer!)</em></label>
       <textarea class="form-control" rows="3" id="offer-message">{{offer_object.message}}</textarea>
     </div>
     <div class="col-sm-3">
       <!-- This div is for the ACCEPT OFFER button when template is reused for countering-->
+      {% if userID == offer_object.toID.userID %}
+      <p class="btn btn-primary btn-block" id="acceptOffer">Accept offer</p>
+      {% endif %}
     </div>
     <div class="col-sm-3">
       {% if userID == offer_object.toID.userID %}
-        <p class="btn btn-primary" id="submitOffer">Make a counter offer</p>
+        <p class="btn btn-primary btn-block" id="submitOffer">Make a counter offer</p>
       {% endif %}
-      <p class="btn btn-danger" id="cancelOffer">Cancel</p>
+      <p class="btn btn-danger btn-block" id="cancelOffer">Cancel</p>
     </div>
   </div>
 </div>
@@ -100,8 +104,14 @@ Haggle view
 {% endif %}
 {% endif %}
 
+<div id="dialog-confirm" title="Offer sent!">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Offer successfully sent! Close to continue trading.</p>
+</div>
+
+
 <script src="/static/js/scripts/makeoffer.js"></script>
 <script type="text/javascript">
+  var offerID = "{{offer_object.offerID}}";
   var opponentID = "{{opponent.userID}}";
 </script>
 {% endblock %}

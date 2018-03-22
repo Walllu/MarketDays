@@ -173,9 +173,43 @@ $.ajaxSetup({
 
 
 
+//the following is for accepting an offer
+$("#acceptOffer").on("click", function (){
+  // we want to make an AJAX post request, sending a true signal
+  var content = {accept_offer:true, offer_ID:offerID};
+  $.ajax({
+    type:'POST',
+    contentType: "application/json",
+    url:'/market/api/acceptoffer/',
+    data: JSON.stringify(content),
+    dataType: "json",
+    /*headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },*/
+    success: function(ret) {
+      $("#dialog-confirm").dialog({
+        resizable:false,
+        height:"auto",
+        width:400,
+        modal:true,
+        buttons:{
+          Close: function(){
+            $(this).dialog("close");
+          }
+        }
+      });
+    },
+    error: function(ret) {
+      alert("failure");
+    }
+  });
+
+});
 
 
 
+// the following if for making an offer
 $("#submitOffer").on("click", function (){
   // we want to make an AJAX post request, sending the contents of the RHSoffers and LHSoffers
   function listEach(list){
@@ -191,7 +225,7 @@ $("#submitOffer").on("click", function (){
   var RHSoffers = listEach(RHSoffers); // this holds the itemIDs of the RHSoffers
   var LHSoffers = listEach(LHSoffers);// this holds the itemIDs of the LHSoffers
   //we also need to extract the text in the message box
-  
+
   var content = {LHS:LHSoffers, RHS:RHSoffers, message:offerMessage, opponent_ID:opponentID};
   //now we send the information via POST request
   $.ajax({
@@ -205,7 +239,17 @@ $("#submitOffer").on("click", function (){
       'Content-Type': 'application/json'
     },*/
     success: function(ret) {
-      //alert("success");
+      $("#dialog-confirm").dialog({
+        resizable:false,
+        height:"auto",
+        width:400,
+        modal:true,
+        buttons:{
+          Close: function(){
+            $(this).dialog("close");
+          }
+        }
+      });
     },
     error: function(ret) {
       alert("failure");
