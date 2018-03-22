@@ -407,7 +407,6 @@ def makeoffer(request):
             content = OfferContent(callerID=current_user, calleeID=opponent, itemID=thisitem, offerID=offer, offered=False)
             content.save()
 
-
         return JsonResponse({})
     else:
         return None
@@ -460,4 +459,29 @@ def counter_offer(request, offerID):
 
 @login_required
 def accept_offer(request):
-    pass
+    if request.method == 'POST':
+        # here we want to check if accept_offer is true
+        unicode_body = json.loads(request.body.decode('utf-8')) # get the contents of the AJAX post
+        accept = unicode_body['accept_offer']
+        offerID = unicode_body['offer_ID']
+        if accept:
+            try:
+                offer = Offer.objects.get(offerID__exact=offerID)
+                yourID = offer.toID
+                oppID = offer.fromID
+                # get the items from the offer
+                youGetID = OfferContent.objects.filter(offerID__exact=offer).exclude(offered=True).values('itemID')
+                youGiveID = OfferContent.objects.filter(offerID__exact=offer).exclude(offered=False).values('itemID')
+                # for each item in youGetID/youGiveID, change claimantID to be the other
+                youGetItems = [Item.objects.get(itemID__exact=ID['itemID']) for ID in youGetID] # list of items you get
+                youGiveItems = [Item.objects.get(itemID__exact=ID['itemID']) for ID in youGiveID]
+                for item in youGetItems:
+                    item.claimantID = oppID
+                    item.save()
+                for item in youGiveItems:
+                    item.claimantID = yourID
+                    item.save()
+                return JsonResponse({})
+            except Offer.DoesNotExist:
+                # the offer does not exist, so redirect to current_user's notifications page
+                return HttpResponseRedirect(reverse('notifications', current_user.userID))
