@@ -5,11 +5,41 @@
     Add Item
 {% endblock %}
 
+{% block style_block %}
+.box{
+		background-color: #E6E6E6;
+		width: 400px;
+		height: 280px;
+		padding: 10px;
+		border: 5px solid gray;
+		margin: 25px;
+	}
+{% endblock %}
 {% block body_block %}
-    <h1>Add an Item</h1>
+<div class="row">
+	<div class="col-md-5">
+         <div class="top-bg"></div>
+    </div>
+	<div class="col-md-7">
+		<h1>Add an Item</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+         <div class="top-bg"></div>
+    </div>
+	<div class="col-md-8 container box">
     <form method="post" action="." enctype="multipart/form-data">
       {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="Submit" />
+		<label for="id_itemName">Item Name:</label>
+		<input type="text" name="itemName" id="id_itemName" class="form-control" />
+
+		<label for="id_itemDescription">Description of Item: </label>
+		<textarea id="id_itemdescription" name="itemDescription" cols="53" rows="4" style="resize: none"></textarea>
+		<br>
+		<br>
+		<button class="btn btn-success" type="submit" value="Add it" />Add item</button>
     </form>
+	</div>
+</div>
 {% endblock %}
