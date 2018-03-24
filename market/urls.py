@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^delete_offer/(?P<offerID>[\w\-]+)/$', views.delete_offer, name='delete_offer'),
     url(r'^viewoffer/(?P<offerID>[\w\-]+)/$', views.counter_offer, name='counter_offer'),
     url(r'^api/acceptoffer/$', views.accept_offer, name="accept_offer"),
+    url(r'^collect_item/(?P<itemID>[\w\-]+)/$', views.collect_item, name='collect_item'),
     ]

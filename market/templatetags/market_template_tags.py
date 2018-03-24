@@ -1,5 +1,7 @@
 from django import template
 from market.models import UserProfile, Session, Offer, Item, SessionParticipants, OfferContent
+import datetime, pytz
+
 
 #Walter 26.2.2018
 # This is just something here in case we want to use templatetags later on
@@ -16,7 +18,17 @@ def get_session_list():
 # tradable items, called depending on context
 @register.inclusion_tag('market/items.html')
 def get_your_items(yourID):  #this method should return all tradable and nontradable Items
-    return {'yourtradable': Item.objects.filter(claimantID__exact=yourID), 'yournontradable': Item.objects.filter(possessorID__exact=yourID).exclude(claimantID__exact=yourID)}
+
+    #next 5 lines are there to figure out if the session already expired, because if so then users can start colleting their items
+    sessionParticipant = SessionParticipants.objects.get(participantID=yourID)
+    sessionEnd = sessionParticipant.sessionID.sessionEnd
+    now = datetime.datetime.now()
+    now = now.replace(tzinfo=pytz.UTC)
+    sessionFinished = now > sessionEnd
+
+    return {'yourtradable': Item.objects.filter(claimantID__exact=yourID),
+     'yournontradable': Item.objects.filter(possessorID__exact=yourID).exclude(claimantID__exact=yourID),
+     'sessionFinished':sessionFinished}
 
 @register.inclusion_tag('market/offer_items.html')  # This method returns all tradable items of other user
 def get_tradable_items(uID):

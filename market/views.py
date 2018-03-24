@@ -489,3 +489,19 @@ def accept_offer(request):
             except Offer.DoesNotExist:
                 # the offer does not exist, so redirect to current_user's notifications page
                 return HttpResponseRedirect(reverse('notifications', current_user.userID))
+
+
+@login_required
+def collect_item(request, itemID):
+    item = Item.objects.get(itemID__exact=int(itemID))
+    item.possessorID = item.claimantID
+    item.save()
+    return HttpResponse("Hope you gonna enjoy your new item just like you do MarketDays :P")
+    '''
+    item = Item.objects.get(itemID__exact=int(itemID))
+    if item.possessorID.slug == item.claimantID.slug:
+        Item.objects.filter(itemID__exact=itemID).delete()
+        return redirect('/market/viewuser/'+item.possessorID.slug)
+    else:
+        return redirect('/market/viewuser/'+item.possessorID.slug)
+    '''

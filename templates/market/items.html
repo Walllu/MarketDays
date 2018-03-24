@@ -14,6 +14,11 @@
         {% else %}
         <strong><a title="Date Posted : {{item.itemDatePosted}}" href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary btn-sm">Make Offer</a></strong>
         {% endif %}
+				{% if sessionFinished and userprofile_object.userID != yourtradable.possessorID.userID %}
+				<strong><a href="{% url 'collect_item' item.itemID %}" class="btn btn-sm btn-danger">Collect Item</a></strong>
+				{% else %}
+				<strong><a href="{% url 'collect_item' item.itemID %}" class="btn btn-sm btn-danger">yo muma</a></strong>
+				{% endif %}
       </div>
     </div>
 		{% endfor %}
