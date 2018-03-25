@@ -15,32 +15,17 @@ class UserForm(forms.ModelForm):
 
 #this is used at the account edit stage, when you've logged in and edit your account
 class UserProfileForm(forms.ModelForm):
-    #password = forms.CharField(widget=forms.PasswordInput())
-    #userName = forms.CharField(max_length=15, help_text="first name")
-    #firstName = forms.CharField(max_length=20, help_text="first name")
-    #lastName = forms.CharField(max_length=20, help_text="last name")
-    # I pulled the phonenumber line from StackOverflow
-    #userPhoneNumber = forms.CharField(max_length=15)
-    #userDescription = forms.CharField(max_length=512, help_text="Please enter description...")
-    #userInterests = forms.CharField(max_length=512, help_text="What are you interested in?")
-    #userStartDate = forms.CharField(max_length=15)#models.DateField(_("Date"), default=datetime.date.today) to be sorted later
     class Meta:
         model = UserProfile
-        #exclude = ('userName','password')#'userName','email','password'
         fields = ('firstName','lastName','userPhoneNumber','userDescription','userInterests', 'picture')
 
+#this for is used when adding items
 class ItemForm(forms.ModelForm):
-    print "lol"
-    # itemID = Get next ID
-    # possessorID = get user ID
-    # claimantID = get user ID
-    # itemName = set by user
-    # itemDescription = set by user
-    # itemDatePosted = get date
-    # slug = itemName + itemID
     class Meta:
         model = Item
         fields = ('itemName', 'itemDescription', 'picture')
 
+'''
 class OfferForm(forms.ModelForm):
     pass
+'''
