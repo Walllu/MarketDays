@@ -476,6 +476,7 @@ def accept_offer(request):
                 return HttpResponseRedirect(reverse('notifications', current_user.userID))
 
 
+#when session is done user can let the app now that he got physically his item
 @login_required
 def collect_item(request, itemID):
     item = Item.objects.get(itemID__exact=int(itemID))
