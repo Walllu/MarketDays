@@ -14,7 +14,6 @@
         {% else %}
         <strong><a title="Date Posted : {{item.itemDatePosted}}" href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary btn-sm">Make Offer</a></strong>
         {% endif %}
-				{{yourID	}} lolo {{item.possessorID.userID}} jhoho {{sessionFinished}}
 				{% if sessionFinished and yourID != item.possessorID.userID %}
 				<strong><a href="{% url 'collect_item' item.itemID %}" class="btn btn-sm btn-danger">Collect Item</a></strong>
 				{% else %}
