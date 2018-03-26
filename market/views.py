@@ -17,15 +17,28 @@ from django.http import JsonResponse
 import json
 
 # Create your views here.
-#used for testing databas 23.3.18 Pawel
-'''
-def users(request):
-    user_list = UserProfile.objects.all()[:5]
-    context_dict = {'users' : user_list }
+################ helper methods #########################
+# this method returns the UserProfile of whoever sent in the request
+# to be called only in methods restricted to login_required
+def get_current_user(req):
+    user = req.user # this is the User instance
+    return UserProfile.objects.get(user=user) # this is the UserProfile instance, return to caller
 
-    return render(request, 'market/users.html', context_dict)
-'''
+# this method finds all offers involving the item
+# to be called when an offer transacting these items is accepted, effectively deleting offers that are now null
+def delete_all_offers_containing(item): # accepts an Item object
+    assoc_offerIDs = OfferContent.objects.filter(itemID=item) # get all the offerIDs involving the item in questio
+    for ID in assoc_offerIDs: # delete every offer, cascading down to offer contents as well
+        print str(ID.offerID) + " to be deleted"
+        try:
+            offer = Offer.objects.get(offerID__exact=ID.offerID.offerID)
+            offer.delete()
+            print "item deleted"
+        except Offer.DoesNotExist:
+            print "not deleted, already does not exist"
+            continue # the point is we're trying to delete these things, if it doesn't exist already then less work for us!
 
+########################################################3
 # returns the about page
 def about(request):
     return render(request, 'market/about.html', {})
@@ -130,8 +143,7 @@ def sessionlist(request):
 def join_session(request, session_slug=None):
     # if there's a slug parameter, then we want to add SessionParticipant, and increment participants in Session, and redirect to home
     # should check if you are already part of a session - if so, do not procede
-    user = request.user # this is the User instance
-    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+    current_user = get_current_user(request)
     session_to_join = Session.objects.get(slug__exact=session_slug)
     if not session_slug:
         return HttpResponseRedirect(reverse('sessionlist'))
@@ -167,7 +179,6 @@ def register_item(request, username):
 
         #if the two forms are valid
         if item_form.is_valid():
-            print "hello"
 
             user = UserProfile.objects.get(userName=username)
             item = item_form.save(commit=False)
@@ -205,8 +216,7 @@ def show_market_session(request, session_slug=None):
         session = Session.objects.get(slug=session_slug)
         context_dict['session_object'] = session
         # check if current user is part of the session
-        user = request.user # this is the User instance
-        current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+        current_user = get_current_user(request)
         context_dict['current_user_object'] = current_user
         if not SessionParticipants.objects.filter(sessionID=session, participantID=current_user).exists():
             print "This user is not part of this session - YOU SHALL NOT PASS!!!"
@@ -219,14 +229,7 @@ def show_market_session(request, session_slug=None):
         if (not session==None) and (session.participants>0): # if session exists and it has more than 0 participants, then find all users within session
             # if session exists with more than 0 participants, then it is assumed that at least one SessionParticipants object exists
             users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
-            print " session exists and have participants"
-            s = SessionParticipants.objects.all()
-            print s.values()
-            users_in_session = SessionParticipants.objects.filter(sessionID__exact=session.sessionID)
 
-
-            print "session id recieved"
-            print users_in_session
             context_dict['users_in_session'] = users_in_session
         else:
             context_dict['users_in_session'] = None
@@ -244,8 +247,7 @@ def begin_haggle(request, item_id=None):
     # open a new haggle view for the item of "item_id"
     # make an OfferForm?
     # get the current user's items
-    user = request.user # this is the User instance
-    current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
+    current_user = get_current_user(request)
     context_dict['current_user_object'] = current_user
     itemcount = Item.objects.filter(claimantID__exact=current_user).count()
     if itemcount == 0:
@@ -362,8 +364,7 @@ def makeoffer(request):
     if request.method == 'POST':
         #now we want to go ahead and make a new Offer
         unicode_body = json.loads(request.body.decode('utf-8')) # get the contents of the AJAX post
-        user = request.user
-        current_user = UserProfile.objects.get(user=user)
+        current_user = get_current_user(request)
         LHS = unicode_body['LHS']
         RHS = unicode_body['RHS']
         message = unicode_body['message']
@@ -394,8 +395,11 @@ def makeoffer(request):
         return None
 
 
+# this method allows an item to be deleted
+# should only be possible if the current user owns physially and by claim
 @login_required
 def delete_item(request, itemID):
+    current_user = get_current_user(request)
     item = Item.objects.get(itemID__exact=int(itemID))
     if item.possessorID.slug == item.claimantID.slug:
         Item.objects.filter(itemID__exact=itemID).delete()
@@ -419,9 +423,8 @@ def delete_offer(request, offerID):
 def counter_offer(request, offerID):
     # this view should render the counter offer template
     context_dict = {}
-    user = request.user
-    user = UserProfile.objects.get(user=user)
-    context_dict['userID']=user.userID
+    current_user = get_current_user(request)
+    context_dict['userID'] = current_user.userID
     try:
         offer = Offer.objects.get(offerID__exact=offerID)
         current_user = offer.toID
@@ -435,8 +438,6 @@ def counter_offer(request, offerID):
         context_dict['current_user_object'] = None
 
     #include current user details
-    #user = request.user # this is the User instance
-    #current_user = UserProfile.objects.get(user__exact=user) # this is the UserProfile instance, with all the juicy parts
     itemcount = Item.objects.filter(claimantID__exact=current_user).count()
     if itemcount == 0:
         context_dict['current_user_item_count'] = None
@@ -462,14 +463,17 @@ def accept_offer(request):
                 youGetID = OfferContent.objects.filter(offerID__exact=offer).exclude(offered=True).values('itemID')
                 youGiveID = OfferContent.objects.filter(offerID__exact=offer).exclude(offered=False).values('itemID')
                 # for each item in youGetID/youGiveID, change claimantID to be the other
+                # and delete all offers containing these items - a process which gets faster with each item (or should)
                 youGetItems = [Item.objects.get(itemID__exact=ID['itemID']) for ID in youGetID] # list of items you get
                 youGiveItems = [Item.objects.get(itemID__exact=ID['itemID']) for ID in youGiveID]
                 for item in youGetItems:
                     item.claimantID = oppID
                     item.save()
+                    delete_all_offers_containing(item) # delete all the offers associated with this item
                 for item in youGiveItems:
                     item.claimantID = yourID
                     item.save()
+                    delete_all_offers_containing(item) # delete all offers associated with this item
                 return JsonResponse({})
             except Offer.DoesNotExist:
                 # the offer does not exist, so redirect to current_user's notifications page
@@ -480,7 +484,7 @@ def accept_offer(request):
 @login_required
 def collect_item(request, itemID):
     item = Item.objects.get(itemID__exact=int(itemID))
-    item.possessorID = item.claimantID
+    item.possessorID = item.claimantID # change physical ownership of an item
     item.save()
     context_dict = {}
     userprof = item.possessorID
