@@ -17,17 +17,19 @@ def get_session_list():
 # tradable items, called depending on context
 @register.inclusion_tag('market/items.html')
 def get_your_items(yourID):  #this method should return all tradable and nontradable Items
-
     #next 5 lines are there to figure out if the session already expired, because if so then users can start colleting their items
-    sessionParticipant = SessionParticipants.objects.get(participantID=yourID)
-    sessionEnd = sessionParticipant.sessionID.sessionEnd
-    now = datetime.datetime.now()
-    now = now.replace(tzinfo=pytz.UTC)
-    sessionFinished = now > sessionEnd
+    context_dict = {'yourtradable': Item.objects.filter(claimantID__exact=yourID),'yournontradable': Item.objects.filter(possessorID__exact=yourID).exclude(claimantID__exact=yourID),'yourID':yourID}
+    try:
+        sessionParticipant = SessionParticipants.objects.get(participantID=yourID)
+        sessionEnd = sessionParticipant.sessionID.sessionEnd
+        now = datetime.datetime.now()
+        now = now.replace(tzinfo=pytz.UTC)
+        sessionFinished = now > sessionEnd
+        context_dict['sessionFinished'] = sessionFinished
+    except SessionParticipants.DoesNotExist:
+        context_dict['sessionFinished'] = None # this line indicates that session participant does not exist
 
-    return {'yourtradable': Item.objects.filter(claimantID__exact=yourID),
-     'yournontradable': Item.objects.filter(possessorID__exact=yourID).exclude(claimantID__exact=yourID),
-     'sessionFinished':sessionFinished, 'yourID':yourID}
+    return context_dict
 
 
 @register.inclusion_tag('market/offer_items.html')  # This method returns all tradable items of other user

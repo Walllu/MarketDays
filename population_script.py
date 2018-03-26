@@ -11,7 +11,7 @@ from PIL import Image
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MarketDays.settings')
 base_dir = os.path.abspath(__file__)  # get current directory
-data_path = base_dir[:-12] + "/population_resource/data/"
+data_path = base_dir[:-21] + "/population_resource/data/"
 data_path = data_path.replace("\\", "/")
 
 import django
@@ -95,7 +95,7 @@ def populate():
                         it2 = Item.objects.filter(claimantID=uid2).first()
                     except Item.DoesNotExist:
                         it2 = None
-                    
+
                     if it2 != None:
                         print "Populating offer: " + str(uid1) + " | " + str(uid2)
                         add_offer(it1, it2, uid1, uid2)
@@ -159,7 +159,7 @@ def add_item(id, details):
     it.itemName = details[0]
     it.itemDescription = details[3]
     it.itemDatePosted = datetime.now()
-    
+
     item_pic = data_path + "item_pictures/"
     it.picture.save(str(id) + ".jpg", open(item_pic + str(id) + ".jpg", "rb"))
 
@@ -186,7 +186,7 @@ def pop_session(id):
         up = UserProfile.objects.get(userID=id*11 + i + 1)
         add_session_participant(se, up)
         se.participants = int(se.participants) + 1
-    
+
     se.save()
     return se
 
