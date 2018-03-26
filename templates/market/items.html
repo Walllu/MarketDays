@@ -14,10 +14,10 @@
         {% else %}
         <strong><a title="Date Posted : {{item.itemDatePosted}}" href="{% url 'begin_haggle' item.itemID %}" class="btn btn-primary btn-sm">Make Offer</a></strong>
         {% endif %}
-				{% if sessionFinished and userprofile_object.userID != yourtradable.possessorID.userID %}
+				{% if sessionFinished and yourID != item.possessorID.userID %}
 				<strong><a href="{% url 'collect_item' item.itemID %}" class="btn btn-sm btn-danger">Collect Item</a></strong>
 				{% else %}
-				<strong><a href="{% url 'collect_item' item.itemID %}" class="btn btn-sm btn-danger">yo muma</a></strong>
+				<strong><a href="#" class="btn btn-sm btn-danger">You have collected this item</a></strong>
 				{% endif %}
       </div>
     </div>

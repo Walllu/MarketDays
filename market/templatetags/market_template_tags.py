@@ -8,7 +8,6 @@ import datetime, pytz
 
 register = template.Library()
 
-
 # this is for the sessions list template
 @register.inclusion_tag('market/sesh.html')
 def get_session_list():
@@ -28,11 +27,13 @@ def get_your_items(yourID):  #this method should return all tradable and nontrad
 
     return {'yourtradable': Item.objects.filter(claimantID__exact=yourID),
      'yournontradable': Item.objects.filter(possessorID__exact=yourID).exclude(claimantID__exact=yourID),
-     'sessionFinished':sessionFinished}
+     'sessionFinished':sessionFinished, 'yourID':yourID}
+
 
 @register.inclusion_tag('market/offer_items.html')  # This method returns all tradable items of other user
 def get_tradable_items(uID):
     return {'tradable': Item.objects.filter(claimantID__exact=uID)}
+
 
 @register.inclusion_tag('market/offer_items.html')
 def get_offer_LHS(offerID):
@@ -45,6 +46,7 @@ def get_offer_LHS(offerID):
         items.append(Item.objects.get(itemID__exact=realID))
     return {'LHSitems':items}
 
+
 @register.inclusion_tag('market/offer_items.html')
 def get_offer_RHS(offerID):
     # this should return the caller items based on offerID
@@ -55,6 +57,7 @@ def get_offer_RHS(offerID):
         realID = id['itemID']
         items.append(Item.objects.get(itemID__exact=realID))
     return {'RHSitems':items}
+
 
 @register.inclusion_tag('market/offer_items.html')
 def get_tradable_exclude_LHS(offerID):
@@ -77,6 +80,7 @@ def get_tradable_exclude_LHS(offerID):
         else:
             tradable_exclude_LHS.append(item)
     return {'LHSitems_sans':tradable_exclude_LHS}
+
 
 @register.inclusion_tag('market/offer_items.html')
 def get_tradable_exclude_RHS(offerID):
@@ -101,12 +105,6 @@ def get_tradable_exclude_RHS(offerID):
     return {'RHSitems_sans':tradable_exclude_RHS}
 
 
-"""
-@register.inclusion_tag('market/items.html')
-def get_items_by_ownership(userID):
-    return {}
-"""
-
 # this one is for when you're in a session - it produces the list of all items in session
 @register.inclusion_tag('market/items.html')
 def get_all_items(sessionID):
@@ -124,12 +122,12 @@ def get_all_items(sessionID):
             uitems = Item.objects.filter(possessorID=uid) # a QuerySet containing Item objects
             for item in uitems:
                 session_items.append(item)
-    print session_items
     return {'sessionitems': session_items}
     # NOTE: I think it should be fine passing a list - the important thing is that it's an iterable
 
 
 #this to template tags below are to get all the offers user is involved in
+#the one right beleow is returning offers user has made
 @register.inclusion_tag('market/offer_snip.html')
 def get_your_offers(yourID):
     allOffers = Offer.objects.filter(fromID__exact=yourID).values('offerID').values()
@@ -142,13 +140,12 @@ def get_your_offers(yourID):
     return {'yourOffers':allOffersParsed}
 
 
+#the one below returns offers addresed to a user
 @register.inclusion_tag('market/offer_snip.html')
-def get_to_you_offers(yourID):  #this method should return all tradable and nontradable Items
+def get_to_you_offers(yourID):
     allOffers = Offer.objects.filter(toID__exact=yourID).values('offerID').values()
-    #sende
     allOffersParsed = []
     for offer in allOffers:
-        #llOffersParsed += [offer]
         senderID = offer['fromID_id']
         sender = UserProfile.objects.get(userID__exact=int(senderID))
         offer['fromID_id']=sender.user.username

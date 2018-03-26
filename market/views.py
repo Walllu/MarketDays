@@ -8,7 +8,7 @@ from models import User
 from django.db.models import F
 from market.models import UserProfile, Item, Session, Offer, SessionParticipants, OfferContent
 from django.contrib.auth.decorators import login_required
-from market.forms import UserForm, UserProfileForm, ItemForm, OfferForm
+from market.forms import UserForm, UserProfileForm, ItemForm
 import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
@@ -17,17 +17,20 @@ from django.http import JsonResponse
 import json
 
 # Create your views here.
+#used for testing databas 23.3.18 Pawel
+'''
 def users(request):
     user_list = UserProfile.objects.all()[:5]
     context_dict = {'users' : user_list }
 
     return render(request, 'market/users.html', context_dict)
-
+'''
 
 # added this to pass a test I wrote - up to someone else whether we keep it or not
 def about(request):
     pass
 
+#view for handling logging in
 def user_login(request):
     if request.method == 'POST':
         # use request.Post.get('<variable>') instead of request.POST['<variable>'] because the first returns
@@ -35,7 +38,6 @@ def user_login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         #passwordhash = make_password(password)
-
 
         user = authenticate(username=username, password=password)
         if user:
@@ -56,31 +58,24 @@ def user_login(request):
         #No context variables hence the empty dictionary
         return render(request, 'market/login.html', {})
 
+
+#view that handles registering
 def register(request):
     # a boolean to keep track of whether or not registration worked
-    print "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
     registered = False
     if request.method == 'POST':
-        # user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
 
         #if the two forms are valid
         if profile_form.is_valid():
             print "hello"
-            # user = user_form.save()
-            #hash the password with set_password method
-
-            # user.save()
-
             profile = profile_form.save(commit=False)
-            #profile.password = make_password(profile.password)
             profile.password = make_password(profile.password)
 
             id = UserProfile.objects.all().aggregate(Max('userID'))
             num = id['userID__max']
 
             profile.userID = num + 1
-            #profile.user = user
             profile.userStartDate = datetime.date.today()
 
             profile.save()
@@ -99,14 +94,7 @@ def register(request):
 
 # could we please change this view to do something meaningful? should probably present user login here yeah?
 def index(request):
-    #request.session.set_test_cookie()
-    #category_list = Category.objects.order_by('-likes')[:5]
-    #pages_list = Page.objects.order_by('-views')[:5]
-    #context_dict = {}#{'categories': category_list, 'pages': pages_list}
-
-    #visitor_cookie_handler(request)
-    #context_dict['visits'] = request.session['visits']
-    context_dict = {'boldmessage': "yoyoyo"}
+    context_dict = {'boldmessage': "index view demo"}
     return render(request, 'market/index.html', context = context_dict)
 
 
@@ -115,15 +103,13 @@ def index(request):
 # Walter - 10.3.18
 
 
-# This one is for VIEWING
+# This one is for VIEWING user profiles
 def view_user(request, user_name_slug=None):
     context_dict = {}
     try: # try to find the user in the db
         userprof = UserProfile.objects.get(slug=user_name_slug.lower())
-        print "after user"
         context_dict['userprofile_object'] = userprof
     except UserProfile.DoesNotExist:
-        print "lol2"
         context_dict['userprofile_object'] = None
     # context dictionary for the userProfile template now contains information regarding the user to whom it belongs
     return render(request, 'market/viewuser.html', context_dict)
@@ -138,6 +124,7 @@ def view_user(request, user_name_slug=None):
 def sessionlist(request):
     context_dict = {}
     return render(request, 'market/sessionlist.html', context_dict)
+
 
 @login_required
 def join_session(request, session_slug=None):
@@ -168,7 +155,6 @@ def join_session(request, session_slug=None):
             return HttpResponseRedirect(reverse('view_market', kwargs={'session_slug':session_slug}))
         else:
             return HttpResponseRedirect(reverse('sessionlist'))
-
 
 
 @login_required
@@ -251,9 +237,6 @@ def show_market_session(request, session_slug=None):
 
     return render(request, 'market/show_session.html', context_dict)
 
-@login_required
-def restricted(request):
-    return HttpResponse("thx for logging in")
 
 @login_required
 def begin_haggle(request, item_id=None):
@@ -276,6 +259,8 @@ def begin_haggle(request, item_id=None):
     context_dict['opponent'] = opponent
     return render(request, 'market/haggle.html', context_dict)
 
+
+#view for creating user profile after creating a user (second step in django registration redux)
 @login_required
 def register_profile(request):
     form = UserProfileForm()
@@ -325,6 +310,7 @@ def profile(request, username):
     return render(request, 'market/userProfile.html', {'userprofile_object':userprofile,'selecteduser':user,'form':form})
 
 
+#adding items
 @login_required
 def add_item(request, username):
     form = ItemForm()
@@ -358,21 +344,17 @@ def add_item(request, username):
     return render(request, 'market/add_item.html', context_dict)
 
 
+#view for displaying offers user is involved in
 @login_required
 def show_notifications(request, username):
     context_dict={}
     try: # try to find the user in the db
         user = User.objects.get(username=username)
         userprof = UserProfile.objects.get(user=user)
-        print "userProf found"
         context_dict['userprofile_object'] = userprof
     except UserProfile.DoesNotExist:
-        print "lol2"
         context_dict['userprofile_object'] = None
     return render(request, 'market/show_notifications.html', context = context_dict)
-
-
-
 
 
 @login_required
@@ -411,6 +393,7 @@ def makeoffer(request):
     else:
         return None
 
+
 @login_required
 def delete_item(request, itemID):
     item = Item.objects.get(itemID__exact=int(itemID))
@@ -430,6 +413,7 @@ def delete_offer(request, offerID):
         return redirect('/market/notifications/'+offer.fromID.user.username)
     except:
         return redirect('/market/notifications/'+offer.toID.user.username)
+
 
 @login_required
 def counter_offer(request, offerID):
@@ -461,6 +445,7 @@ def counter_offer(request, offerID):
 
     return render(request, 'market/counteroffer.html', context_dict)
 
+
 @login_required
 def accept_offer(request):
     if request.method == 'POST':
@@ -491,17 +476,15 @@ def accept_offer(request):
                 return HttpResponseRedirect(reverse('notifications', current_user.userID))
 
 
+#when session is done user can let the app now that he got physically his item
 @login_required
 def collect_item(request, itemID):
     item = Item.objects.get(itemID__exact=int(itemID))
     item.possessorID = item.claimantID
     item.save()
-    return HttpResponse("Hope you gonna enjoy your new item just like you do MarketDays :P")
-    '''
-    item = Item.objects.get(itemID__exact=int(itemID))
-    if item.possessorID.slug == item.claimantID.slug:
-        Item.objects.filter(itemID__exact=itemID).delete()
-        return redirect('/market/viewuser/'+item.possessorID.slug)
-    else:
-        return redirect('/market/viewuser/'+item.possessorID.slug)
-    '''
+    context_dict = {}
+    userprof = item.possessorID
+    context_dict['userprofile_object'] = userprof
+
+    #return HttpResponse("Hope you gonna enjoy your new item just like you do MarketDays :P")
+    return render(request, 'market/viewuser.html', context_dict)
