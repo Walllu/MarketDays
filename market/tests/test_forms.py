@@ -19,4 +19,3 @@ class FormTests(TestCase):
         except:
             print "Something else went wrong in FormTests"
 
-#    def test_does_login_form_exist(self):

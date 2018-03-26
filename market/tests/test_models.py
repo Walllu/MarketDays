@@ -10,11 +10,11 @@ class UserProfileTests(TestCase):
     def setUpTestData(cls):
         print "UserProfile Model tests commencing..."
         try:
-            from populate import populate
+            from population_script import populate
             print "populating test database.........."
             populate()
         except ImportError:
-            print "The module populate.py does not exist"
+            print "The module population_script.py does not exist"
         except NameError:
             print "The function populate() does not exist, or is incorrect"
         except:
@@ -57,11 +57,11 @@ class OfferTests(TestCase):
     def setUpTestData(cls):
         print "Offer Model tests commencing..."
         try:
-            from populate import populate
+            from population_script import populate
             print "populating test database.........."
             populate()
         except ImportError:
-            print "The module populate.py does not exist"
+            print "The module population_script.py does not exist"
         except NameError:
             print "The function populate() does not exist, or is incorrect"
         except:
@@ -103,11 +103,11 @@ class SessionTests(TestCase):
     def setUpTestData(cls):
         print "Session Model tests commencing..."
         try:
-            from populate import populate
+            from population_script import populate
             print "populating test database.........."
             populate()
         except ImportError:
-            print "The module populate.py does not exist"
+            print "The module population_script.py does not exist"
         except NameError:
             print "The function populate() does not exist, or is incorrect"
         except:
@@ -145,11 +145,11 @@ class SessionTests(TestCase):
 class ItemTests(TestCase):
     def setUp(self):
         try:
-            from populate import populate
+            from population_script import populate
             print "populating test database.........."
             populate()
         except ImportError:
-            print "The module populate.py does not exist"
+            print "The module population_script.py does not exist"
         except NameError:
             print "The function populate() does not exist, or is incorrect"
         except:

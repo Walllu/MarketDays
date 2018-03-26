@@ -3,15 +3,6 @@
 
 
 {% block title_block %}{{ selecteduser.username }} UserProfile{% endblock %}
-{% block style_block %}
-.box {
-		background-color: #E6E6E6;
-		width: 500px;
-		padding: 10px;
-		border: 5px solid gray;
-		margin: 0;
-	}
-{% endblock %}
 
 {% block body_block %}
 
@@ -22,7 +13,7 @@
 	<div class="col-md-4">
          <div class="top-bg"></div>
     </div>
-	<div id="edit_profile" class="container col-md-9 box">
+	<div id="edit_profile" class="container col-md-9 edit-prof-box">
 		<form method="post" action=".">
 		{% csrf_token %}
 		<p class="required"><label class="required" for="id_firstname" >Firstname:</label>
