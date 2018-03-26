@@ -21,7 +21,10 @@
   float:right;
   background-color:#d1fff6;
 }
-
+#inventory-card:hover {
+  box-shadow: 0 15px 16px 0 rgba(0,0,0,0.6);
+  background-color:black;
+}
 #LHSitems{
   background-color:#c6d3d3;
   height: 500px;

@@ -86,7 +86,7 @@ Haggle view
       {% if userID == offer_object.toID.userID %}
         <p class="btn btn-primary btn-block" id="submitOffer">Make a counter offer</p>
       {% endif %}
-      <p class="btn btn-danger btn-block" id="cancelOffer">Cancel</p>
+      <a href="{% url 'notifications' current_user_object.user.username %}"><p class="btn btn-danger btn-block" id="cancelOffer">Cancel</p></a>
     </div>
   </div>
 </div>

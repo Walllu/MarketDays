@@ -11,17 +11,22 @@
 		<div class="col-md-3">
 			<img class="img-thumbnail" src="{{userprofile_object.picture.url}}">
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-4">
 			<h1><em>{{ userprofile_object.user.username }}</em></h1>
 			{% if userprofile_object.user.username == user.username %}
 				<form method="get" action="{% url 'profile' user.username %}">
-				<button type="submit">Edit</button>
+				<button type="submit" class="btn btn-danger btn-block"><h2>Edit</h2></button>
+				</form>
+				<form method="get" action="{% url 'add_item' user.username %}">
+					<button type="submit" class="btn btn-primary btn-block"><h2>Add Item</h2></button>
 				</form>
 			{% endif %}
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-md-4">
+		</div>
+	</div>
+	<div class="row panel panel-primary">
+		<div class="col-md-4 panel panel-default">
 			<dt><h2>First Name:</h2></dt>
 			<dd>{{userprofile_object.firstName}}</dd>
 			<dt><h2>Last Name:</h2></dt>
@@ -41,26 +46,18 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="panel panel-primary">
+		<div class="col-sm-12 panel-heading">
 			<h1>{{userprofile_object.user.username}}'s <em>Inventory</em> </h1>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-        {% get_your_items userprofile_object.userID %}
+		<div class="row">
+	      {% get_your_items userprofile_object.userID %}
 		</div>
-    </div>
-    
+	</div>
+	</div>
 		{% else %}
 		<strong> This person doesn't exist! Should they? </strong>
 		{% endif %}
 
-    {% if userprofile_object.user.username == user.username %}
-		
-		<form method="get" action="{% url 'add_item' user.username %}">
-	    <button type="submit">Add Item</button>
-		</form>
-
-    {% endif %}
 	</div>
 {% endblock %}
