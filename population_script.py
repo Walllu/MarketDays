@@ -51,7 +51,7 @@ def populate():
         details[0] = se_names[i]
         details[1] = i * 4 + 17
         details[2] = i * 3 + 13
-        print "Adding session: " + str(i)
+        #print "Adding session: " + str(i)
         add_session(i, details)
 
     # create a user for every line in users.txt
@@ -75,14 +75,14 @@ def populate():
 
     # Populate each session with 11 users
     for i in range(3):
-        print "Populating session: " + str(i)
+        #print "Populating session: " + str(i)
         pop_session(i)
 
     # Populate each session with 1 offer
     for sid in range(3):
         for i in range(11):
             uid1 = sid * 11 + i
-            print "Populating offer: " + str(uid1)
+            #print "Populating offer: " + str(uid1)
             try:
                 it1 = Item.objects.filter(claimantID=uid1).first()
             except Item.DoesNotExist:
@@ -97,7 +97,7 @@ def populate():
                         it2 = None
 
                     if it2 != None:
-                        print "Populating offer: " + str(uid1) + " | " + str(uid2)
+                        #print "Populating offer: " + str(uid1) + " | " + str(uid2)
                         add_offer(it1, it2, uid1, uid2)
                         break
                 break
@@ -140,7 +140,7 @@ def add_user(id, details):
     up.userStartDate = datetime.now()
 
     profile_pic = data_path + "profile_pictures/"
-    print profile_pic + str(id) + ".jpg"
+    #print profile_pic + str(id) + ".jpg"
     up.picture.save(str(id) + ".jpg", open(profile_pic + str(id) + ".jpg", "rb"), save=True)
 
     return up

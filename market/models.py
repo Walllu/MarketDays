@@ -11,11 +11,11 @@ from django.utils import timezone
 # Create your models here.
 
 def user_profile_path(self, userID):
-    print "userID: " + str(userID)
+    #print "userID: " + str(userID)
     return "profile_pictures/" + str(userID)
 
 def item_picture_path(self, itemID):
-    print "itemID: " + str(itemID)
+    #print "itemID: " + str(itemID)
     return "item_pictures/" + str(itemID)
 
 class UserProfile(models.Model):

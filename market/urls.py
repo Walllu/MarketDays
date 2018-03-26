@@ -7,6 +7,7 @@ urlpatterns = [
     #assuming we want to name the initial portal to the app "index"
     #url(r'^users/', views.users, name = 'users'), not needed anymore used for testing the database ~Pawel 23.03.2018
     url(r'^sessionlist/', views.sessionlist, name='sessionlist'),
+    url(r'^about/', views.about, name='about'),
     url(r'^join_session/(?P<session_slug>[\w\-]+)/$', views.join_session, name='join_session'),
     url(r'^viewuser/(?P<user_name_slug>[\w\-]+)/$', views.view_user, name='view_user'), # this is for all people to be able to view the user information of someone
     url(r'^viewmarket/(?P<session_slug>[\w\-]+)/$', views.show_market_session, name='view_market'), # this is for viewing a session if you're part of the session

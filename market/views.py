@@ -26,9 +26,9 @@ def users(request):
     return render(request, 'market/users.html', context_dict)
 '''
 
-# added this to pass a test I wrote - up to someone else whether we keep it or not
+# returns the about page
 def about(request):
-    pass
+    return render(request, 'market/about.html', {})
 
 #view for handling logging in
 def user_login(request):

@@ -40,7 +40,7 @@
 				{% if user.is_authenticated %}
 				<li><a href="{% url 'sessionlist' %}">Session List</a></li>
 				{% endif %}
-				<li><a href="#">About</a></li>
+				<li><a href="{% url 'about' %}">About</a></li>
 			</ul>
 				{% if user.is_authenticated %}
 					<ul class="nav navbar-nav navbar-right">
