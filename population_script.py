@@ -25,23 +25,11 @@ from django.utils import timezone
 from django.db.models import Max
 
 def populate():
-    users = [
-            {"username":"Johnnyy", "fname":"Johhny","lname":"Pun","password":"Johnny", "email":"2329819P@student.gla.ac.uk","phonenumber":"123456789","desc":"","interests":""},
-            {"username":"Olee", "fname":"Ole","lname":"Stubben","password":"Ole", "email":"2270838S@student.gla.ac.uk","phonenumber":"123456789","desc":"","interests":""},
-            {"username":"Pawell", "fname":"Pawel","lname":"Heldt","password":"Pawel", "email":"2268686H@student.gla.ac.uk","phonenumber":"123456789","desc":"","interests":""},
-            {"username":"Wally", "fname":"Walter","lname":"Leinonen","password":"Walter", "email":"2270077L@student.gla.ac.uk","phonenumber":"123456789","desc":"","interests":""},
-            {"username":"Rosannaaa", "fname":"Rosanna","lname":"smth","password":"Rosanna", "email":"rosanna@gmail.com","phonenumber":"123456789","desc":"Im a fashion student","interests":"I love clothes!"},
-            {"username":"Komorii", "fname":"Komori","lname":"smthsm","password":"Komori", "email":"komori@gmail.com","phonenumber":"123456789","desc":"Im from Japan","interests":"I love to cook!"},
-            {"username":"Georgie", "fname":"George","lname":"Thiefman","password":"George", "email":"george@gmail.com","phonenumber":"123456789","desc":"Im a smalltime thief looking to expand","interests":"I like shiny things and money"},
-            ]
-
-    items = [
-            {"posterID":"1", "phonenumber":"1234567", "pic":None, "desc":"", "interests":"", "startdate":""},
-            {},
-            {},
-            ]
-    sessions = []
-    offers = []
+    # Mock data files are generated using the jupyter notebook scripts in
+    # the /population_resources/generators folders.
+    # Image credits to:
+    # http://www.vision.caltech.edu/Image_Datasets/Caltech101/
+    # http://www.vision.caltech.edu/Image_Datasets/Caltech_10K_WebFaces/
 
     se_names = [ "Oedipus", "Narcissus", "Minerva" ]
 
@@ -49,14 +37,12 @@ def populate():
     for i in range(3):
         details = [None, None, None]
         details[0] = se_names[i]
-        details[1] = i * 4 + 17
+        details[1] = i * 4 + 17 # somewhat random numbers
         details[2] = i * 3 + 13
-        #print "Adding session: " + str(i)
         add_session(i, details)
 
     # create a user for every line in users.txt
     f = open("./population_resource/data/users.txt")
-    #with f as open("./population_resource/data/users.txt"):
     i = 1
     for line in f:
         details = line.split("\t")
@@ -75,14 +61,13 @@ def populate():
 
     # Populate each session with 11 users
     for i in range(3):
-        #print "Populating session: " + str(i)
         pop_session(i)
 
     # Populate each session with 1 offer
+    # Does not work as intended, and instead only produces a single offer
     for sid in range(3):
         for i in range(11):
             uid1 = sid * 11 + i
-            #print "Populating offer: " + str(uid1)
             try:
                 it1 = Item.objects.filter(claimantID=uid1).first()
             except Item.DoesNotExist:
@@ -97,7 +82,6 @@ def populate():
                         it2 = None
 
                     if it2 != None:
-                        #print "Populating offer: " + str(uid1) + " | " + str(uid2)
                         add_offer(it1, it2, uid1, uid2)
                         break
                 break
@@ -140,27 +124,25 @@ def add_user(id, details):
     up.userStartDate = datetime.now()
 
     profile_pic = data_path + "profile_pictures/"
-    #print profile_pic + str(id) + ".jpg"
+
+    # Open an image file, load to DB, then save
     up.picture.save(str(id) + ".jpg", open(profile_pic + str(id) + ".jpg", "rb"), save=True)
 
     return up
 
 def add_item(id, details):
-    #print "Adding item: " + str(id)
-    #print details
-
     possessor = UserProfile.objects.get(userID = int(details[1]))
     claimant = UserProfile.objects.get(userID = int(details[2]))
 
     it = Item.objects.create(itemID = id, possessorID = possessor, claimantID = claimant)
-
-    # file: name -> owner -> claimant -> desc -> date
 
     it.itemName = details[0]
     it.itemDescription = details[3]
     it.itemDatePosted = datetime.now()
 
     item_pic = data_path + "item_pictures/"
+    
+    # Open an image file, load to DB, then save
     it.picture.save(str(id) + ".jpg", open(item_pic + str(id) + ".jpg", "rb"))
 
     return it
@@ -179,7 +161,7 @@ def add_session_participant(se, up):
     sp.save()
     return sp
 
-
+# Put some users in each session
 def pop_session(id):
     se = Session.objects.get(sessionID=id)
     for i in range(11):
@@ -190,11 +172,14 @@ def pop_session(id):
     se.save()
     return se
 
+# Fill one line of the offer contents table.
+# Used as part of add_offer
 def add_offer_contents(offer, fid, tid, oid, it, offered):
     contents = OfferContent.objects.create(callerID=fid, calleeID=tid, itemID=it, offerID=oid, offered=offered)
     contents.save()
     return contents
 
+# Take 2 items, 2 users, register an offer
 def add_offer(it1, it2, uid1, uid2):
     fid = UserProfile.objects.get(userID=uid1)
     tid = UserProfile.objects.get(userID=uid2)
