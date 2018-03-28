@@ -4,4 +4,4 @@
 *.pyc
 *.pyc.orig
 *.sqlite3
-*.jpg
+./market/migrations/*
