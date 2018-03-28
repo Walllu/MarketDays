@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
-from .models import User
+from models import User
 from django.db.models import F
 from market.models import UserProfile, Item, Session, Offer, SessionParticipants, OfferContent
 from django.contrib.auth.decorators import login_required
@@ -29,13 +29,13 @@ def get_current_user(req):
 def delete_all_offers_containing(item): # accepts an Item object
     assoc_offerIDs = OfferContent.objects.filter(itemID=item) # get all the offerIDs involving the item in questio
     for ID in assoc_offerIDs: # delete every offer, cascading down to offer contents as well
-        print(str(ID.offerID) + " to be deleted")
+        print str(ID.offerID) + " to be deleted"
         try:
             offer = Offer.objects.get(offerID__exact=ID.offerID.offerID)
             offer.delete()
-            print("item deleted")
+            print "item deleted"
         except Offer.DoesNotExist:
-            print("not deleted, already does not exist")
+            print "not deleted, already does not exist"
             continue # the point is we're trying to delete these things, if it doesn't exist already then less work for us!
 
 ########################################################3
@@ -63,7 +63,7 @@ def user_login(request):
                 return HttpResponse("Your MarketDays account is disabled")
         else:
             # Bad login details were provided
-            print(("Invalid login details: {0}, {1}".format(username, password)))
+            print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
     # request is not a HTTP POST so display the login form
     # this scenario will most likely be a HTTP GET
@@ -81,7 +81,7 @@ def register(request):
 
         #if the two forms are valid
         if profile_form.is_valid():
-            print("hello")
+            print "hello"
             profile = profile_form.save(commit=False)
             profile.password = make_password(profile.password)
 
@@ -95,7 +95,7 @@ def register(request):
             registered = True
         else:
             #invalid form or forms
-            print((profile_form.errors))
+            print(profile_form.errors)
     else:
         # Not a HTTP POST, so we render our form using two ModelForm instances
         # These forms will be blank, ready for user input
@@ -198,7 +198,7 @@ def register_item(request, username):
             registered = True
         else:
             #invalid form or forms
-            print((item_form.errors))
+            print(item_form.errors)
     else:
         # Not a HTTP POST, so we render our form using two ModelForm instances
         # These forms will be blank, ready for user input
@@ -219,7 +219,7 @@ def show_market_session(request, session_slug=None):
         current_user = get_current_user(request)
         context_dict['current_user_object'] = current_user
         if not SessionParticipants.objects.filter(sessionID=session, participantID=current_user).exists():
-            print("This user is not part of this session - YOU SHALL NOT PASS!!!")
+            print "This user is not part of this session - YOU SHALL NOT PASS!!!"
             return HttpResponseRedirect(reverse('sessionlist'))
     except Session.DoesNotExist:
         context_dict['session_object'] = None
@@ -234,7 +234,7 @@ def show_market_session(request, session_slug=None):
         else:
             context_dict['users_in_session'] = None
     except SessionParticipants.DoesNotExist: # if there is an error for some reason, make None
-        print("there are no users in this session")
+        print "there are no users in this session"
         context_dict['users_in_session'] = None
 
 
@@ -283,7 +283,7 @@ def register_profile(request):
 
             return redirect('/market/')
         else:
-            print((form.errors))
+            print (form.errors)
 
     context_dict = {'form' : form}
 
@@ -307,7 +307,7 @@ def profile(request, username):
             form.save(commit=True)
             return redirect('profile', user.username)
         else:
-            print(form.errors)
+            print form.errors
 
     return render(request, 'market/userProfile.html', {'userprofile_object':userprofile,'selecteduser':user,'form':form})
 
@@ -323,7 +323,7 @@ def add_item(request, username):
             item = form.save(commit=False)
             user = User.objects.get(username=username)
             user = UserProfile.objects.get(user=user)
-            print(user.userID)
+            print user.userID
             item.possessorID = user
             item.claimantID = item.possessorID
 
@@ -339,7 +339,7 @@ def add_item(request, username):
 
             return HttpResponseRedirect(reverse('view_user', kwargs={'user_name_slug':user.slug}))
         else:
-            print(form.errors)
+            print form.errors
 
     context_dict = {'form' : form}
 

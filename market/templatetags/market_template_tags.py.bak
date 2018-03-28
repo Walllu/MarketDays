@@ -114,7 +114,7 @@ def get_all_items(sessionID):
     # this method should return all items that are in a session
     # essentially all the items that are in the inventories of the user within a session
     session_participants = SessionParticipants.objects.filter(sessionID=session).values('participantID')     # get the userID of all participants - store as a QuerySet
-    print(session_participants)
+    print session_participants
     session_items = [] # this list will contain Item objects
     if len(session_participants)==0: # quick check to see if there's any participants to begin with
         return {'sessionitems':None}
@@ -132,7 +132,7 @@ def get_all_items(sessionID):
 #the one right beleow is returning offers user has made
 @register.inclusion_tag('market/offer_snip.html')
 def get_your_offers(yourID):
-    allOffers = list(Offer.objects.filter(fromID__exact=yourID).values('offerID').values())
+    allOffers = Offer.objects.filter(fromID__exact=yourID).values('offerID').values()
     allOffersParsed = []
     for offer in allOffers:
         recieverID = offer['toID_id']
@@ -145,7 +145,7 @@ def get_your_offers(yourID):
 #the one below returns offers addresed to a user
 @register.inclusion_tag('market/offer_snip.html')
 def get_to_you_offers(yourID):
-    allOffers = list(Offer.objects.filter(toID__exact=yourID).values('offerID').values())
+    allOffers = Offer.objects.filter(toID__exact=yourID).values('offerID').values()
     allOffersParsed = []
     for offer in allOffers:
         senderID = offer['fromID_id']
