@@ -28,7 +28,7 @@ SECRET_KEY = '^7j!@g84t72&@qjhemd-y8d670elzap+^xrgasq(sn#d#aj*ep'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['marketdays.pythonanywhere.com']
 
 '''
 Walter 26.2.2018
